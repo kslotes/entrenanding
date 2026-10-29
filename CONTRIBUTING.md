@@ -4,7 +4,7 @@ English | [Español](CONTRIBUTING.es.md)
 
 Content and code are both contributed through pull requests. Questions live in this repository as Markdown files, so adding a question is the same as adding code: fork, branch, commit, open a PR.
 
-> **Provisional.** The project is in Phase 0. The file layout and frontmatter schema below are a draft until the content schema task (T0.4) lands. Automated validation in CI is also coming in Phase 0. Until then, reviewers check these rules by hand.
+> **Phase 0.** The frontmatter below is enforced by the content schema in `src/content/schema.ts` when the site builds. Automated validation in CI is coming in Phase 0. Until then, reviewers check these rules by hand.
 
 ## Quick path
 
@@ -32,9 +32,10 @@ src/content/questions/
 | `<category>` | `algorithms`, `frontend`, `backend`, `behavioral`, or `system-design`                                |
 | `<slug>`     | Lowercase, hyphen-separated, in English. The same slug in both locales identifies the same question. |
 
-## Frontmatter (draft)
+## Frontmatter
 
 ```yaml
+title: Which bean scope does Spring use by default?
 locale: en
 type: multiple-choice
 category: backend
@@ -46,19 +47,39 @@ evidence: # required (min 2) when fundamentals is false
     url: https://...
   - type: job-posting
     url: https://...
+options:
+  - id: a
+    text: singleton
+  - id: b
+    text: prototype
+answer: a
 ```
 
 | Field          | Values                                                                                     |
 | -------------- | ------------------------------------------------------------------------------------------ |
+| `title`        | The question, in the file's locale.                                                        |
 | `locale`       | `en`, `es`. Must match the folder.                                                         |
 | `type`         | `open`, `multiple-choice`, `predict-output`, `spot-the-bug`, `behavioral`, `system-design` |
-| `category`     | Must match the folder.                                                                     |
-| `stack`        | Technologies the question applies to.                                                      |
-| `seniority`    | Levels the question targets.                                                               |
+| `category`     | `algorithms`, `frontend`, `backend`, `behavioral`, `system-design`. Must match the folder. |
+| `stack`        | Technologies the question applies to. May be empty.                                        |
+| `seniority`    | One or more of `jr`, `ssr`, `sr`.                                                          |
 | `fundamentals` | `true` for basics needed to understand a tool or language.                                 |
-| `evidence`     | Sources showing the question recurs in real interviews.                                    |
+| `evidence`     | Sources showing the question recurs in real interviews. See the evidence rule.             |
 
-Type-specific fields (options, expected output, rubric, and so on) will be documented with the schema.
+The Markdown body holds the model answer or explanation for every type.
+
+Unknown fields are rejected, so a typo such as `anwser` fails validation instead of being silently ignored.
+
+### Type-specific fields
+
+| Type              | Fields                                                                                             |
+| ----------------- | -------------------------------------------------------------------------------------------------- |
+| `open`            | None.                                                                                              |
+| `multiple-choice` | `options`: 2 to 6 items of `{ id, text }` with unique ids. `answer`: the id of the correct option. |
+| `predict-output`  | `code`, `language`, `expectedOutput`: the exact output, compared as a string.                      |
+| `spot-the-bug`    | `code`, `language`, `bugLine`: the 1-based line number of the bug, within `code`.                  |
+| `behavioral`      | `checklist`: one or more STAR self-assessment items.                                               |
+| `system-design`   | `steps`: one or more guide steps. `rubric`: one or more criteria to assess the answer.             |
 
 ## Evidence rule
 
