@@ -142,7 +142,8 @@ evidence: # required (min 2) when fundamentals is false
 | 3   | `feat/astro-scaffold` | `e05b75f`, `0f3bdaf`       | Astro + React scaffold, lint, format | ~120 authored + Markdown table reformat (lockfile excluded)                                   |
 
 - No git remote exists yet; PRs are opened once the GitHub repo is created.
+- 2026-10-28: user asked to land PR 1–3 on `main` before continuing. With no remote, slices were fast-forwarded locally into `main` in order (linear history, no merge commits). Later slices still branch from `main`.
 
 ## Next step
 
-T0.4: content schema + Astro i18n. Resolve first: `title` and type-specific frontmatter fields, full `seniority` value set.
+T0.4: content schema + Astro i18n. Resolve first: `title` and type-specific frontmatter fields. `seniority` values decided: `jr`, `ssr`, `sr` (user, 2026-10-28; more levels may come later).
