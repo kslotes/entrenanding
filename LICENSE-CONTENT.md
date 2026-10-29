@@ -12,11 +12,11 @@ The source code of the application is licensed separately under the MIT License.
 
 You may copy, share, and adapt the content, including for commercial use, as long as you:
 
-| Requirement | What to do |
-|---|---|
-| Attribution | Credit "Entrenanding contributors", link to this repository, link to the license, and state whether you changed the material. |
-| ShareAlike | Distribute your adapted material under CC BY-SA 4.0 or a compatible license. |
-| No extra restrictions | Do not apply legal terms or technical measures that stop others from doing what the license allows. |
+| Requirement           | What to do                                                                                                                    |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Attribution           | Credit "Entrenanding contributors", link to this repository, link to the license, and state whether you changed the material. |
+| ShareAlike            | Distribute your adapted material under CC BY-SA 4.0 or a compatible license.                                                  |
+| No extra restrictions | Do not apply legal terms or technical measures that stop others from doing what the license allows.                           |
 
 A short attribution line is enough, for example:
 

@@ -14,45 +14,45 @@ Por ahora el repositorio contiene las licencias y la documentación para contrib
 
 ## Qué lo diferencia
 
-| Principio | Qué significa |
-|---|---|
-| Orientado al trabajo | El contenido debe aplicarse al trabajo real, no a curiosidades. |
+| Principio                | Qué significa                                                                                                                                                                                    |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Orientado al trabajo     | El contenido debe aplicarse al trabajo real, no a curiosidades.                                                                                                                                  |
 | Respaldado por evidencia | Las preguntas teóricas deben citar al menos dos fuentes que muestren que se repiten en entrevistas reales. Los fundamentos necesarios para entender una herramienta o un lenguaje están exentos. |
-| Bilingüe | Interfaz y contenido en español e inglés. Una pregunta puede existir en un solo idioma hasta que alguien la traduzca. |
-| Privado por defecto | Tu progreso queda en tu navegador (`localStorage`). Sin cuenta y sin backend. |
-| Contenido como código | Las preguntas son archivos Markdown en este repositorio y se aportan mediante pull requests. |
+| Bilingüe                 | Interfaz y contenido en español e inglés. Una pregunta puede existir en un solo idioma hasta que alguien la traduzca.                                                                            |
+| Privado por defecto      | Tu progreso queda en tu navegador (`localStorage`). Sin cuenta y sin backend.                                                                                                                    |
+| Contenido como código    | Las preguntas son archivos Markdown en este repositorio y se aportan mediante pull requests.                                                                                                     |
 
 ## Tipos de pregunta
 
 Ninguno de los tipos requiere ejecutar código.
 
-| Tipo | Cómo se evalúa |
-|---|---|
-| `open` | Respuesta modelo más autoevaluación (la sabía / parcialmente / no la sabía) |
-| `multiple-choice` | Automática |
-| `predict-output` | Automática (comparación de texto) |
-| `spot-the-bug` | Automática (línea u opción seleccionada) |
-| `behavioral` | Guía STAR más lista de autoevaluación |
-| `system-design` | Guía paso a paso más rúbrica |
+| Tipo              | Cómo se evalúa                                                              |
+| ----------------- | --------------------------------------------------------------------------- |
+| `open`            | Respuesta modelo más autoevaluación (la sabía / parcialmente / no la sabía) |
+| `multiple-choice` | Automática                                                                  |
+| `predict-output`  | Automática (comparación de texto)                                           |
+| `spot-the-bug`    | Automática (línea u opción seleccionada)                                    |
+| `behavioral`      | Guía STAR más lista de autoevaluación                                       |
+| `system-design`   | Guía paso a paso más rúbrica                                                |
 
 ## Categorías
 
-| Categoría | Alcance |
-|---|---|
-| `algorithms` | Estructuras de datos y algoritmos |
-| `frontend` | React, Vue, Angular y la plataforma web |
-| `backend` | Enfoque inicial en Java con Spring y Quarkus |
-| `behavioral` | Preguntas sobre experiencia, colaboración y conflictos |
-| `system-design` | Ejercicios de arquitectura y diseño |
+| Categoría       | Alcance                                                |
+| --------------- | ------------------------------------------------------ |
+| `algorithms`    | Estructuras de datos y algoritmos                      |
+| `frontend`      | React, Vue, Angular y la plataforma web                |
+| `backend`       | Enfoque inicial en Java con Spring y Quarkus           |
+| `behavioral`    | Preguntas sobre experiencia, colaboración y conflictos |
+| `system-design` | Ejercicios de arquitectura y diseño                    |
 
 ## Hoja de ruta
 
-| Fase | Alcance |
-|---|---|
-| 0. Fundamentos | Repositorio, licencias, esquema de contenido, CI que valida contenido y evidencia, primer despliegue |
-| 1. MVP | Navegación por categoría, stack y seniority; los seis tipos de pregunta; progreso en el navegador; contenido inicial |
-| 2. Herramientas de estudio | Repetición espaciada, modo simulacro de entrevista, exportación e importación del progreso |
-| 3+. Más adelante | Práctica ejecutable, cuentas y sincronización opcionales, simulacros con IA usando tu propia clave de API |
+| Fase                       | Alcance                                                                                                              |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| 0. Fundamentos             | Repositorio, licencias, esquema de contenido, CI que valida contenido y evidencia, primer despliegue                 |
+| 1. MVP                     | Navegación por categoría, stack y seniority; los seis tipos de pregunta; progreso en el navegador; contenido inicial |
+| 2. Herramientas de estudio | Repetición espaciada, modo simulacro de entrevista, exportación e importación del progreso                           |
+| 3+. Más adelante           | Práctica ejecutable, cuentas y sincronización opcionales, simulacros con IA usando tu propia clave de API            |
 
 ## Cómo contribuir
 
@@ -60,7 +60,7 @@ Las contribuciones son bienvenidas, en especial preguntas con evidencia y traduc
 
 ## Licencias
 
-| Qué | Licencia |
-|---|---|
-| Código | [MIT](LICENSE) |
+| Qué                         | Licencia                           |
+| --------------------------- | ---------------------------------- |
+| Código                      | [MIT](LICENSE)                     |
 | Contenido en `src/content/` | [CC BY-SA 4.0](LICENSE-CONTENT.md) |

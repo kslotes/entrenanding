@@ -14,14 +14,14 @@ Build an open-source webapp that helps people learn, practice, and prepare for j
 
 ## Decisions (accepted)
 
-| Decision | Rationale |
-|---|---|
-| **Content-as-code**: questions and answers live in the repo as Markdown/MDX | No CMS, no DB for content; community contributes via PRs (same model as roadmap.sh) |
-| **Progress stored in `localStorage` only** for the MVP | No backend needed; behind a `ProgressRepository` port so a cloud adapter can be added later |
-| **No code execution in the MVP** | Sandboxing, per-exercise tests, feedback, and contributor burden are high effort; deferred to a dedicated later phase |
-| **Question `type` discriminator** in the content schema | Allows adding `type: exercise` later without breaking existing content |
-| **Evidence required** for theoretical questions | Enforces the "verified recurring in interviews" goal; CI rejects PRs without it |
-| **Bilingual: Spanish + English** (UI and content) | Wider community reach; Astro native i18n routing (`locales: ["es", "en"]`, `prefixDefaultLocale: true` → `/es/...`, `/en/...`), no extra i18n library |
+| Decision                                                                    | Rationale                                                                                                                                             |
+| --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Content-as-code**: questions and answers live in the repo as Markdown/MDX | No CMS, no DB for content; community contributes via PRs (same model as roadmap.sh)                                                                   |
+| **Progress stored in `localStorage` only** for the MVP                      | No backend needed; behind a `ProgressRepository` port so a cloud adapter can be added later                                                           |
+| **No code execution in the MVP**                                            | Sandboxing, per-exercise tests, feedback, and contributor burden are high effort; deferred to a dedicated later phase                                 |
+| **Question `type` discriminator** in the content schema                     | Allows adding `type: exercise` later without breaking existing content                                                                                |
+| **Evidence required** for theoretical questions                             | Enforces the "verified recurring in interviews" goal; CI rejects PRs without it                                                                       |
+| **Bilingual: Spanish + English** (UI and content)                           | Wider community reach; Astro native i18n routing (`locales: ["es", "en"]`, `prefixDefaultLocale: true` → `/es/...`, `/en/...`), no extra i18n library |
 
 | **Single visual direction: "technical and raw"** (IDE/terminal aesthetic) | One look only, no switchable skins; keeps components, copy, and visual QA single-variant. Reference mockup: https://claude.ai/artifact/W7vETgpT8EFBc6a5ypDh6a (panel C) |
 
@@ -50,14 +50,14 @@ Build an open-source webapp that helps people learn, practice, and prepare for j
 
 ## Tech stack (proposed)
 
-| Layer | Choice | Notes |
-|---|---|---|
-| Framework | Astro + React islands + TypeScript | Content-heavy, mostly static output |
-| Content | Astro Content Collections + Zod | Schema validation in CI |
-| Tests | Vitest + Playwright | |
-| Hosting | Cloudflare Pages (free) | Verify current free-tier limits before committing |
-| CI | GitHub Actions | Free for public repos |
-| Licenses | MIT (code) + CC BY-SA 4.0 (content) | Confirm before publishing |
+| Layer     | Choice                              | Notes                                             |
+| --------- | ----------------------------------- | ------------------------------------------------- |
+| Framework | Astro + React islands + TypeScript  | Content-heavy, mostly static output               |
+| Content   | Astro Content Collections + Zod     | Schema validation in CI                           |
+| Tests     | Vitest + Playwright                 |                                                   |
+| Hosting   | Cloudflare Pages (free)             | Verify current free-tier limits before committing |
+| CI        | GitHub Actions                      | Free for public repos                             |
+| Licenses  | MIT (code) + CC BY-SA 4.0 (content) | Confirm before publishing                         |
 
 ## Content model
 
@@ -65,14 +65,14 @@ Categories: `algorithms`, `frontend` (React, Vue, Angular, ...), `backend` (focu
 
 Question types (no execution required):
 
-| Type | Grading |
-|---|---|
-| `open` | Model answer + self-assessment (knew it / partially / didn't) |
-| `multiple-choice` | Automatic |
-| `predict-output` | Automatic (string comparison) |
-| `spot-the-bug` | Automatic (selected line/option) |
-| `behavioral` | STAR guide + self-assessment checklist |
-| `system-design` | Step-by-step guide + rubric |
+| Type              | Grading                                                       |
+| ----------------- | ------------------------------------------------------------- |
+| `open`            | Model answer + self-assessment (knew it / partially / didn't) |
+| `multiple-choice` | Automatic                                                     |
+| `predict-output`  | Automatic (string comparison)                                 |
+| `spot-the-bug`    | Automatic (selected line/option)                              |
+| `behavioral`      | STAR guide + self-assessment checklist                        |
+| `system-design`   | Step-by-step guide + rubric                                   |
 
 Frontmatter sketch:
 
@@ -81,9 +81,9 @@ type: multiple-choice
 category: backend
 stack: [java, spring]
 seniority: [ssr, sr]
-fundamentals: false      # true = no evidence required
-evidence:                # required (min 2) when fundamentals is false
-  - type: interview-report   # Glassdoor, Blind, public post
+fundamentals: false # true = no evidence required
+evidence: # required (min 2) when fundamentals is false
+  - type: interview-report # Glassdoor, Blind, public post
     url: https://...
   - type: job-posting
     url: https://...
@@ -134,11 +134,11 @@ evidence:                # required (min 2) when fundamentals is false
 - Running count after T0.2: ~610 authored lines (T0.1 ~180, T0.2 ~430). Over the ~400 budget: chain strategy asked to the user before the T0.3 commit.
 - Chain strategy: **stacked-to-main** (user choice, 2026-10-28). Each slice targets the previous slice's branch while it is open, then `main` once the parent merges.
 
-| PR | Branch | Commits | Scope | Size |
-|---|---|---|---|---|
-| 1 | `chore/repo-setup` | `5e3dcac` | T0.1 repo config + plan | ~180 |
-| 2 | `docs/project-docs` | `ce3e318` + progress notes | T0.2 licenses and contributor docs | ~440 (docs only; slightly over budget, cannot split cohesively, `size:exception` recommended) |
-| 3 | `feat/astro-scaffold` | T0.3 | Astro + React scaffold, lint, format | pending |
+| PR  | Branch                | Commits                    | Scope                                | Size                                                                                          |
+| --- | --------------------- | -------------------------- | ------------------------------------ | --------------------------------------------------------------------------------------------- |
+| 1   | `chore/repo-setup`    | `5e3dcac`                  | T0.1 repo config + plan              | ~180                                                                                          |
+| 2   | `docs/project-docs`   | `ce3e318` + progress notes | T0.2 licenses and contributor docs   | ~440 (docs only; slightly over budget, cannot split cohesively, `size:exception` recommended) |
+| 3   | `feat/astro-scaffold` | T0.3                       | Astro + React scaffold, lint, format | pending                                                                                       |
 
 - No git remote exists yet; PRs are opened once the GitHub repo is created.
 

@@ -26,11 +26,11 @@ src/content/questions/
       spring-bean-scopes.md
 ```
 
-| Part | Rule |
-|---|---|
-| `<locale>` | `en` or `es` |
-| `<category>` | `algorithms`, `frontend`, `backend`, `behavioral`, or `system-design` |
-| `<slug>` | Lowercase, hyphen-separated, in English. The same slug in both locales identifies the same question. |
+| Part         | Rule                                                                                                 |
+| ------------ | ---------------------------------------------------------------------------------------------------- |
+| `<locale>`   | `en` or `es`                                                                                         |
+| `<category>` | `algorithms`, `frontend`, `backend`, `behavioral`, or `system-design`                                |
+| `<slug>`     | Lowercase, hyphen-separated, in English. The same slug in both locales identifies the same question. |
 
 ## Frontmatter (draft)
 
@@ -40,23 +40,23 @@ type: multiple-choice
 category: backend
 stack: [java, spring]
 seniority: [ssr, sr]
-fundamentals: false        # true = no evidence required
-evidence:                  # required (min 2) when fundamentals is false
+fundamentals: false # true = no evidence required
+evidence: # required (min 2) when fundamentals is false
   - type: interview-report # Glassdoor, Blind, public post
     url: https://...
   - type: job-posting
     url: https://...
 ```
 
-| Field | Values |
-|---|---|
-| `locale` | `en`, `es`. Must match the folder. |
-| `type` | `open`, `multiple-choice`, `predict-output`, `spot-the-bug`, `behavioral`, `system-design` |
-| `category` | Must match the folder. |
-| `stack` | Technologies the question applies to. |
-| `seniority` | Levels the question targets. |
-| `fundamentals` | `true` for basics needed to understand a tool or language. |
-| `evidence` | Sources showing the question recurs in real interviews. |
+| Field          | Values                                                                                     |
+| -------------- | ------------------------------------------------------------------------------------------ |
+| `locale`       | `en`, `es`. Must match the folder.                                                         |
+| `type`         | `open`, `multiple-choice`, `predict-output`, `spot-the-bug`, `behavioral`, `system-design` |
+| `category`     | Must match the folder.                                                                     |
+| `stack`        | Technologies the question applies to.                                                      |
+| `seniority`    | Levels the question targets.                                                               |
+| `fundamentals` | `true` for basics needed to understand a tool or language.                                 |
+| `evidence`     | Sources showing the question recurs in real interviews.                                    |
 
 Type-specific fields (options, expected output, rubric, and so on) will be documented with the schema.
 
@@ -68,10 +68,10 @@ Entrenanding only includes theoretical questions that people are actually asked.
 - Each entry has a `type` and a public `url`.
 - When `fundamentals: true`, evidence is optional. Use it only for basics required to understand a tool or language, not to skip the rule.
 
-| Evidence type | Examples |
-|---|---|
+| Evidence type      | Examples                                                                       |
+| ------------------ | ------------------------------------------------------------------------------ |
 | `interview-report` | A Glassdoor review, a Blind thread, a public blog post describing an interview |
-| `job-posting` | A job posting that lists the topic as a requirement |
+| `job-posting`      | A job posting that lists the topic as a requirement                            |
 
 Link to sources. Do not copy their text into the repository.
 
@@ -92,13 +92,13 @@ Link to sources. Do not copy their text into the repository.
 
 Use [Conventional Commits](https://www.conventionalcommits.org/). The PR title follows the same format.
 
-| Example | When |
-|---|---|
-| `feat(content): add spring bean scopes question` | New question |
-| `feat(content): translate spring bean scopes to es` | New translation |
-| `fix(content): correct expected output in js-closures` | Content fix |
-| `feat: add category filter` | New app feature |
-| `docs: clarify evidence rule` | Documentation |
+| Example                                                | When            |
+| ------------------------------------------------------ | --------------- |
+| `feat(content): add spring bean scopes question`       | New question    |
+| `feat(content): translate spring bean scopes to es`    | New translation |
+| `fix(content): correct expected output in js-closures` | Content fix     |
+| `feat: add category filter`                            | New app feature |
+| `docs: clarify evidence rule`                          | Documentation   |
 
 ## Licensing
 
