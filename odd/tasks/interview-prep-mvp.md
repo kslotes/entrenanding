@@ -106,8 +106,10 @@ evidence:                # required (min 2) when fundamentals is false
 
 ## Phase 0 checklist
 
-- [x] T0.1 Initialize git repository, default branch `main`, `.gitignore`, `.editorconfig`. Route: inline (3 mechanical config files, no research). Also added `.gitattributes` (LF) for Windows contributors.
-- [ ] T0.2 Add `LICENSE` (MIT) and content license (CC BY-SA 4.0), `README.md`, `CONTRIBUTING.md`, PR template.
+- [x] T0.1 Initialize git repository, default branch `main`, `.gitignore`, `.editorconfig`. Route: inline (3 mechanical config files, no research). Also added `.gitattributes` (LF) for Windows contributors. Commit `5e3dcac`. Checks: `git ls-files --eol` shows LF for all files. Review: assessed `medium`, `under_budget`; RDD off (global), no review.
+- [x] T0.2 Add `LICENSE` (MIT) and content license (CC BY-SA 4.0), `README.md`, `CONTRIBUTING.md`, PR template. Route: delegated writer (7 non-trivial docs, incl. `README.es.md`, `CONTRIBUTING.es.md`). Checks: 15/15 relative links resolve, LF only, structural readback by parent. Licenses remain "confirm before publishing".
+  - Open for T0.4: `title` and type-specific fields (options, expected output) are not in the frontmatter sketch yet; full `seniority` value set undefined (only `ssr`, `sr` shown).
+  - Added conventions: slugs in English; commit messages in English.
 - [ ] T0.3 Scaffold Astro + TypeScript + React integration; configure lint/format.
 - [ ] T0.4 Define content collection schema with Zod (type discriminator, category, stack, seniority, fundamentals, evidence rule, locale) and configure Astro i18n (`es`, `en`).
 - [ ] T0.5 Add one sample question per type to validate the schema.
