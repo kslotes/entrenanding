@@ -107,7 +107,7 @@ evidence:                # required (min 2) when fundamentals is false
 ## Phase 0 checklist
 
 - [x] T0.1 Initialize git repository, default branch `main`, `.gitignore`, `.editorconfig`. Route: inline (3 mechanical config files, no research). Also added `.gitattributes` (LF) for Windows contributors. Commit `5e3dcac`. Checks: `git ls-files --eol` shows LF for all files. Review: assessed `medium`, `under_budget`; RDD off (global), no review.
-- [x] T0.2 Add `LICENSE` (MIT) and content license (CC BY-SA 4.0), `README.md`, `CONTRIBUTING.md`, PR template. Route: delegated writer (7 non-trivial docs, incl. `README.es.md`, `CONTRIBUTING.es.md`). Checks: 15/15 relative links resolve, LF only, structural readback by parent. Licenses remain "confirm before publishing".
+- [x] T0.2 Add `LICENSE` (MIT) and content license (CC BY-SA 4.0), `README.md`, `CONTRIBUTING.md`, PR template. Route: delegated writer (7 non-trivial docs, incl. `README.es.md`, `CONTRIBUTING.es.md`). Checks: 15/15 relative links resolve, LF only, structural readback by parent. Licenses remain "confirm before publishing". Commit `ce3e318`. Review: assessed `high`, `review_due: true`; RDD off (global), no review started.
   - Open for T0.4: `title` and type-specific fields (options, expected output) are not in the frontmatter sketch yet; full `seniority` value set undefined (only `ssr`, `sr` shown).
   - Added conventions: slugs in English; commit messages in English.
 - [ ] T0.3 Scaffold Astro + TypeScript + React integration; configure lint/format.
@@ -131,6 +131,16 @@ evidence:                # required (min 2) when fundamentals is false
 ## Delivery
 
 - Strategy: `ask-on-risk` (default). Forecast for Phase 0: roughly 600–900 authored lines (scaffold, schema, tests, CI, sample content), so a chain decision is expected before T0.4.
+- Running count after T0.2: ~610 authored lines (T0.1 ~180, T0.2 ~430). Over the ~400 budget: chain strategy asked to the user before the T0.3 commit.
+- Chain strategy: **stacked-to-main** (user choice, 2026-10-28). Each slice targets the previous slice's branch while it is open, then `main` once the parent merges.
+
+| PR | Branch | Commits | Scope | Size |
+|---|---|---|---|---|
+| 1 | `chore/repo-setup` | `5e3dcac` | T0.1 repo config + plan | ~180 |
+| 2 | `docs/project-docs` | `ce3e318` + progress notes | T0.2 licenses and contributor docs | ~440 (docs only; slightly over budget, cannot split cohesively, `size:exception` recommended) |
+| 3 | `feat/astro-scaffold` | T0.3 | Astro + React scaffold, lint, format | pending |
+
+- No git remote exists yet; PRs are opened once the GitHub repo is created.
 
 ## Next step
 
