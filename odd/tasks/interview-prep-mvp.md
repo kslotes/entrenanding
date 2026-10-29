@@ -14,14 +14,15 @@ Build an open-source webapp that helps people learn, practice, and prepare for j
 
 ## Decisions (accepted)
 
-| Decision                                                                    | Rationale                                                                                                                                             |
-| --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Content-as-code**: questions and answers live in the repo as Markdown/MDX | No CMS, no DB for content; community contributes via PRs (same model as roadmap.sh)                                                                   |
-| **Progress stored in `localStorage` only** for the MVP                      | No backend needed; behind a `ProgressRepository` port so a cloud adapter can be added later                                                           |
-| **No code execution in the MVP**                                            | Sandboxing, per-exercise tests, feedback, and contributor burden are high effort; deferred to a dedicated later phase                                 |
-| **Question `type` discriminator** in the content schema                     | Allows adding `type: exercise` later without breaking existing content                                                                                |
-| **Evidence required** for theoretical questions                             | Enforces the "verified recurring in interviews" goal; CI rejects PRs without it                                                                       |
-| **Bilingual: Spanish + English** (UI and content)                           | Wider community reach; Astro native i18n routing (`locales: ["es", "en"]`, `prefixDefaultLocale: true` → `/es/...`, `/en/...`), no extra i18n library |
+| Decision                                                                                   | Rationale                                                                                                                                                                                                                                                                                         |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Content-as-code**: questions and answers live in the repo as Markdown/MDX                | No CMS, no DB for content; community contributes via PRs (same model as roadmap.sh)                                                                                                                                                                                                               |
+| **Progress stored in `localStorage` only** for the MVP                                     | No backend needed; behind a `ProgressRepository` port so a cloud adapter can be added later                                                                                                                                                                                                       |
+| **No code execution in the MVP**                                                           | Sandboxing, per-exercise tests, feedback, and contributor burden are high effort; deferred to a dedicated later phase                                                                                                                                                                             |
+| **Question `type` discriminator** in the content schema                                    | Allows adding `type: exercise` later without breaking existing content                                                                                                                                                                                                                            |
+| **Evidence required** for theoretical questions                                            | Enforces the "verified recurring in interviews" goal; CI rejects PRs without it                                                                                                                                                                                                                   |
+| **Bilingual: Spanish + English** (UI and content)                                          | Wider community reach; Astro native i18n routing (`locales: ["es", "en"]`, `prefixDefaultLocale: true` → `/es/...`, `/en/...`), no extra i18n library                                                                                                                                             |
+| **MVP ships only auto-graded types** (`multiple-choice`, `predict-output`, `spot-the-bug`) | Questions the app cannot verify as correctly answered add no value yet. `open`, `behavioral`, `system-design` types and the `behavioral` category return with AI answer evaluation (BYOK) in Phase 3+. `system-design` stays as a category (asked as multiple-choice). Owner decision, 2026-10-29 |
 
 | **Single visual direction: "technical and raw"** (IDE/terminal aesthetic) | One look only, no switchable skins; keeps components, copy, and visual QA single-variant. Reference mockup: https://claude.ai/artifact/W7vETgpT8EFBc6a5ypDh6a (panel C) |
 
@@ -61,18 +62,18 @@ Build an open-source webapp that helps people learn, practice, and prepare for j
 
 ## Content model
 
-Categories: `algorithms`, `frontend` (React, Vue, Angular, ...), `backend` (focus: Java with Spring/Quarkus), `behavioral`, `system-design`.
+Categories: `algorithms`, `frontend` (React, Vue, Angular, ...), `backend` (focus: Java with Spring/Quarkus), `system-design`. The `behavioral` category is deferred to Phase 3+ (AI evaluation).
 
 Question types (no execution required):
 
-| Type              | Grading                                                       |
-| ----------------- | ------------------------------------------------------------- |
-| `open`            | Model answer + self-assessment (knew it / partially / didn't) |
-| `multiple-choice` | Automatic                                                     |
-| `predict-output`  | Automatic (string comparison)                                 |
-| `spot-the-bug`    | Automatic (selected line/option)                              |
-| `behavioral`      | STAR guide + self-assessment checklist                        |
-| `system-design`   | Step-by-step guide + rubric                                   |
+| Type              | Grading                              |
+| ----------------- | ------------------------------------ |
+| `open`            | Deferred to Phase 3+ (AI evaluation) |
+| `multiple-choice` | Automatic                            |
+| `predict-output`  | Automatic (string comparison)        |
+| `spot-the-bug`    | Automatic (selected line/option)     |
+| `behavioral`      | Deferred to Phase 3+ (AI evaluation) |
+| `system-design`   | Deferred to Phase 3+ (AI evaluation) |
 
 Frontmatter sketch:
 
@@ -92,9 +93,9 @@ evidence: # required (min 2) when fundamentals is false
 ## Roadmap
 
 - **Phase 0 — Foundations:** repo, licenses, Astro + Zod schema, CI validating content and evidence, deploy to Cloudflare Pages.
-- **Phase 1 — MVP:** browse by category/stack/seniority, all 6 question types, progress in `localStorage`, seed content with evidence (~10 questions per category).
+- **Phase 1 — MVP:** browse by category/stack/seniority, the 3 auto-graded question types, progress in `localStorage`, seed content with evidence (~10 questions per category).
 - **Phase 2 — Study tools:** spaced repetition (self-assessment based), mock interview mode (N random questions + timer), progress export/import.
-- **Phase 3+ — Later:** design executable practice properly, accounts + DB for sync and "I was asked this" votes, AI mock interviews with BYOK (user-provided API key).
+- **Phase 3+ — Later:** design executable practice properly, accounts + DB for sync and "I was asked this" votes, AI answer evaluation and mock interviews with BYOK (user-provided API key), which brings back the deferred self-assessed types `open`, `behavioral`, `system-design` and the `behavioral` category.
 
 ### Deferred research for executable practice (Phase 3+)
 
@@ -109,13 +110,11 @@ evidence: # required (min 2) when fundamentals is false
 - Schema lives in a plain module (`src/content/schema.ts`) so it is unit-testable without `astro:content`; `src/content.config.ts` only wires it to the collection with the glob loader.
 - Common fields: `title` (localized), `locale` (`es` | `en`, must match the path segment), `type`, `category`, `stack` (string[]), `seniority` (non-empty subset of `jr`, `ssr`, `sr`), `fundamentals` (boolean), `evidence` (min 2 when `fundamentals: false`; items `{ type: interview-report | job-posting, url }`).
 - Discriminated union on `type`; type-specific fields:
-  - `open`: none (body = model answer).
   - `multiple-choice`: `options: { id, text }[]` (2–6, unique ids), `answer` = one option id.
   - `predict-output`: `code`, `language`, `expectedOutput`.
   - `spot-the-bug`: `code`, `language`, `bugLine` (1-based, within `code`).
-  - `behavioral`: `checklist: string[]` (STAR self-assessment items).
-  - `system-design`: `steps: string[]`, `rubric: string[]`.
-- Body (Markdown) holds the model answer / explanation for every type.
+  - Removed in T0.5b (deferred to Phase 3+): `open` (no fields), `behavioral` (`checklist`), `system-design` (`steps`, `rubric`).
+- Body (Markdown) holds the explanation for every type.
 - i18n: `locales: ["es", "en"]`, `defaultLocale: "es"` (assumption: Spanish-first audience; change is a one-line config edit), `prefixDefaultLocale: true`. Placeholder pages `/es/` and `/en/`; root `/` keeps a placeholder until the `Accept-Language` redirect lands.
 - Typed UI dictionaries `src/i18n/{en,es}.ts`: `es` is typed against the keys of `en`, so a missing key fails `astro check`.
 - Vitest moves from T0.6 into T0.4 so the schema is built test-first. T0.6 becomes content-integrity tests (locale matches path, metadata parity across translations).
@@ -127,8 +126,9 @@ evidence: # required (min 2) when fundamentals is false
   - Open for T0.4: `title` and type-specific fields (options, expected output) are not in the frontmatter sketch yet; full `seniority` value set undefined (only `ssr`, `sr` shown).
   - Added conventions: slugs in English; commit messages in English.
 - [x] T0.3 Scaffold Astro + TypeScript + React integration; configure lint/format. Route: delegated writer (10 config files + install). Stack: astro 7.4.4, @astrojs/react 7.1.2, react 19.3.1, TypeScript 6.0.3 (pinned: @astrojs/check requires <7), ESLint 10 flat + typescript-eslint + eslint-plugin-astro + react-hooks `flat.recommended`, Prettier 3 + prettier-plugin-astro, pnpm 10.28.2, Node >=24. Commits `e05b75f` (scaffold, 118 authored lines excl. lockfile) and `0f3bdaf` (Prettier pass on pre-existing Markdown, tables only). Checks (parent re-run): `pnpm check` 0 errors, `pnpm lint` clean, `pnpm format:check` pass, `pnpm build` 1 page. Test-first exception: scaffold has no behavior. Review: assessed `high`, `review_due: true`; RDD off (global), no review started.
-- [x] T0.4 Define content collection schema with Zod (type discriminator, category, stack, seniority, fundamentals, evidence rule, locale) and configure Astro i18n (`es`, `en`). Route: delegated writer (schema, tests, i18n, pages, docs) + one inline parent correction (strict objects). Deps: vitest 5.0.5 (Vite 8.3.5 shared with Astro), Zod 4.6.7 via `astro/zod`. RED observed: `Failed to resolve import "./schema"`; later RED for 2 strict-object tests. GREEN: 22 tests. Checks (parent re-run): `pnpm check` 0 errors, lint clean, format:check pass, build 3 pages (`/`, `/es/`, `/en/`). Missing-key proof: deleting a key in `es.ts` fails `astro check` (ts2741). Known warning: glob loader warns until `src/content/questions/` exists (T0.5). Chosen minimums: `checklist`, `steps`, `rubric` need ≥1 item; `stack` may be empty. Unknown frontmatter fields are rejected (strict objects).
-- [x] T0.5 Add one sample question per type to validate the schema. Route: delegated writer (12 content files). 6 slugs × `en`/`es`, covering all 5 categories. Fundamentals (`true`): var-closure-in-loop, spring-default-bean-scope, binary-search-off-by-one, http-idempotent-methods. Evidence-backed (`false`, 2 fetched `interview-report` URLs each): conflict-with-teammate, url-shortener. Weak spot: behavioral evidence comes from PracHub aggregator pages (Glassdoor/LeetCode return 403 to automated checks). No meaningful RED (content only); checks: build passes with 12 entries and no glob warning, check 0 errors, 22 tests, lint, format; negative check (`answer: z`) fails build with `InvalidContentEntryDataError`, then reverted. T0.4 delivered as PR #1 (merge a6d9d46).
+- [x] T0.4 Define content collection schema with Zod (type discriminator, category, stack, seniority, fundamentals, evidence rule, locale) and configure Astro i18n (`es`, `en`). Route: delegated writer (schema, tests, i18n, pages, docs) + one inline parent correction (strict objects). Deps: vitest 5.0.5 (Vite 8.3.5 shared with Astro), Zod 4.6.7 via `astro/zod`. RED observed: `Failed to resolve import "./schema"`; later RED for 2 strict-object tests. GREEN: 22 tests. Checks (parent re-run): `pnpm check` 0 errors, lint clean, format:check pass, build 3 pages (`/`, `/es/`, `/en/`). Missing-key proof: deleting a key in `es.ts` fails `astro check` (ts2741). Known warning: glob loader warns until `src/content/questions/` exists (T0.5). Chosen minimums: `checklist`, `steps`, `rubric` need ≥1 item (fields removed in T0.5b); `stack` may be empty. Unknown frontmatter fields are rejected (strict objects).
+- [x] T0.5 Add one sample question per type to validate the schema. Route: delegated writer (12 content files). Originally 6 slugs × `en`/`es` (12 files) covering all 5 categories; after T0.5b, 3 slugs × 2 locales = 6 files remain (var-closure-in-loop, spring-default-bean-scope, binary-search-off-by-one), and the evidence-backed samples were removed with their types. Fundamentals (`true`): var-closure-in-loop, spring-default-bean-scope, binary-search-off-by-one, http-idempotent-methods. Evidence-backed (`false`, 2 fetched `interview-report` URLs each): conflict-with-teammate, url-shortener. Weak spot: behavioral evidence comes from PracHub aggregator pages (Glassdoor/LeetCode return 403 to automated checks). No meaningful RED (content only); checks: build passes with 12 entries and no glob warning, check 0 errors, 22 tests, lint, format; negative check (`answer: z`) fails build with `InvalidContentEntryDataError`, then reverted. T0.4 delivered as PR #1 (merge a6d9d46).
+- [x] T0.5b Remove self-assessed types from the MVP (owner decision: only auto-graded types). Route: delegated writer (schema, tests, docs, content removal). Schema drops `open`, `behavioral`, `system-design` variants and the `behavioral` category; `system-design` category stays. Removed samples (both locales): http-idempotent-methods, conflict-with-teammate, url-shortener. RED observed: 4 failed / 19 passed (deferred types and `behavioral` category still accepted). GREEN: 23 tests. Docs updated: CONTRIBUTING (en/es), README (en/es).
 - [ ] T0.6 Content-integrity tests: `locale` matches path segment, metadata parity across translations (same slug). (Vitest setup and schema unit tests moved into T0.4.)
 - [ ] T0.7 GitHub Actions CI: install, lint, typecheck, test, build.
 - [ ] T0.8 Deploy to Cloudflare Pages (verify free-tier limits first).
@@ -137,7 +137,7 @@ evidence: # required (min 2) when fundamentals is false
 
 - A PR with a theoretical question lacking evidence fails CI.
 - A PR with valid content builds and deploys a preview.
-- All six question types validate against the schema.
+- All three auto-graded question types validate against the schema; deferred types are rejected.
 
 ## Progress
 

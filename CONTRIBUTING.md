@@ -29,7 +29,7 @@ src/content/questions/
 | Part         | Rule                                                                                                 |
 | ------------ | ---------------------------------------------------------------------------------------------------- |
 | `<locale>`   | `en` or `es`                                                                                         |
-| `<category>` | `algorithms`, `frontend`, `backend`, `behavioral`, or `system-design`                                |
+| `<category>` | `algorithms`, `frontend`, `backend`, or `system-design`                                              |
 | `<slug>`     | Lowercase, hyphen-separated, in English. The same slug in both locales identifies the same question. |
 
 ## Frontmatter
@@ -55,16 +55,16 @@ options:
 answer: a
 ```
 
-| Field          | Values                                                                                     |
-| -------------- | ------------------------------------------------------------------------------------------ |
-| `title`        | The question, in the file's locale.                                                        |
-| `locale`       | `en`, `es`. Must match the folder.                                                         |
-| `type`         | `open`, `multiple-choice`, `predict-output`, `spot-the-bug`, `behavioral`, `system-design` |
-| `category`     | `algorithms`, `frontend`, `backend`, `behavioral`, `system-design`. Must match the folder. |
-| `stack`        | Technologies the question applies to. May be empty.                                        |
-| `seniority`    | One or more of `jr`, `ssr`, `sr`.                                                          |
-| `fundamentals` | `true` for basics needed to understand a tool or language.                                 |
-| `evidence`     | Sources showing the question recurs in real interviews. See the evidence rule.             |
+| Field          | Values                                                                         |
+| -------------- | ------------------------------------------------------------------------------ |
+| `title`        | The question, in the file's locale.                                            |
+| `locale`       | `en`, `es`. Must match the folder.                                             |
+| `type`         | `multiple-choice`, `predict-output`, `spot-the-bug`                            |
+| `category`     | `algorithms`, `frontend`, `backend`, `system-design`. Must match the folder.   |
+| `stack`        | Technologies the question applies to. May be empty.                            |
+| `seniority`    | One or more of `jr`, `ssr`, `sr`.                                              |
+| `fundamentals` | `true` for basics needed to understand a tool or language.                     |
+| `evidence`     | Sources showing the question recurs in real interviews. See the evidence rule. |
 
 The Markdown body holds the model answer or explanation for every type.
 
@@ -74,12 +74,11 @@ Unknown fields are rejected, so a typo such as `anwser` fails validation instead
 
 | Type              | Fields                                                                                             |
 | ----------------- | -------------------------------------------------------------------------------------------------- |
-| `open`            | None.                                                                                              |
 | `multiple-choice` | `options`: 2 to 6 items of `{ id, text }` with unique ids. `answer`: the id of the correct option. |
 | `predict-output`  | `code`, `language`, `expectedOutput`: the exact output, compared as a string.                      |
 | `spot-the-bug`    | `code`, `language`, `bugLine`: the 1-based line number of the bug, within `code`.                  |
-| `behavioral`      | `checklist`: one or more STAR self-assessment items.                                               |
-| `system-design`   | `steps`: one or more guide steps. `rubric`: one or more criteria to assess the answer.             |
+
+> **Deferred types.** The site only accepts types it can grade automatically. Self-assessed types (open answers, behavioral, and system-design walkthroughs) and the `behavioral` category are deferred to the phase that adds AI answer evaluation, so contributions of those types are not accepted yet. System-design topics are welcome as any of the types above.
 
 ## Evidence rule
 

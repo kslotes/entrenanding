@@ -29,7 +29,7 @@ src/content/questions/
 | Parte        | Regla                                                                                                         |
 | ------------ | ------------------------------------------------------------------------------------------------------------- |
 | `<locale>`   | `en` o `es`                                                                                                   |
-| `<category>` | `algorithms`, `frontend`, `backend`, `behavioral` o `system-design`                                           |
+| `<category>` | `algorithms`, `frontend`, `backend` o `system-design`                                                         |
 | `<slug>`     | En minúsculas, separado por guiones y en inglés. El mismo slug en ambos idiomas identifica la misma pregunta. |
 
 ## Frontmatter
@@ -55,16 +55,16 @@ options:
 answer: a
 ```
 
-| Campo          | Valores                                                                                            |
-| -------------- | -------------------------------------------------------------------------------------------------- |
-| `title`        | La pregunta, en el idioma del archivo.                                                             |
-| `locale`       | `en`, `es`. Debe coincidir con la carpeta.                                                         |
-| `type`         | `open`, `multiple-choice`, `predict-output`, `spot-the-bug`, `behavioral`, `system-design`         |
-| `category`     | `algorithms`, `frontend`, `backend`, `behavioral`, `system-design`. Debe coincidir con la carpeta. |
-| `stack`        | Tecnologías a las que aplica la pregunta. Puede estar vacío.                                       |
-| `seniority`    | Uno o más de `jr`, `ssr`, `sr`.                                                                    |
-| `fundamentals` | `true` para conceptos básicos necesarios para entender una herramienta o un lenguaje.              |
-| `evidence`     | Fuentes que muestran que la pregunta se repite en entrevistas reales. Ver la regla de evidencia.   |
+| Campo          | Valores                                                                                          |
+| -------------- | ------------------------------------------------------------------------------------------------ |
+| `title`        | La pregunta, en el idioma del archivo.                                                           |
+| `locale`       | `en`, `es`. Debe coincidir con la carpeta.                                                       |
+| `type`         | `multiple-choice`, `predict-output`, `spot-the-bug`                                              |
+| `category`     | `algorithms`, `frontend`, `backend`, `system-design`. Debe coincidir con la carpeta.             |
+| `stack`        | Tecnologías a las que aplica la pregunta. Puede estar vacío.                                     |
+| `seniority`    | Uno o más de `jr`, `ssr`, `sr`.                                                                  |
+| `fundamentals` | `true` para conceptos básicos necesarios para entender una herramienta o un lenguaje.            |
+| `evidence`     | Fuentes que muestran que la pregunta se repite en entrevistas reales. Ver la regla de evidencia. |
 
 El cuerpo en Markdown contiene la respuesta modelo o la explicación, para todos los tipos.
 
@@ -74,12 +74,11 @@ Los campos desconocidos se rechazan: un error de tipeo como `anwser` hace fallar
 
 | Tipo              | Campos                                                                                              |
 | ----------------- | --------------------------------------------------------------------------------------------------- |
-| `open`            | Ninguno.                                                                                            |
 | `multiple-choice` | `options`: de 2 a 6 elementos `{ id, text }` con ids únicos. `answer`: el id de la opción correcta. |
 | `predict-output`  | `code`, `language`, `expectedOutput`: la salida exacta, que se compara como texto.                  |
 | `spot-the-bug`    | `code`, `language`, `bugLine`: el número de línea del error (empezando en 1), dentro de `code`.     |
-| `behavioral`      | `checklist`: uno o más ítems de autoevaluación STAR.                                                |
-| `system-design`   | `steps`: uno o más pasos de la guía. `rubric`: uno o más criterios para evaluar la respuesta.       |
+
+> **Tipos pospuestos.** El sitio solo acepta tipos que puede evaluar automáticamente. Los tipos de autoevaluación (respuestas abiertas, preguntas de comportamiento y recorridos de diseño de sistemas) y la categoría `behavioral` se posponen hasta la fase que agrega la evaluación de respuestas con IA, por lo que todavía no se aceptan contribuciones de esos tipos. Los temas de diseño de sistemas se pueden aportar con cualquiera de los tipos anteriores.
 
 ## Regla de evidencia
 
