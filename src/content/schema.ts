@@ -5,7 +5,6 @@ export const categories = [
   "algorithms",
   "frontend",
   "backend",
-  "behavioral",
   "system-design",
 ] as const;
 export const seniorities = ["jr", "ssr", "sr"] as const;
@@ -35,8 +34,6 @@ const codeFields = {
 };
 
 const countLines = (code: string) => code.replace(/\n$/, "").split("\n").length;
-
-const openSchema = baseSchema.extend({ type: z.literal("open") });
 
 const multipleChoiceSchema = baseSchema
   .extend({
@@ -75,25 +72,13 @@ const spotTheBugSchema = baseSchema
     path: ["bugLine"],
   });
 
-const behavioralSchema = baseSchema.extend({
-  type: z.literal("behavioral"),
-  checklist: z.array(z.string().min(1)).min(1),
-});
-
-const systemDesignSchema = baseSchema.extend({
-  type: z.literal("system-design"),
-  steps: z.array(z.string().min(1)).min(1),
-  rubric: z.array(z.string().min(1)).min(1),
-});
-
+// Only auto-graded types for now; self-assessed types (open, behavioral,
+// system-design) return with AI answer evaluation in Phase 3+.
 export const questionSchema = z
   .discriminatedUnion("type", [
-    openSchema,
     multipleChoiceSchema,
     predictOutputSchema,
     spotTheBugSchema,
-    behavioralSchema,
-    systemDesignSchema,
   ])
   .refine((q) => q.fundamentals || q.evidence.length >= MIN_EVIDENCE, {
     message: `Questions with fundamentals: false need at least ${MIN_EVIDENCE} evidence items`,

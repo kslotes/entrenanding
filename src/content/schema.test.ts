@@ -17,7 +17,6 @@ const base = {
 };
 
 const validByType = {
-  open: { ...base, type: "open" },
   "multiple-choice": {
     ...base,
     type: "multiple-choice",
@@ -41,18 +40,9 @@ const validByType = {
     language: "java",
     bugLine: 2,
   },
-  behavioral: {
-    ...base,
-    type: "behavioral",
-    checklist: ["Situation is clear", "Result is measurable"],
-  },
-  "system-design": {
-    ...base,
-    type: "system-design",
-    steps: ["Clarify requirements", "Estimate load"],
-    rubric: ["Identifies bottlenecks"],
-  },
 };
+
+const mc = validByType["multiple-choice"];
 
 const parse = (input: unknown) => questionSchema.safeParse(input);
 
@@ -66,42 +56,33 @@ describe("questionSchema", () => {
 
   describe("evidence rule", () => {
     it("rejects non-fundamentals questions with fewer than 2 evidence items", () => {
-      expect(
-        parse({ ...validByType.open, evidence: [evidence[0]] }).success,
-      ).toBe(false);
-      expect(parse({ ...validByType.open, evidence: undefined }).success).toBe(
-        false,
-      );
+      expect(parse({ ...mc, evidence: [evidence[0]] }).success).toBe(false);
+      expect(parse({ ...mc, evidence: undefined }).success).toBe(false);
     });
 
     it("accepts fundamentals questions without evidence", () => {
       expect(
-        parse({ ...validByType.open, fundamentals: true, evidence: undefined })
-          .success,
+        parse({ ...mc, fundamentals: true, evidence: undefined }).success,
       ).toBe(true);
     });
 
     it("rejects an unknown evidence type", () => {
       const bad = [{ type: "rumor", url: "https://example.com" }, evidence[1]];
-      expect(parse({ ...validByType.open, evidence: bad }).success).toBe(false);
+      expect(parse({ ...mc, evidence: bad }).success).toBe(false);
     });
   });
 
   describe("seniority", () => {
     it("rejects an unknown level", () => {
-      expect(
-        parse({ ...validByType.open, seniority: ["principal"] }).success,
-      ).toBe(false);
+      expect(parse({ ...mc, seniority: ["principal"] }).success).toBe(false);
     });
 
     it("rejects an empty list", () => {
-      expect(parse({ ...validByType.open, seniority: [] }).success).toBe(false);
+      expect(parse({ ...mc, seniority: [] }).success).toBe(false);
     });
   });
 
   describe("multiple-choice", () => {
-    const mc = validByType["multiple-choice"];
-
     it("rejects an answer that is not an option id", () => {
       expect(parse({ ...mc, answer: "z" }).success).toBe(false);
     });
@@ -145,25 +126,37 @@ describe("questionSchema", () => {
     expect(parse({ ...base, type: "exercise" }).success).toBe(false);
   });
 
+  // Self-assessed types are deferred until AI answer evaluation (Phase 3+).
+  describe("deferred self-assessed content", () => {
+    it.each([
+      ["open", {}],
+      ["behavioral", { checklist: ["Situation is clear"] }],
+      [
+        "system-design",
+        { steps: ["Clarify requirements"], rubric: ["Identifies bottlenecks"] },
+      ],
+    ])("rejects the %s type", (type, fields) => {
+      expect(parse({ ...base, type, ...fields }).success).toBe(false);
+    });
+
+    it("rejects the behavioral category", () => {
+      expect(parse({ ...mc, category: "behavioral" }).success).toBe(false);
+    });
+  });
+
   it("rejects an invalid locale", () => {
-    expect(parse({ ...validByType.open, locale: "fr" }).success).toBe(false);
+    expect(parse({ ...mc, locale: "fr" }).success).toBe(false);
   });
 
   it("rejects an unknown category", () => {
-    expect(parse({ ...validByType.open, category: "devops" }).success).toBe(
-      false,
-    );
+    expect(parse({ ...mc, category: "devops" }).success).toBe(false);
   });
 
   it("rejects unknown fields so typos are caught", () => {
-    expect(parse({ ...validByType.open, fundamental: true }).success).toBe(
-      false,
-    );
+    expect(parse({ ...mc, fundamental: true }).success).toBe(false);
   });
 
   it("rejects unknown fields in type-specific variants", () => {
-    expect(
-      parse({ ...validByType["multiple-choice"], anwser: "a" }).success,
-    ).toBe(false);
+    expect(parse({ ...mc, anwser: "a" }).success).toBe(false);
   });
 });

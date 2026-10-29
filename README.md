@@ -24,35 +24,33 @@ The repository currently holds licenses and contributor docs. Install, run, and 
 
 ## Question types
 
-None of the types require running code.
+None of the types require running code. All of them are graded automatically.
 
-| Type              | How it is graded                                                 |
-| ----------------- | ---------------------------------------------------------------- |
-| `open`            | Model answer plus self-assessment (knew it / partially / didn't) |
-| `multiple-choice` | Automatic                                                        |
-| `predict-output`  | Automatic (string comparison)                                    |
-| `spot-the-bug`    | Automatic (selected line or option)                              |
-| `behavioral`      | STAR guide plus self-assessment checklist                        |
-| `system-design`   | Step-by-step guide plus rubric                                   |
+| Type              | How it is graded                    |
+| ----------------- | ----------------------------------- |
+| `multiple-choice` | Automatic                           |
+| `predict-output`  | Automatic (string comparison)       |
+| `spot-the-bug`    | Automatic (selected line or option) |
+
+Self-assessed types (open answers, behavioral questions, and system-design walkthroughs) return in a later phase, together with AI answer evaluation.
 
 ## Categories
 
-| Category        | Scope                                             |
-| --------------- | ------------------------------------------------- |
-| `algorithms`    | Data structures and algorithms                    |
-| `frontend`      | React, Vue, Angular, and the web platform         |
-| `backend`       | Initial focus on Java with Spring and Quarkus     |
-| `behavioral`    | Experience, collaboration, and conflict questions |
-| `system-design` | Architecture and design exercises                 |
+| Category        | Scope                                         |
+| --------------- | --------------------------------------------- |
+| `algorithms`    | Data structures and algorithms                |
+| `frontend`      | React, Vue, Angular, and the web platform     |
+| `backend`       | Initial focus on Java with Spring and Quarkus |
+| `system-design` | Architecture and design exercises             |
 
 ## Roadmap
 
-| Phase          | Scope                                                                                                   |
-| -------------- | ------------------------------------------------------------------------------------------------------- |
-| 0. Foundations | Repository, licenses, content schema, CI that validates content and evidence, first deploy              |
-| 1. MVP         | Browse by category, stack, and seniority; all six question types; progress in the browser; seed content |
-| 2. Study tools | Spaced repetition, mock interview mode, progress export and import                                      |
-| 3+. Later      | Executable practice, optional accounts and sync, AI mock interviews with your own API key               |
+| Phase          | Scope                                                                                                                                                                                   |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0. Foundations | Repository, licenses, content schema, CI that validates content and evidence, first deploy                                                                                              |
+| 1. MVP         | Browse by category, stack, and seniority; all question types; progress in the browser; seed content                                                                                     |
+| 2. Study tools | Spaced repetition, mock interview mode, progress export and import                                                                                                                      |
+| 3+. Later      | Executable practice, optional accounts and sync, AI answer evaluation and mock interviews with your own API key (brings back open, behavioral, and system-design walkthrough questions) |
 
 ## Contributing
 

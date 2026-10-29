@@ -24,35 +24,33 @@ Por ahora el repositorio contiene las licencias y la documentación para contrib
 
 ## Tipos de pregunta
 
-Ninguno de los tipos requiere ejecutar código.
+Ninguno de los tipos requiere ejecutar código. Todos se evalúan automáticamente.
 
-| Tipo              | Cómo se evalúa                                                              |
-| ----------------- | --------------------------------------------------------------------------- |
-| `open`            | Respuesta modelo más autoevaluación (la sabía / parcialmente / no la sabía) |
-| `multiple-choice` | Automática                                                                  |
-| `predict-output`  | Automática (comparación de texto)                                           |
-| `spot-the-bug`    | Automática (línea u opción seleccionada)                                    |
-| `behavioral`      | Guía STAR más lista de autoevaluación                                       |
-| `system-design`   | Guía paso a paso más rúbrica                                                |
+| Tipo              | Cómo se evalúa                           |
+| ----------------- | ---------------------------------------- |
+| `multiple-choice` | Automática                               |
+| `predict-output`  | Automática (comparación de texto)        |
+| `spot-the-bug`    | Automática (línea u opción seleccionada) |
+
+Los tipos de autoevaluación (respuestas abiertas, preguntas de comportamiento y recorridos de diseño de sistemas) volverán en una fase posterior, junto con la evaluación de respuestas con IA.
 
 ## Categorías
 
-| Categoría       | Alcance                                                |
-| --------------- | ------------------------------------------------------ |
-| `algorithms`    | Estructuras de datos y algoritmos                      |
-| `frontend`      | React, Vue, Angular y la plataforma web                |
-| `backend`       | Enfoque inicial en Java con Spring y Quarkus           |
-| `behavioral`    | Preguntas sobre experiencia, colaboración y conflictos |
-| `system-design` | Ejercicios de arquitectura y diseño                    |
+| Categoría       | Alcance                                      |
+| --------------- | -------------------------------------------- |
+| `algorithms`    | Estructuras de datos y algoritmos            |
+| `frontend`      | React, Vue, Angular y la plataforma web      |
+| `backend`       | Enfoque inicial en Java con Spring y Quarkus |
+| `system-design` | Ejercicios de arquitectura y diseño          |
 
 ## Hoja de ruta
 
-| Fase                       | Alcance                                                                                                              |
-| -------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| 0. Fundamentos             | Repositorio, licencias, esquema de contenido, CI que valida contenido y evidencia, primer despliegue                 |
-| 1. MVP                     | Navegación por categoría, stack y seniority; los seis tipos de pregunta; progreso en el navegador; contenido inicial |
-| 2. Herramientas de estudio | Repetición espaciada, modo simulacro de entrevista, exportación e importación del progreso                           |
-| 3+. Más adelante           | Práctica ejecutable, cuentas y sincronización opcionales, simulacros con IA usando tu propia clave de API            |
+| Fase                       | Alcance                                                                                                                                                                                                           |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0. Fundamentos             | Repositorio, licencias, esquema de contenido, CI que valida contenido y evidencia, primer despliegue                                                                                                              |
+| 1. MVP                     | Navegación por categoría, stack y seniority; todos los tipos de pregunta; progreso en el navegador; contenido inicial                                                                                             |
+| 2. Herramientas de estudio | Repetición espaciada, modo simulacro de entrevista, exportación e importación del progreso                                                                                                                        |
+| 3+. Más adelante           | Práctica ejecutable, cuentas y sincronización opcionales, evaluación de respuestas y simulacros con IA usando tu propia clave de API (recupera las preguntas abiertas, de comportamiento y de diseño de sistemas) |
 
 ## Cómo contribuir
 
