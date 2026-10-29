@@ -1,0 +1,17 @@
+---
+import { useTranslations } from "../../i18n";
+
+const locale = "es";
+const t = useTranslations(locale);
+---
+
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{t("site.title")}</title>
+  </head>
+  <body>
+    <p>{t("site.underConstruction")}</p>
+  </body>
+</html>

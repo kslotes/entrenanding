@@ -4,7 +4,7 @@
 
 Tanto el contenido como el código se aportan mediante pull requests. Las preguntas viven en este repositorio como archivos Markdown, así que agregar una pregunta es igual que agregar código: fork, rama, commit y pull request.
 
-> **Provisional.** El proyecto está en la Fase 0. La estructura de archivos y el esquema de frontmatter descritos aquí son un borrador hasta que se complete la tarea del esquema de contenido (T0.4). La validación automática en CI también llegará durante la Fase 0. Mientras tanto, quienes revisan verifican estas reglas manualmente.
+> **Fase 0.** El esquema de contenido en `src/content/schema.ts` valida el frontmatter descrito aquí cuando se compila el sitio. La validación automática en CI llegará durante la Fase 0. Mientras tanto, quienes revisan verifican estas reglas manualmente.
 
 ## Pasos rápidos
 
@@ -32,9 +32,10 @@ src/content/questions/
 | `<category>` | `algorithms`, `frontend`, `backend`, `behavioral` o `system-design`                                           |
 | `<slug>`     | En minúsculas, separado por guiones y en inglés. El mismo slug en ambos idiomas identifica la misma pregunta. |
 
-## Frontmatter (borrador)
+## Frontmatter
 
 ```yaml
+title: ¿Qué scope usa Spring por defecto para un bean?
 locale: es
 type: multiple-choice
 category: backend
@@ -46,19 +47,39 @@ evidence: # obligatoria (mínimo 2) cuando fundamentals es false
     url: https://...
   - type: job-posting
     url: https://...
+options:
+  - id: a
+    text: singleton
+  - id: b
+    text: prototype
+answer: a
 ```
 
-| Campo          | Valores                                                                                    |
-| -------------- | ------------------------------------------------------------------------------------------ |
-| `locale`       | `en`, `es`. Debe coincidir con la carpeta.                                                 |
-| `type`         | `open`, `multiple-choice`, `predict-output`, `spot-the-bug`, `behavioral`, `system-design` |
-| `category`     | Debe coincidir con la carpeta.                                                             |
-| `stack`        | Tecnologías a las que aplica la pregunta.                                                  |
-| `seniority`    | Niveles a los que apunta la pregunta.                                                      |
-| `fundamentals` | `true` para conceptos básicos necesarios para entender una herramienta o un lenguaje.      |
-| `evidence`     | Fuentes que muestran que la pregunta se repite en entrevistas reales.                      |
+| Campo          | Valores                                                                                            |
+| -------------- | -------------------------------------------------------------------------------------------------- |
+| `title`        | La pregunta, en el idioma del archivo.                                                             |
+| `locale`       | `en`, `es`. Debe coincidir con la carpeta.                                                         |
+| `type`         | `open`, `multiple-choice`, `predict-output`, `spot-the-bug`, `behavioral`, `system-design`         |
+| `category`     | `algorithms`, `frontend`, `backend`, `behavioral`, `system-design`. Debe coincidir con la carpeta. |
+| `stack`        | Tecnologías a las que aplica la pregunta. Puede estar vacío.                                       |
+| `seniority`    | Uno o más de `jr`, `ssr`, `sr`.                                                                    |
+| `fundamentals` | `true` para conceptos básicos necesarios para entender una herramienta o un lenguaje.              |
+| `evidence`     | Fuentes que muestran que la pregunta se repite en entrevistas reales. Ver la regla de evidencia.   |
 
-Los campos específicos de cada tipo (opciones, salida esperada, rúbrica, etc.) se documentarán junto con el esquema.
+El cuerpo en Markdown contiene la respuesta modelo o la explicación, para todos los tipos.
+
+Los campos desconocidos se rechazan: un error de tipeo como `anwser` hace fallar la validación en lugar de ignorarse en silencio.
+
+### Campos específicos de cada tipo
+
+| Tipo              | Campos                                                                                              |
+| ----------------- | --------------------------------------------------------------------------------------------------- |
+| `open`            | Ninguno.                                                                                            |
+| `multiple-choice` | `options`: de 2 a 6 elementos `{ id, text }` con ids únicos. `answer`: el id de la opción correcta. |
+| `predict-output`  | `code`, `language`, `expectedOutput`: la salida exacta, que se compara como texto.                  |
+| `spot-the-bug`    | `code`, `language`, `bugLine`: el número de línea del error (empezando en 1), dentro de `code`.     |
+| `behavioral`      | `checklist`: uno o más ítems de autoevaluación STAR.                                                |
+| `system-design`   | `steps`: uno o más pasos de la guía. `rubric`: uno o más criterios para evaluar la respuesta.       |
 
 ## Regla de evidencia
 

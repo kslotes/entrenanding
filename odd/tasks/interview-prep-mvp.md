@@ -104,6 +104,22 @@ evidence: # required (min 2) when fundamentals is false
 - Spring/Quarkus: cannot run in the browser realistically; options are non-execution question types plus template repos with tests run by GitHub Actions on the user's fork or GitHub Codespaces (user's own quota).
 - Piston public API: rate limited, unclear auth, repo last pushed 2025-02; not suitable as a product dependency.
 
+## T0.4 design (accepted 2026-10-29)
+
+- Schema lives in a plain module (`src/content/schema.ts`) so it is unit-testable without `astro:content`; `src/content.config.ts` only wires it to the collection with the glob loader.
+- Common fields: `title` (localized), `locale` (`es` | `en`, must match the path segment), `type`, `category`, `stack` (string[]), `seniority` (non-empty subset of `jr`, `ssr`, `sr`), `fundamentals` (boolean), `evidence` (min 2 when `fundamentals: false`; items `{ type: interview-report | job-posting, url }`).
+- Discriminated union on `type`; type-specific fields:
+  - `open`: none (body = model answer).
+  - `multiple-choice`: `options: { id, text }[]` (2–6, unique ids), `answer` = one option id.
+  - `predict-output`: `code`, `language`, `expectedOutput`.
+  - `spot-the-bug`: `code`, `language`, `bugLine` (1-based, within `code`).
+  - `behavioral`: `checklist: string[]` (STAR self-assessment items).
+  - `system-design`: `steps: string[]`, `rubric: string[]`.
+- Body (Markdown) holds the model answer / explanation for every type.
+- i18n: `locales: ["es", "en"]`, `defaultLocale: "es"` (assumption: Spanish-first audience; change is a one-line config edit), `prefixDefaultLocale: true`. Placeholder pages `/es/` and `/en/`; root `/` keeps a placeholder until the `Accept-Language` redirect lands.
+- Typed UI dictionaries `src/i18n/{en,es}.ts`: `es` is typed against the keys of `en`, so a missing key fails `astro check`.
+- Vitest moves from T0.6 into T0.4 so the schema is built test-first. T0.6 becomes content-integrity tests (locale matches path, metadata parity across translations).
+
 ## Phase 0 checklist
 
 - [x] T0.1 Initialize git repository, default branch `main`, `.gitignore`, `.editorconfig`. Route: inline (3 mechanical config files, no research). Also added `.gitattributes` (LF) for Windows contributors. Commit `5e3dcac`. Checks: `git ls-files --eol` shows LF for all files. Review: assessed `medium`, `under_budget`; RDD off (global), no review.
@@ -111,9 +127,9 @@ evidence: # required (min 2) when fundamentals is false
   - Open for T0.4: `title` and type-specific fields (options, expected output) are not in the frontmatter sketch yet; full `seniority` value set undefined (only `ssr`, `sr` shown).
   - Added conventions: slugs in English; commit messages in English.
 - [x] T0.3 Scaffold Astro + TypeScript + React integration; configure lint/format. Route: delegated writer (10 config files + install). Stack: astro 7.4.4, @astrojs/react 7.1.2, react 19.3.1, TypeScript 6.0.3 (pinned: @astrojs/check requires <7), ESLint 10 flat + typescript-eslint + eslint-plugin-astro + react-hooks `flat.recommended`, Prettier 3 + prettier-plugin-astro, pnpm 10.28.2, Node >=24. Commits `e05b75f` (scaffold, 118 authored lines excl. lockfile) and `0f3bdaf` (Prettier pass on pre-existing Markdown, tables only). Checks (parent re-run): `pnpm check` 0 errors, `pnpm lint` clean, `pnpm format:check` pass, `pnpm build` 1 page. Test-first exception: scaffold has no behavior. Review: assessed `high`, `review_due: true`; RDD off (global), no review started.
-- [ ] T0.4 Define content collection schema with Zod (type discriminator, category, stack, seniority, fundamentals, evidence rule, locale) and configure Astro i18n (`es`, `en`).
+- [x] T0.4 Define content collection schema with Zod (type discriminator, category, stack, seniority, fundamentals, evidence rule, locale) and configure Astro i18n (`es`, `en`). Route: delegated writer (schema, tests, i18n, pages, docs) + one inline parent correction (strict objects). Deps: vitest 5.0.5 (Vite 8.3.5 shared with Astro), Zod 4.6.7 via `astro/zod`. RED observed: `Failed to resolve import "./schema"`; later RED for 2 strict-object tests. GREEN: 22 tests. Checks (parent re-run): `pnpm check` 0 errors, lint clean, format:check pass, build 3 pages (`/`, `/es/`, `/en/`). Missing-key proof: deleting a key in `es.ts` fails `astro check` (ts2741). Known warning: glob loader warns until `src/content/questions/` exists (T0.5). Chosen minimums: `checklist`, `steps`, `rubric` need ≥1 item; `stack` may be empty. Unknown frontmatter fields are rejected (strict objects).
 - [ ] T0.5 Add one sample question per type to validate the schema.
-- [ ] T0.6 Set up Vitest; add schema validation tests (valid/invalid fixtures, evidence rule).
+- [ ] T0.6 Content-integrity tests: `locale` matches path segment, metadata parity across translations (same slug). (Vitest setup and schema unit tests moved into T0.4.)
 - [ ] T0.7 GitHub Actions CI: install, lint, typecheck, test, build.
 - [ ] T0.8 Deploy to Cloudflare Pages (verify free-tier limits first).
 
@@ -141,7 +157,7 @@ evidence: # required (min 2) when fundamentals is false
 | 2   | `docs/project-docs`   | `ce3e318` + progress notes | T0.2 licenses and contributor docs   | ~440 (docs only; slightly over budget, cannot split cohesively, `size:exception` recommended) |
 | 3   | `feat/astro-scaffold` | `e05b75f`, `0f3bdaf`       | Astro + React scaffold, lint, format | ~120 authored + Markdown table reformat (lockfile excluded)                                   |
 
-- No git remote exists yet; PRs are opened once the GitHub repo is created.
+- Remote: `origin` = https://github.com/kslotes/entrenanding (public). `main` pushed 2026-10-28 at `f0471b0`. From T0.4 on, each slice is a real PR to `main`.
 - 2026-10-28: user asked to land PR 1–3 on `main` before continuing. With no remote, slices were fast-forwarded locally into `main` in order (linear history, no merge commits). Later slices still branch from `main`.
 
 ## Next step
