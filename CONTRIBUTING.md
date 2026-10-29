@@ -4,7 +4,7 @@ English | [Español](CONTRIBUTING.es.md)
 
 Content and code are both contributed through pull requests. Questions live in this repository as Markdown files, so adding a question is the same as adding code: fork, branch, commit, open a PR.
 
-> **Phase 0.** The frontmatter below is enforced by the content schema in `src/content/schema.ts` when the site builds. Automated validation in CI is coming in Phase 0. Until then, reviewers check these rules by hand.
+> **Phase 0.** The frontmatter below is enforced by the content schema in `src/content/schema.ts` when the site builds, and `pnpm test` also checks that `locale` and `category` match the folder, that slugs are valid, and that translations share the same metadata. Automated validation in CI is coming in Phase 0. Until then, reviewers check these rules by hand.
 
 ## Quick path
 

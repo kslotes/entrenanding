@@ -4,7 +4,7 @@
 
 Tanto el contenido como el código se aportan mediante pull requests. Las preguntas viven en este repositorio como archivos Markdown, así que agregar una pregunta es igual que agregar código: fork, rama, commit y pull request.
 
-> **Fase 0.** El esquema de contenido en `src/content/schema.ts` valida el frontmatter descrito aquí cuando se compila el sitio. La validación automática en CI llegará durante la Fase 0. Mientras tanto, quienes revisan verifican estas reglas manualmente.
+> **Fase 0.** El esquema de contenido en `src/content/schema.ts` valida el frontmatter descrito aquí cuando se compila el sitio, y `pnpm test` también comprueba que `locale` y `category` coincidan con la carpeta, que los slugs sean válidos y que las traducciones compartan los mismos metadatos. La validación automática en CI llegará durante la Fase 0. Mientras tanto, quienes revisan verifican estas reglas manualmente.
 
 ## Pasos rápidos
 
