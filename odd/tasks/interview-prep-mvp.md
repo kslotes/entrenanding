@@ -110,7 +110,7 @@ evidence: # required (min 2) when fundamentals is false
 - [x] T0.2 Add `LICENSE` (MIT) and content license (CC BY-SA 4.0), `README.md`, `CONTRIBUTING.md`, PR template. Route: delegated writer (7 non-trivial docs, incl. `README.es.md`, `CONTRIBUTING.es.md`). Checks: 15/15 relative links resolve, LF only, structural readback by parent. Licenses remain "confirm before publishing". Commit `ce3e318`. Review: assessed `high`, `review_due: true`; RDD off (global), no review started.
   - Open for T0.4: `title` and type-specific fields (options, expected output) are not in the frontmatter sketch yet; full `seniority` value set undefined (only `ssr`, `sr` shown).
   - Added conventions: slugs in English; commit messages in English.
-- [ ] T0.3 Scaffold Astro + TypeScript + React integration; configure lint/format.
+- [x] T0.3 Scaffold Astro + TypeScript + React integration; configure lint/format. Route: delegated writer (10 config files + install). Stack: astro 7.4.4, @astrojs/react 7.1.2, react 19.3.1, TypeScript 6.0.3 (pinned: @astrojs/check requires <7), ESLint 10 flat + typescript-eslint + eslint-plugin-astro + react-hooks `flat.recommended`, Prettier 3 + prettier-plugin-astro, pnpm 10.28.2, Node >=24. Commits `e05b75f` (scaffold, 118 authored lines excl. lockfile) and `0f3bdaf` (Prettier pass on pre-existing Markdown, tables only). Checks (parent re-run): `pnpm check` 0 errors, `pnpm lint` clean, `pnpm format:check` pass, `pnpm build` 1 page. Test-first exception: scaffold has no behavior. Review: assessed `high`, `review_due: true`; RDD off (global), no review started.
 - [ ] T0.4 Define content collection schema with Zod (type discriminator, category, stack, seniority, fundamentals, evidence rule, locale) and configure Astro i18n (`es`, `en`).
 - [ ] T0.5 Add one sample question per type to validate the schema.
 - [ ] T0.6 Set up Vitest; add schema validation tests (valid/invalid fixtures, evidence rule).
@@ -127,6 +127,7 @@ evidence: # required (min 2) when fundamentals is false
 
 - 2026-10-28: Planning completed. No code written yet. Working directory is not a git repository yet.
 - 2026-10-28: Repo initialized; empty root commit on `main`; work happens on `feat/phase-0-foundations`. T0.1 done.
+- 2026-10-28: T0.2 and T0.3 done. Branches restacked per delivery table (`feat/phase-0-foundations` renamed to `docs/project-docs`). Next: T0.4 on a new slice branch from `feat/astro-scaffold`.
 
 ## Delivery
 
@@ -138,10 +139,10 @@ evidence: # required (min 2) when fundamentals is false
 | --- | --------------------- | -------------------------- | ------------------------------------ | --------------------------------------------------------------------------------------------- |
 | 1   | `chore/repo-setup`    | `5e3dcac`                  | T0.1 repo config + plan              | ~180                                                                                          |
 | 2   | `docs/project-docs`   | `ce3e318` + progress notes | T0.2 licenses and contributor docs   | ~440 (docs only; slightly over budget, cannot split cohesively, `size:exception` recommended) |
-| 3   | `feat/astro-scaffold` | T0.3                       | Astro + React scaffold, lint, format | pending                                                                                       |
+| 3   | `feat/astro-scaffold` | `e05b75f`, `0f3bdaf`       | Astro + React scaffold, lint, format | ~120 authored + Markdown table reformat (lockfile excluded)                                   |
 
 - No git remote exists yet; PRs are opened once the GitHub repo is created.
 
 ## Next step
 
-T0.2: licenses, README, CONTRIBUTING, PR template.
+T0.4: content schema + Astro i18n. Resolve first: `title` and type-specific frontmatter fields, full `seniority` value set.
