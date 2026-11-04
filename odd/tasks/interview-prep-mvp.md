@@ -141,9 +141,9 @@ Layout (accepted 2026-11-03): `exercises/backend` is a Maven multi-module projec
 
 - [x] T1.E1 Backend exercise scaffold + first exercise `java-core/immutable-money` + verifier + CI job `backend-exercises` (`actions/setup-java@v6`, Temurin 25, Maven cache). Route: inline. Checks (local, portable Temurin 25.0.5): starter 14 tests, 13 fail; solution 14/14 pass; verifier exit 0; negative checks: solved starter → `java-core/immutable-money: starter code already passes all 14 tests`, HALF_UP in solution → `a reference solution fails its tests`; lint, format:check, 47 tests, build pass. Gotchas: in Git Bash, `./mvnw` fails when it picks Windows `curl.exe` (cannot open `/tmp` path), so Windows users use `mvnw.cmd`; Node `spawnSync` with `shell: true` needs the absolute `mvnw.cmd` path.
 - [x] T1.L1 Spanish only: removed `en` content, `locale` field, translation parity checks, `src/i18n`, `/es/` and `/en/` pages, Astro i18n config; questions live at `src/content/questions/<category>/<slug>.md`; README, CONTRIBUTING, PR template and LICENSE-CONTENT summary in Spanish (LICENSE MIT text stays English, legal text); exercise has a single `statement.md`. Route: inline. RED observed: 10 failed (new path rule, removed `locale`). GREEN: 35 tests. Checks: format, lint, `astro check` 0 errors, build 1 page, `pnpm verify:exercises` exit 0 (starter 13/14 fail, solution 14/14).
-- [ ] T1.C1 Concepts collection (theory per concept, decision 2026-11-04): `src/content/concepts/<slug>.md` citing official docs; exercises and questions reference `concepts: [...]`; CI: each exercise needs ≥1 concept and every referenced slug exists. Theory explains concepts, never the exercise solution.
+- [x] T1.C1 Concepts collection (theory per concept, decision 2026-11-04): `src/content/concepts/<slug>.md` citing official docs; exercises and questions reference `concepts: [...]`; CI: each exercise needs ≥1 concept and every referenced slug exists. Theory explains concepts, never the exercise solution. Done: `conceptSchema` (title, stack, references ≥1 `{title,url}`), `exerciseSchema` (common fields + `concepts` ≥1 slug), optional `concepts` on questions; `checkConcepts`, `checkExercises`, unknown-concept check in `checkIntegrity`; `content.test.ts` (renamed from `questions.test.ts`) validates real questions, concepts and `exercises/**/statement.md`; Astro collections `concepts` and `exercises`. First concepts: `value-objects`, `equals-hashcode-contract`, `bigdecimal-money` (every code example verified on Temurin 25.0.5; all reference URLs and anchors return 200). Statement gets a `## Teoría` section with relative links. Route: inline. RED: 12 failed (missing functions), then 2 failed on real content (no concepts yet). GREEN: 49 tests. Negative checks on real content: removed concept → `statement.md: unknown concept "value-objects"`; `concepts: []` → `concepts: Too small: expected array to have >=1 items`. Gotcha: Vitest 5 `fsModuleCache` (default true, `node_modules/.vitest-cache`) kept a stale `import.meta.glob` file list after files were added/removed, giving false results; disabled in `vitest.config.ts`.
 - [ ] T1.E2 Frontend exercise scaffold (Vitest project separate from `pnpm test`, `pnpm exercise <path>`, starter-fails/solution-passes check) + first exercise.
-- [ ] T1.E3 Exercises content collection: schema for `statement.md` + integrity tests (frontmatter, referenced concepts).
+- [x] T1.E3 (covered by T1.C1) Exercises content collection: schema for `statement.md` + integrity tests (frontmatter, referenced concepts).
 - [ ] T1.E4 App pages listing exercises with statement and run command.
 - [ ] T1.E5 CONTRIBUTING (en/es): how to add an exercise.
 
@@ -166,6 +166,8 @@ Layout (accepted 2026-11-03): `exercises/backend` is a Maven multi-module projec
 
 - 2026-11-04: User (verbatim): "quiero que todos los ejercicios practicos, en algun lado tengan la teoria que los respaldan." Then: "Me gusta por concepto." Then: "no, esta bien. Saquemos todo lo que sea en ingles y dejemos full español. Eso si, los terminos tecnicos y demas que consideres por supuesto que quedan en ingles. Pero lenguaje principal español". T1.L1 done; T1.C1 added.
 
+- 2026-11-04: PRs #6 and #7 were merged into stale stacked bases after #5 landed; recovered with PR #8 (merge 5662dd5). User: "verifica y continuemso". T1.C1 and T1.E3 done on `feat/concepts`.
+
 ## Delivery
 
 - Strategy: `ask-on-risk` (default). Forecast for Phase 0: roughly 600–900 authored lines (scaffold, schema, tests, CI, sample content), so a chain decision is expected before T0.4.
@@ -183,4 +185,4 @@ Layout (accepted 2026-11-03): `exercises/backend` is a Maven multi-module projec
 
 ## Next step
 
-Merge PR #4 and the local-first docs PR (user decision). Then T1.C1 (concepts collection) and T1.E2 (frontend exercise scaffold).
+Push `feat/concepts` and open its PR against `main` (user decision). Then T1.E2 (frontend exercise scaffold) and T1.E4 (app pages).

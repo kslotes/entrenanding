@@ -49,7 +49,7 @@ Abre http://localhost:4321/ en tu navegador.
 
 ## Ejercicios de código
 
-Cada ejercicio tiene un enunciado (`statement.md`), código inicial que editas, tests que validan tu trabajo y una solución de referencia en `solution/`. Las soluciones están a la vista a propósito: inténtalo primero y después compara y aprende de ellas.
+Cada ejercicio tiene un enunciado (`statement.md`), la teoría que lo respalda (uno o más conceptos en `src/content/concepts/`), código inicial que editas, tests que validan tu trabajo y una solución de referencia en `solution/`. Las soluciones están a la vista a propósito: inténtalo primero y después compara y aprende de ellas.
 
 Los ejercicios de backend están en `exercises/backend`, un módulo de Maven por ejercicio:
 
