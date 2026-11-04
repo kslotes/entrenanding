@@ -14,7 +14,7 @@ Entrenanding es un proyecto de código abierto para aprender, practicar y prepar
 
 ## Estado
 
-**Fase 0, pre-alfa.** La aplicación arranca y compila, pero solo muestra páginas provisionales y algunas preguntas de ejemplo. Los ejercicios de código todavía no existen.
+**Fase 0, pre-alfa.** La aplicación arranca y compila, pero solo muestra páginas provisionales y algunas preguntas de ejemplo. Los ejercicios de código son parte del MVP y todavía no existen.
 
 ## Requisitos previos
 
@@ -83,12 +83,12 @@ Los tipos de autoevaluación (respuestas abiertas, preguntas de comportamiento y
 
 ## Hoja de ruta
 
-| Fase                       | Alcance                                                                                                                                                                                           |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 0. Fundamentos             | Repositorio, licencias, esquema de contenido, CI que valida contenido y evidencia                                                                                                                 |
-| 1. MVP                     | Navegación por categoría, stack y seniority; todos los tipos de pregunta; progreso en el navegador; contenido inicial                                                                             |
-| 2. Herramientas de estudio | Repetición espaciada, modo simulacro de entrevista, exportación e importación del progreso                                                                                                        |
-| 3+. Más adelante           | Ejercicios de código validados con tests, evaluación de respuestas y simulacros con IA usando tu propia clave de API (recupera las preguntas abiertas, de comportamiento y de diseño de sistemas) |
+| Fase                       | Alcance                                                                                                                                                                                             |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0. Fundamentos             | Repositorio, licencias, esquema de contenido, CI que valida contenido y evidencia                                                                                                                   |
+| 1. MVP                     | Navegación por categoría, stack y seniority; todos los tipos de pregunta; progreso en el navegador; contenido inicial; ejercicios de código validados con tests (Java + JUnit, TypeScript + Vitest) |
+| 2. Herramientas de estudio | Repetición espaciada, modo simulacro de entrevista, exportación e importación del progreso                                                                                                          |
+| 3+. Más adelante           | Evaluación de respuestas y simulacros con IA usando tu propia clave de API (recupera las preguntas abiertas, de comportamiento y de diseño de sistemas)                                             |
 
 ## Cómo contribuir
 

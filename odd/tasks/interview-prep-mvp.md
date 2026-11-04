@@ -94,9 +94,9 @@ evidence: # required (min 2) when fundamentals is false
 ## Roadmap
 
 - **Phase 0 — Foundations:** repo, licenses, Astro + Zod schema, CI validating content and evidence, deploy to Cloudflare Pages.
-- **Phase 1 — MVP:** browse by category/stack/seniority, the 3 auto-graded question types, progress in `localStorage`, seed content with evidence (~10 questions per category).
+- **Phase 1 — MVP:** browse by category/stack/seniority, the 3 auto-graded question types, progress in `localStorage`, seed content with evidence (~10 questions per category), code exercises validated by tests (backend: Maven multi-module + JUnit 5 on JDK 25 via `./mvnw`; frontend: Vitest).
 - **Phase 2 — Study tools:** spaced repetition (self-assessment based), mock interview mode (N random questions + timer), progress export/import.
-- **Phase 3+ — Later:** design executable practice properly, accounts + DB for sync and "I was asked this" votes, AI answer evaluation and mock interviews with BYOK (user-provided API key), which brings back the deferred self-assessed types `open`, `behavioral`, `system-design` and the `behavioral` category.
+- **Phase 3+ — Later:** accounts + DB for sync and "I was asked this" votes, AI answer evaluation and mock interviews with BYOK (user-provided API key), which brings back the deferred self-assessed types `open`, `behavioral`, `system-design` and the `behavioral` category.
 
 ### Deferred research for executable practice (Phase 3+) — superseded 2026-11-03 by the local-first decision
 
@@ -148,6 +148,7 @@ evidence: # required (min 2) when fundamentals is false
 - 2026-10-28: T0.2 and T0.3 done. Branches restacked per delivery table (`feat/phase-0-foundations` renamed to `docs/project-docs`). Next: T0.4 on a new slice branch from `feat/astro-scaffold`.
 
 - 2026-11-03: User request (verbatim): "quiero continuar con el tema de los ejercicios. Sigue sin conformarme esto de que sea en el navegador, ya que mi principal objetivo es practicar Java en backend. JS/TS solo para frontend. [...] no seria mejor simplemente clonar el proyecto, correrlo en una terminal y listo? que se levante un Front, explique de qué va el proyecto, tengamos a mano algunas preguntas teóricas multiple-choice, y luego pasar directmaente a ejercicios en código que estén validados con tests? tanto para front como back?" Follow-up (verbatim): "pivoteamos a 100% local. Todo lo que sea necesario instalar y pre-requisitos quiero que lo dejemos bien en claro en el readme." Decision recorded; T0.8 cancelled; T0.9 done. Assumptions: JDK 25 (current LTS), Maven Wrapper so Maven is not a prerequisite. Open: exercise layout and roadmap phase for code exercises.
+- 2026-11-03: User (verbatim): "Si, van para el MVP. perfecto lo del JDK 25 y maven wrapper, es tal cual lo que queria". Code exercises move to Phase 1 (MVP); JDK 25 and Maven Wrapper confirmed (no longer assumptions). README roadmap (en/es) updated. Open: exercise layout.
 
 ## Delivery
 
@@ -166,4 +167,4 @@ evidence: # required (min 2) when fundamentals is false
 
 ## Next step
 
-Merge PR #4 and the local-first docs PR (user decision). Then design the code-exercise layout (backend Maven multi-module + JUnit, frontend Vitest) and decide its roadmap phase.
+Merge PR #4 and the local-first docs PR (user decision). Then design the code-exercise layout (backend Maven multi-module + JUnit, frontend Vitest) as part of Phase 1.

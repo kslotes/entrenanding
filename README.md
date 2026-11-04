@@ -14,7 +14,7 @@ Entrenanding is an open-source project to learn, practice, and prepare for techn
 
 ## Status
 
-**Phase 0, pre-alpha.** The app starts and builds, but it only shows placeholder pages and a few sample questions. Code exercises do not exist yet.
+**Phase 0, pre-alpha.** The app starts and builds, but it only shows placeholder pages and a few sample questions. Code exercises are part of the MVP and do not exist yet.
 
 ## Prerequisites
 
@@ -83,12 +83,12 @@ Self-assessed types (open answers, behavioral questions, and system-design walkt
 
 ## Roadmap
 
-| Phase          | Scope                                                                                                                                                                     |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 0. Foundations | Repository, licenses, content schema, CI that validates content and evidence                                                                                              |
-| 1. MVP         | Browse by category, stack, and seniority; all question types; progress in the browser; seed content                                                                       |
-| 2. Study tools | Spaced repetition, mock interview mode, progress export and import                                                                                                        |
-| 3+. Later      | Code exercises validated by tests, AI answer evaluation and mock interviews with your own API key (brings back open, behavioral, and system-design walkthrough questions) |
+| Phase          | Scope                                                                                                                                                                      |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0. Foundations | Repository, licenses, content schema, CI that validates content and evidence                                                                                               |
+| 1. MVP         | Browse by category, stack, and seniority; all question types; progress in the browser; seed content; code exercises validated by tests (Java + JUnit, TypeScript + Vitest) |
+| 2. Study tools | Spaced repetition, mock interview mode, progress export and import                                                                                                         |
+| 3+. Later      | AI answer evaluation and mock interviews with your own API key (brings back open, behavioral, and system-design walkthrough questions)                                     |
 
 ## Contributing
 
