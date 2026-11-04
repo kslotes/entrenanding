@@ -4,9 +4,18 @@ category: backend
 stack: [java]
 seniority: [jr, ssr]
 fundamentals: true
+concepts: [value-objects, equals-hashcode-contract, bigdecimal-money]
 ---
 
 Construye `Money`, un objeto de valor inmutable que guarda un monto en una moneda. El código que maneja dinero aparece en casi cualquier backend y es fácil equivocarse: `double` pierde centavos y el `equals` de `BigDecimal` sorprende a mucha gente.
+
+## Teoría
+
+Antes de empezar, lee los conceptos en los que se apoya este ejercicio:
+
+- [Objetos de valor e inmutabilidad](../../../../src/content/concepts/value-objects.md)
+- [Contrato de equals y hashCode](../../../../src/content/concepts/equals-hashcode-contract.md)
+- [BigDecimal y dinero en Java](../../../../src/content/concepts/bigdecimal-money.md)
 
 ## Qué implementar
 

@@ -89,11 +89,27 @@ Entrenanding solo incluye preguntas teóricas que efectivamente se hacen en entr
 
 Enlaza las fuentes. No copies su texto en el repositorio.
 
+## Conceptos (teoría)
+
+La teoría vive por concepto en `src/content/concepts/<slug>.md`, para que varios ejercicios y preguntas la reutilicen. Todo ejercicio debe referenciar al menos un concepto; las preguntas pueden hacerlo con el campo opcional `concepts`.
+
+```yaml
+title: Contrato de equals y hashCode
+stack: [java]
+references: # mínimo 1: documentación oficial o fuentes reconocidas
+  - title: "Object.equals (Java SE 25)"
+    url: https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html
+```
+
+- Las referencias prueban que lo que dice el concepto es correcto. No confundir con `evidence`, que prueba que el tema se pregunta en entrevistas.
+- La teoría explica el concepto, nunca la solución de un ejercicio.
+- `pnpm test` rechaza un concepto sin referencias y cualquier referencia a un concepto que no existe.
+
 ## Ejercicios de código
 
 Cada ejercicio de backend es un módulo de Maven en `exercises/backend/<grupo>/<slug>/` con:
 
-- `statement.md`: el enunciado, con el mismo frontmatter común que las preguntas (`title`, `category`, `stack`, `seniority`, `fundamentals`).
+- `statement.md`: el enunciado, con el mismo frontmatter común que las preguntas (`title`, `category`, `stack`, `seniority`, `fundamentals`) y `concepts`, con al menos un concepto. Agrega una sección `## Teoría` con enlaces a esos conceptos.
 - `src/main/java`: el código inicial, que compila pero no pasa los tests.
 - `src/test/java`: los tests que validan el ejercicio.
 - `solution/src/main/java`: la solución de referencia, comentada para que se pueda aprender de ella.
