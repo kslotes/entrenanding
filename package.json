@@ -17,7 +17,9 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "verify:exercises": "node scripts/verify-exercises.mjs"
+    "verify:exercises": "node scripts/verify-exercises.mjs",
+    "exercise": "vitest run --config vitest.exercises.config.ts",
+    "exercise:watch": "vitest --config vitest.exercises.config.ts"
   },
   "dependencies": {
     "@astrojs/react": "7.1.2",

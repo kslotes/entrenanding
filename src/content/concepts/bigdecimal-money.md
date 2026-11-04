@@ -30,7 +30,7 @@ Un `BigDecimal` guarda dos cosas: un entero sin escala (`unscaledValue`, un `Big
 new BigDecimal("10.50"); // unscaledValue = 1050, scale = 2
 ```
 
-Creálo desde un `String` o con `BigDecimal.valueOf(double)`. El constructor que recibe un `double` copia el error binario:
+Créalo desde un `String` o con `BigDecimal.valueOf(double)`. El constructor que recibe un `double` copia el error binario:
 
 ```java
 new BigDecimal(0.1);      // 0.1000000000000000055511151231257827021181583404541015625

@@ -34,7 +34,7 @@ Por defecto, `Object.equals` compara identidad (`==`): dos instancias distintas 
 
 ## Por qué importa: las colecciones hash
 
-`HashMap` y `HashSet` usan `hashCode` para elegir el bucket y después `equals` para comparar dentro de ese bucket. Si sobrescribís `equals` pero no `hashCode`, dos objetos iguales caen (casi siempre) en buckets distintos:
+`HashMap` y `HashSet` usan `hashCode` para elegir el bucket y después `equals` para comparar dentro de ese bucket. Si sobrescribes `equals` pero no `hashCode`, dos objetos iguales caen (casi siempre) en buckets distintos:
 
 ```java
 class Point {
@@ -73,6 +73,6 @@ Eso tiene una consecuencia: **el record hereda la semántica del `equals` de sus
 
 ## En la entrevista
 
-- ¿Qué pasa si sobrescribís `equals` y no `hashCode`?
+- ¿Qué pasa si sobrescribes `equals` y no `hashCode`?
 - Si dos objetos tienen el mismo `hashCode`, ¿son iguales? No necesariamente.
 - ¿Por qué las claves de un `HashMap` deberían ser inmutables?
