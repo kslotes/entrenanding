@@ -20,7 +20,7 @@ El JDK está lleno de value objects: `String`, `Integer`, `LocalDate`, `BigDecim
 
 ## Por qué conviene que sean inmutables
 
-- **Se pueden compartir sin miedo.** Nadie te cambia el valor por debajo, así que no hacen falta copias defensivas cada vez que lo pasás.
+- **Se pueden compartir sin miedo.** Nadie te cambia el valor por debajo, así que no hacen falta copias defensivas cada vez que lo pasas.
 - **Son seguros entre hilos** sin sincronización: no hay estado que cambie.
 - **Funcionan como clave de `HashMap` o elemento de `HashSet`.** Si el valor (y por lo tanto el `hashCode`) cambiara después de insertarlo, el elemento quedaría en un bucket incorrecto y no se volvería a encontrar.
 - **Las operaciones devuelven instancias nuevas**, como `LocalDate.plusDays` o `String.concat`. El original no cambia.

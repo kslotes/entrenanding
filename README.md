@@ -64,6 +64,19 @@ En Windows, usa `mvnw.cmd` desde PowerShell o `cmd` en lugar de `./mvnw`. En Git
 | ------------------------------- | --------------------------- | ------------------------------------------------------------ |
 | Objeto de valor inmutable Money | `java-core/immutable-money` | Objetos de valor, `BigDecimal`, `equals`/`hashCode`, records |
 
+Los ejercicios de frontend están en `exercises/frontend` y se ejecutan con Vitest desde la raíz del repositorio:
+
+```sh
+pnpm exercise js-core/debounce        # una vez
+pnpm exercise:watch js-core/debounce  # cada vez que guardas
+```
+
+| Ejercicio            | Ruta               | Tema                               |
+| -------------------- | ------------------ | ---------------------------------- |
+| Implementar debounce | `js-core/debounce` | Closures, `this`, timers, `cancel` |
+
+`pnpm test` no ejecuta los ejercicios: su código inicial falla a propósito.
+
 Quienes mantienen el proyecto verifican cada ejercicio con `pnpm verify:exercises`: el código inicial debe fallar sus tests y la solución de referencia debe pasarlos. CI ejecuta la misma verificación.
 
 ## Qué lo diferencia

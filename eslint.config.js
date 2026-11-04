@@ -21,5 +21,13 @@ export default defineConfig(
     files: ["**/*.{jsx,tsx}"],
     extends: [reactHooks.configs.flat.recommended],
   },
+  {
+    // Exercise starter code ships as stubs whose parameters are not used yet.
+    files: ["exercises/frontend/**/src/**/*.{ts,tsx}"],
+    ignores: ["exercises/frontend/**/solution/**"],
+    rules: {
+      "@typescript-eslint/no-unused-vars": ["error", { args: "none" }],
+    },
+  },
   eslintConfigPrettier,
 );

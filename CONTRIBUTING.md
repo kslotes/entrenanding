@@ -114,7 +114,16 @@ Cada ejercicio de backend es un módulo de Maven en `exercises/backend/<grupo>/<
 - `src/test/java`: los tests que validan el ejercicio.
 - `solution/src/main/java`: la solución de referencia, comentada para que se pueda aprender de ella.
 
-Registra el módulo en `exercises/backend/pom.xml` y ejecuta `pnpm verify:exercises`: el código inicial debe fallar sus tests y la solución debe pasarlos. CI ejecuta la misma verificación.
+Registra el módulo en `exercises/backend/pom.xml`.
+
+Cada ejercicio de frontend vive en `exercises/frontend/<grupo>/<slug>/` con:
+
+- `statement.md`: el enunciado, con las mismas reglas que en backend.
+- `src/`: el código inicial, en TypeScript.
+- `<nombre>.test.ts` en la carpeta del ejercicio: los tests, que importan desde `./src/...`.
+- `solution/src/`: la solución de referencia, con los mismos nombres de archivo que `src/`. En modo solución (`--mode solution`), las importaciones de `./src/...` se resuelven a `solution/src/...`.
+
+Antes de abrir el pull request, ejecuta `pnpm verify:exercises` (o `pnpm verify:exercises backend` / `frontend`): el código inicial debe fallar sus tests y la solución debe pasarlos, y cada ejercicio debe tener su `statement.md`. CI ejecuta la misma verificación.
 
 ## Contribuciones de código
 
