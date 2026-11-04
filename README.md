@@ -14,7 +14,7 @@ Entrenanding is an open-source project to learn, practice, and prepare for techn
 
 ## Status
 
-**Phase 0, pre-alpha.** The app starts and builds, but it only shows placeholder pages and a few sample questions. Code exercises are part of the MVP and do not exist yet.
+**Phase 0, pre-alpha.** The app starts and builds, but it only shows placeholder pages and a few sample questions. There is one backend code exercise; the frontend exercises and the in-app exercise list are next.
 
 ## Prerequisites
 
@@ -25,11 +25,11 @@ Install these before you start. The **Check** column shows the command that conf
 | [Git](https://git-scm.com/)                                | Any recent  | Cloning the repository      | `git --version`  |
 | [Node.js](https://nodejs.org/)                             | 24 or newer | The app, frontend exercises | `node --version` |
 | [pnpm](https://pnpm.io/)                                   | 10          | Installing dependencies     | `pnpm --version` |
-| JDK (for example [Eclipse Temurin](https://adoptium.net/)) | 25 (LTS)    | Backend exercises (planned) | `java -version`  |
+| JDK (for example [Eclipse Temurin](https://adoptium.net/)) | 25 (LTS)    | Backend exercises           | `java -version`  |
 
 - **pnpm**: if you do not have it, run `npm install -g pnpm@10`.
-- **JDK**: not needed until the backend exercises land. Any OpenJDK 25 distribution works.
-- **Maven**: you will not need to install it. The backend exercises will ship with the Maven Wrapper (`./mvnw`), which downloads the right Maven version on first use.
+- **JDK**: any OpenJDK 25 distribution works. Make sure `JAVA_HOME` points to it (`java -version` must print 25).
+- **Maven**: you do not need to install it. The backend exercises ship with the Maven Wrapper (`./mvnw`), which downloads the right Maven version on first use.
 - **Editor**: any. An IDE with Java support (IntelliJ IDEA, VS Code with the Java extensions) makes the backend exercises easier.
 
 ## Getting started
@@ -48,6 +48,25 @@ Open http://localhost:4321/ in your browser.
 | `pnpm dev`   | Starts the app locally with live reload            |
 | `pnpm test`  | Runs the test suite (schema and content integrity) |
 | `pnpm build` | Builds the app and validates all content           |
+
+## Code exercises
+
+Each exercise has a statement (`statement.en.md`, `statement.es.md`), starter code that you edit, tests that check your work, and a reference solution in `solution/`. The solutions are visible on purpose: try first, then compare and learn from them.
+
+Backend exercises live in `exercises/backend`, one Maven module each:
+
+```sh
+cd exercises/backend
+./mvnw -pl java-core/immutable-money test
+```
+
+On Windows, use `mvnw.cmd` from PowerShell or `cmd` instead of `./mvnw`. In Git Bash, `./mvnw` can fail to download Maven when it picks the Windows `curl`.
+
+| Exercise                     | Path                        | Topic                                                     |
+| ---------------------------- | --------------------------- | --------------------------------------------------------- |
+| Immutable Money value object | `java-core/immutable-money` | Value objects, `BigDecimal`, `equals`/`hashCode`, records |
+
+Maintainers check every exercise with `pnpm verify:exercises`: the starter code must fail its tests and the reference solution must pass them. CI runs the same check.
 
 ## What makes it different
 

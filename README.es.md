@@ -14,7 +14,7 @@ Entrenanding es un proyecto de código abierto para aprender, practicar y prepar
 
 ## Estado
 
-**Fase 0, pre-alfa.** La aplicación arranca y compila, pero solo muestra páginas provisionales y algunas preguntas de ejemplo. Los ejercicios de código son parte del MVP y todavía no existen.
+**Fase 0, pre-alfa.** La aplicación arranca y compila, pero solo muestra páginas provisionales y algunas preguntas de ejemplo. Hay un ejercicio de código de backend; los ejercicios de frontend y la lista de ejercicios en la aplicación vienen a continuación.
 
 ## Requisitos previos
 
@@ -25,11 +25,11 @@ Instala lo siguiente antes de empezar. La columna **Verificación** muestra el c
 | [Git](https://git-scm.com/)                                | Cualquiera reciente | Clonar el repositorio                  | `git --version`  |
 | [Node.js](https://nodejs.org/)                             | 24 o superior       | La aplicación y ejercicios de frontend | `node --version` |
 | [pnpm](https://pnpm.io/)                                   | 10                  | Instalar dependencias                  | `pnpm --version` |
-| JDK (por ejemplo [Eclipse Temurin](https://adoptium.net/)) | 25 (LTS)            | Ejercicios de backend (planificados)   | `java -version`  |
+| JDK (por ejemplo [Eclipse Temurin](https://adoptium.net/)) | 25 (LTS)            | Ejercicios de backend                  | `java -version`  |
 
 - **pnpm**: si no lo tienes, ejecuta `npm install -g pnpm@10`.
-- **JDK**: no hace falta hasta que lleguen los ejercicios de backend. Sirve cualquier distribución de OpenJDK 25.
-- **Maven**: no necesitarás instalarlo. Los ejercicios de backend incluirán Maven Wrapper (`./mvnw`), que descarga la versión correcta de Maven la primera vez que se usa.
+- **JDK**: sirve cualquier distribución de OpenJDK 25. Asegúrate de que `JAVA_HOME` apunte a ella (`java -version` debe mostrar 25).
+- **Maven**: no hace falta instalarlo. Los ejercicios de backend incluyen Maven Wrapper (`./mvnw`), que descarga la versión correcta de Maven la primera vez que se usa.
 - **Editor**: cualquiera. Un IDE con soporte para Java (IntelliJ IDEA, VS Code con las extensiones de Java) facilita los ejercicios de backend.
 
 ## Primeros pasos
@@ -48,6 +48,25 @@ Abre http://localhost:4321/ en tu navegador.
 | `pnpm dev`   | Levanta la aplicación en local con recarga automática  |
 | `pnpm test`  | Ejecuta los tests (esquema e integridad del contenido) |
 | `pnpm build` | Compila la aplicación y valida todo el contenido       |
+
+## Ejercicios de código
+
+Cada ejercicio tiene un enunciado (`statement.es.md`, `statement.en.md`), código inicial que editas, tests que validan tu trabajo y una solución de referencia en `solution/`. Las soluciones están a la vista a propósito: inténtalo primero y después compara y aprende de ellas.
+
+Los ejercicios de backend están en `exercises/backend`, un módulo de Maven por ejercicio:
+
+```sh
+cd exercises/backend
+./mvnw -pl java-core/immutable-money test
+```
+
+En Windows, usa `mvnw.cmd` desde PowerShell o `cmd` en lugar de `./mvnw`. En Git Bash, `./mvnw` puede fallar al descargar Maven si toma el `curl` de Windows.
+
+| Ejercicio                       | Ruta                        | Tema                                                         |
+| ------------------------------- | --------------------------- | ------------------------------------------------------------ |
+| Objeto de valor inmutable Money | `java-core/immutable-money` | Objetos de valor, `BigDecimal`, `equals`/`hashCode`, records |
+
+Quienes mantienen el proyecto verifican cada ejercicio con `pnpm verify:exercises`: el código inicial debe fallar sus tests y la solución de referencia debe pasarlos. CI ejecuta la misma verificación.
 
 ## Qué lo diferencia
 

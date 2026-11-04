@@ -94,7 +94,7 @@ evidence: # required (min 2) when fundamentals is false
 ## Roadmap
 
 - **Phase 0 — Foundations:** repo, licenses, Astro + Zod schema, CI validating content and evidence, deploy to Cloudflare Pages.
-- **Phase 1 — MVP:** browse by category/stack/seniority, the 3 auto-graded question types, progress in `localStorage`, seed content with evidence (~10 questions per category), code exercises validated by tests (backend: Maven multi-module + JUnit 5 on JDK 25 via `./mvnw`; frontend: Vitest).
+- **Phase 1 — MVP:** browse by category/stack/seniority, the 3 auto-graded question types, progress in `localStorage`, seed content with evidence (~10 questions per category), code exercises validated by tests (backend: Maven multi-module + JUnit 6 on JDK 25 via `./mvnw`; frontend: Vitest).
 - **Phase 2 — Study tools:** spaced repetition (self-assessment based), mock interview mode (N random questions + timer), progress export/import.
 - **Phase 3+ — Later:** accounts + DB for sync and "I was asked this" votes, AI answer evaluation and mock interviews with BYOK (user-provided API key), which brings back the deferred self-assessed types `open`, `behavioral`, `system-design` and the `behavioral` category.
 
@@ -135,6 +135,16 @@ evidence: # required (min 2) when fundamentals is false
 - [x] ~~T0.8 Deploy to Cloudflare Pages (verify free-tier limits first).~~ Cancelled 2026-11-03: local-first pivot, no hosting.
 - [x] T0.9 README (en/es): local-first positioning, prerequisites table (Git, Node 24+, pnpm 10, JDK 25 planned, Maven Wrapper planned), getting-started commands. Route: inline (docs only). Checks: `pnpm format:check`, relative links resolve.
 
+## Phase 1 — Code exercises
+
+Layout (accepted 2026-11-03): `exercises/backend` is a Maven multi-module project (one module per exercise, parent `pom.xml` with JDK 25, JUnit 6.1.3, AssertJ 3.27.7, Maven Wrapper 3.3.4 `only-script` pinned to Maven 3.10.0). Each exercise: `statement.{en,es}.md` (frontmatter: title, locale, category, stack, seniority, fundamentals), starter code in `src/main/java`, tests in `src/test/java`, reference solution in `solution/src/main/java` (visible on purpose, also a learning aid). The `solution` profile swaps the source directory via the `exercise.sources` property (a profile cannot set `sourceDirectory` directly). `scripts/verify-exercises.mjs` (`pnpm verify:exercises`): starter must compile and fail ≥1 test per module; solutions must pass. Frontend exercises: `exercises/frontend`, Vitest project separate from `pnpm test`.
+
+- [x] T1.E1 Backend exercise scaffold + first exercise `java-core/immutable-money` + verifier + CI job `backend-exercises` (`actions/setup-java@v6`, Temurin 25, Maven cache). Route: inline. Checks (local, portable Temurin 25.0.5): starter 14 tests, 13 fail; solution 14/14 pass; verifier exit 0; negative checks: solved starter → `java-core/immutable-money: starter code already passes all 14 tests`, HALF_UP in solution → `a reference solution fails its tests`; lint, format:check, 47 tests, build pass. Gotchas: in Git Bash, `./mvnw` fails when it picks Windows `curl.exe` (cannot open `/tmp` path), so Windows users use `mvnw.cmd`; Node `spawnSync` with `shell: true` needs the absolute `mvnw.cmd` path.
+- [ ] T1.E2 Frontend exercise scaffold (Vitest project separate from `pnpm test`, `pnpm exercise <path>`, starter-fails/solution-passes check) + first exercise.
+- [ ] T1.E3 Exercises content collection: schema for `statement.*.md` + integrity tests (locale parity, metadata parity).
+- [ ] T1.E4 App pages listing exercises with statement and run command.
+- [ ] T1.E5 CONTRIBUTING (en/es): how to add an exercise.
+
 ## Acceptance criteria (Phase 0)
 
 - A PR with a theoretical question lacking evidence fails CI.
@@ -149,6 +159,8 @@ evidence: # required (min 2) when fundamentals is false
 
 - 2026-11-03: User request (verbatim): "quiero continuar con el tema de los ejercicios. Sigue sin conformarme esto de que sea en el navegador, ya que mi principal objetivo es practicar Java en backend. JS/TS solo para frontend. [...] no seria mejor simplemente clonar el proyecto, correrlo en una terminal y listo? que se levante un Front, explique de qué va el proyecto, tengamos a mano algunas preguntas teóricas multiple-choice, y luego pasar directmaente a ejercicios en código que estén validados con tests? tanto para front como back?" Follow-up (verbatim): "pivoteamos a 100% local. Todo lo que sea necesario instalar y pre-requisitos quiero que lo dejemos bien en claro en el readme." Decision recorded; T0.8 cancelled; T0.9 done. Assumptions: JDK 25 (current LTS), Maven Wrapper so Maven is not a prerequisite. Open: exercise layout and roadmap phase for code exercises.
 - 2026-11-03: User (verbatim): "Si, van para el MVP. perfecto lo del JDK 25 y maven wrapper, es tal cual lo que queria". Code exercises move to Phase 1 (MVP); JDK 25 and Maven Wrapper confirmed (no longer assumptions). README roadmap (en/es) updated. Open: exercise layout.
+
+- 2026-11-03: User (verbatim): "si, con riesgo a spoiler sin problema. De paso, la gente tambien puede ir consultando las soluciones para aprender por si no saben como hacer las cosas". Reference solutions live in the repo under `solution/`. T1.E1 done. Local machine has JDK 17 and 21 only; verification used a portable Temurin 25 in the session scratchpad.
 
 ## Delivery
 
@@ -167,4 +179,4 @@ evidence: # required (min 2) when fundamentals is false
 
 ## Next step
 
-Merge PR #4 and the local-first docs PR (user decision). Then design the code-exercise layout (backend Maven multi-module + JUnit, frontend Vitest) as part of Phase 1.
+Merge PR #4 and the local-first docs PR (user decision). Then T1.E2 (frontend exercise scaffold).
