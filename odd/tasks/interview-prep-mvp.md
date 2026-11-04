@@ -24,6 +24,7 @@ Build an open-source webapp that helps people learn, practice, and prepare for j
 | **Bilingual: Spanish + English** (UI and content)                                          | Wider community reach; Astro native i18n routing (`locales: ["es", "en"]`, `prefixDefaultLocale: true` → `/es/...`, `/en/...`), no extra i18n library                                                                                                                                             |
 | **MVP ships only auto-graded types** (`multiple-choice`, `predict-output`, `spot-the-bug`) | Questions the app cannot verify as correctly answered add no value yet. `open`, `behavioral`, `system-design` types and the `behavioral` category return with AI answer evaluation (BYOK) in Phase 3+. `system-design` stays as a category (asked as multiple-choice). Owner decision, 2026-10-29 |
 
+| **Local-first, no hosting**: users clone the repo and run the app locally (`pnpm dev`); code exercises live in the repo and are validated by tests (backend: JDK 25 + JUnit via Maven Wrapper; frontend: Vitest) | Main goal is practicing real Java backend; browser execution cannot run Spring/Quarkus and CheerpJ is unclear. Supersedes the Cloudflare Pages hosting and the browser-execution research. Owner decision, 2026-11-03 |
 | **Single visual direction: "technical and raw"** (IDE/terminal aesthetic) | One look only, no switchable skins; keeps components, copy, and visual QA single-variant. Reference mockup: https://claude.ai/artifact/W7vETgpT8EFBc6a5ypDh6a (panel C) |
 
 ### Visual direction (accepted, details pending)
@@ -51,14 +52,14 @@ Build an open-source webapp that helps people learn, practice, and prepare for j
 
 ## Tech stack (proposed)
 
-| Layer     | Choice                              | Notes                                             |
-| --------- | ----------------------------------- | ------------------------------------------------- |
-| Framework | Astro + React islands + TypeScript  | Content-heavy, mostly static output               |
-| Content   | Astro Content Collections + Zod     | Schema validation in CI                           |
-| Tests     | Vitest + Playwright                 |                                                   |
-| Hosting   | Cloudflare Pages (free)             | Verify current free-tier limits before committing |
-| CI        | GitHub Actions                      | Free for public repos                             |
-| Licenses  | MIT (code) + CC BY-SA 4.0 (content) | Confirm before publishing                         |
+| Layer     | Choice                                  | Notes                               |
+| --------- | --------------------------------------- | ----------------------------------- |
+| Framework | Astro + React islands + TypeScript      | Content-heavy, mostly static output |
+| Content   | Astro Content Collections + Zod         | Schema validation in CI             |
+| Tests     | Vitest + Playwright                     |                                     |
+| Hosting   | None (local-first, decision 2026-11-03) | Users run `pnpm dev` locally        |
+| CI        | GitHub Actions                          | Free for public repos               |
+| Licenses  | MIT (code) + CC BY-SA 4.0 (content)     | Confirm before publishing           |
 
 ## Content model
 
@@ -93,11 +94,11 @@ evidence: # required (min 2) when fundamentals is false
 ## Roadmap
 
 - **Phase 0 — Foundations:** repo, licenses, Astro + Zod schema, CI validating content and evidence, deploy to Cloudflare Pages.
-- **Phase 1 — MVP:** browse by category/stack/seniority, the 3 auto-graded question types, progress in `localStorage`, seed content with evidence (~10 questions per category).
+- **Phase 1 — MVP:** browse by category/stack/seniority, the 3 auto-graded question types, progress in `localStorage`, seed content with evidence (~10 questions per category), code exercises validated by tests (backend: Maven multi-module + JUnit 5 on JDK 25 via `./mvnw`; frontend: Vitest).
 - **Phase 2 — Study tools:** spaced repetition (self-assessment based), mock interview mode (N random questions + timer), progress export/import.
-- **Phase 3+ — Later:** design executable practice properly, accounts + DB for sync and "I was asked this" votes, AI answer evaluation and mock interviews with BYOK (user-provided API key), which brings back the deferred self-assessed types `open`, `behavioral`, `system-design` and the `behavioral` category.
+- **Phase 3+ — Later:** accounts + DB for sync and "I was asked this" votes, AI answer evaluation and mock interviews with BYOK (user-provided API key), which brings back the deferred self-assessed types `open`, `behavioral`, `system-design` and the `behavioral` category.
 
-### Deferred research for executable practice (Phase 3+)
+### Deferred research for executable practice (Phase 3+) — superseded 2026-11-03 by the local-first decision
 
 - JS/TS and Python can run in the browser (Web Workers, Pyodide) at $0 infra cost; main cost is effort.
 - Frontend frameworks: Sandpack — verify license and no-account usage.
@@ -131,12 +132,13 @@ evidence: # required (min 2) when fundamentals is false
 - [x] T0.5b Remove self-assessed types from the MVP (owner decision: only auto-graded types). Route: delegated writer (schema, tests, docs, content removal). Schema drops `open`, `behavioral`, `system-design` variants and the `behavioral` category; `system-design` category stays. Removed samples (both locales): http-idempotent-methods, conflict-with-teammate, url-shortener. RED observed: 4 failed / 19 passed (deferred types and `behavioral` category still accepted). GREEN: 23 tests. Docs updated: CONTRIBUTING (en/es), README (en/es).
 - [x] T0.6 Content-integrity tests: `locale` matches path segment, metadata parity across translations (same slug). (Vitest setup and schema unit tests moved into T0.4.) Route: delegated writer (pure module + 2 test files + docs). `src/content/integrity.ts` (no I/O) checks per file: `questionSchema`, `locale`/`category` vs folder, slug format; per `<category>/<slug>` across locales: `type`, `category`, `stack`, `seniority`, `fundamentals`, `evidence` (omitted = `[]`), `code`, `language`, `expectedOutput`, `bugLine`, `answer`, option ids in order. `src/content/questions.test.ts` loads real files via Vite `import.meta.glob` (`?raw`) instead of `node:fs`, because the project has no `@types/node` (adding it would change global types for the app); frontmatter split is strict and CRLF-safe. Dep: `yaml` 2.9.1 (exact, devDependency). RED observed: `Failed to resolve import "./integrity"`. GREEN: 47 tests (3 files). Negative checks on real content (reverted): `locale: en` in `es/frontend/var-closure-in-loop.md` → `es/frontend/var-closure-in-loop.md: locale "en" does not match folder "es"`; `bugLine: 4` in `es` binary-search only → `algorithms/binary-search-off-by-one.md: "bugLine" differs between en and es`. Checks: `pnpm check` 0 errors, lint clean, format:check pass, build 3 pages. Docs: CONTRIBUTING (en/es) Phase 0 note mentions `pnpm test`.
 - [x] T0.7 GitHub Actions CI: install, lint, typecheck, test, build. Route: inline (one mechanical workflow file). `.github/workflows/ci.yml` runs on every PR and on push to `main`: `pnpm install --frozen-lockfile`, lint, format:check, check, test, build. Actions (latest majors, checked 2026-10-29): `actions/checkout@v7`, `pnpm/action-setup@v6` (pnpm version from `packageManager`; successor `pnpm/setup@v3` needs pnpm ≥11, project uses 10), `actions/setup-node@v7` (Node 24, pnpm cache). Read-only token, concurrency cancels superseded runs, 15 min timeout. Test-first exception: CI config has no runnable RED locally. Checks: same command sequence passes locally (exit 0, 3 pages built); workflow file passes Prettier. Commit `c00838b`, PR #4. First real run: `verify` passed in 28s (run 40886324588); only annotation is a notice that `ubuntu-latest` migrates to Ubuntu 26. Review: RDD off (global), no review.
-- [ ] T0.8 Deploy to Cloudflare Pages (verify free-tier limits first).
+- [x] ~~T0.8 Deploy to Cloudflare Pages (verify free-tier limits first).~~ Cancelled 2026-11-03: local-first pivot, no hosting.
+- [x] T0.9 README (en/es): local-first positioning, prerequisites table (Git, Node 24+, pnpm 10, JDK 25 planned, Maven Wrapper planned), getting-started commands. Route: inline (docs only). Checks: `pnpm format:check`, relative links resolve.
 
 ## Acceptance criteria (Phase 0)
 
 - A PR with a theoretical question lacking evidence fails CI.
-- A PR with valid content builds and deploys a preview.
+- A PR with valid content builds (no deploy: local-first).
 - All three auto-graded question types validate against the schema; deferred types are rejected.
 
 ## Progress
@@ -144,6 +146,9 @@ evidence: # required (min 2) when fundamentals is false
 - 2026-10-28: Planning completed. No code written yet. Working directory is not a git repository yet.
 - 2026-10-28: Repo initialized; empty root commit on `main`; work happens on `feat/phase-0-foundations`. T0.1 done.
 - 2026-10-28: T0.2 and T0.3 done. Branches restacked per delivery table (`feat/phase-0-foundations` renamed to `docs/project-docs`). Next: T0.4 on a new slice branch from `feat/astro-scaffold`.
+
+- 2026-11-03: User request (verbatim): "quiero continuar con el tema de los ejercicios. Sigue sin conformarme esto de que sea en el navegador, ya que mi principal objetivo es practicar Java en backend. JS/TS solo para frontend. [...] no seria mejor simplemente clonar el proyecto, correrlo en una terminal y listo? que se levante un Front, explique de qué va el proyecto, tengamos a mano algunas preguntas teóricas multiple-choice, y luego pasar directmaente a ejercicios en código que estén validados con tests? tanto para front como back?" Follow-up (verbatim): "pivoteamos a 100% local. Todo lo que sea necesario instalar y pre-requisitos quiero que lo dejemos bien en claro en el readme." Decision recorded; T0.8 cancelled; T0.9 done. Assumptions: JDK 25 (current LTS), Maven Wrapper so Maven is not a prerequisite. Open: exercise layout and roadmap phase for code exercises.
+- 2026-11-03: User (verbatim): "Si, van para el MVP. perfecto lo del JDK 25 y maven wrapper, es tal cual lo que queria". Code exercises move to Phase 1 (MVP); JDK 25 and Maven Wrapper confirmed (no longer assumptions). README roadmap (en/es) updated. Open: exercise layout.
 
 ## Delivery
 
@@ -162,4 +167,4 @@ evidence: # required (min 2) when fundamentals is false
 
 ## Next step
 
-Merge PR #4 (user decision). Then T0.8: Cloudflare Pages deploy (verify free-tier limits first).
+Merge PR #4 and the local-first docs PR (user decision). Then design the code-exercise layout (backend Maven multi-module + JUnit, frontend Vitest) as part of Phase 1.
