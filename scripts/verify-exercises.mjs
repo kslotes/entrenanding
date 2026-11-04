@@ -1,10 +1,10 @@
-// Checks every backend exercise in both directions:
-//   1. The starter code compiles and at least one of its tests fails
-//      (an exercise that already passes teaches nothing).
-//   2. The reference solution passes every test.
+// Verifica cada ejercicio de backend en los dos sentidos:
+//   1. El código inicial compila y falla al menos uno de sus tests
+//      (un ejercicio que ya pasa no enseña nada).
+//   2. La solución de referencia pasa todos los tests.
 //
-// Usage: node scripts/verify-exercises.mjs
-// Requires JDK 25. Maven is downloaded by the Maven Wrapper.
+// Uso: node scripts/verify-exercises.mjs
+// Requiere JDK 25. Maven lo descarga el Maven Wrapper.
 
 import { spawnSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
@@ -12,7 +12,7 @@ import { join } from "node:path";
 
 const backendDir = join(import.meta.dirname, "..", "exercises", "backend");
 const isWindows = process.platform === "win32";
-// Absolute path: cmd.exe may skip the current directory when resolving commands.
+// Ruta absoluta: cmd.exe puede no buscar comandos en el directorio actual.
 const mvnw = isWindows ? `"${join(backendDir, "mvnw.cmd")}"` : "./mvnw";
 
 function runMaven(args) {
@@ -52,31 +52,29 @@ const problems = [];
 const modules = listModules();
 
 console.log(
-  `\n== Starter code must compile and fail (${modules.length} exercises)\n`,
+  `\n== El código inicial debe compilar y fallar (${modules.length} ejercicios)\n`,
 );
 if (runMaven(["-Dmaven.test.failure.ignore=true", "clean", "test"]) !== 0) {
-  problems.push("starter code does not build (compilation error?)");
+  problems.push("el código inicial no compila");
 } else {
   for (const module of modules) {
     const { tests, failed } = readTestTotals(module);
-    if (tests === 0) problems.push(`${module}: no tests ran`);
+    if (tests === 0) problems.push(`${module}: no se ejecutó ningún test`);
     else if (failed === 0)
-      problems.push(
-        `${module}: starter code already passes all ${tests} tests`,
-      );
+      problems.push(`${module}: el código inicial ya pasa los ${tests} tests`);
   }
 }
 
-console.log("\n== Reference solutions must pass\n");
+console.log("\n== Las soluciones de referencia deben pasar\n");
 if (runMaven(["-Psolution", "clean", "test"]) !== 0) {
   problems.push(
-    "a reference solution fails its tests (see the Maven output above)",
+    "una solución de referencia falla sus tests (ver la salida de Maven arriba)",
   );
 }
 
 if (problems.length > 0) {
-  console.error("\nExercise verification failed:");
+  console.error("\nFalló la verificación de ejercicios:");
   for (const problem of problems) console.error(`  - ${problem}`);
   process.exit(1);
 }
-console.log(`\nAll ${modules.length} backend exercises verified.`);
+console.log(`\nEjercicios de backend verificados: ${modules.length}.`);

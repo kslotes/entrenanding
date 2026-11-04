@@ -4,10 +4,10 @@ import java.math.BigDecimal;
 import java.util.Currency;
 
 /**
- * An amount of money in one currency.
+ * Un monto de dinero en una moneda.
  *
- * <p>Read {@code statement.en.md} (or {@code statement.es.md}) in this folder, then make the tests
- * in {@code MoneyTest} pass. You may turn this class into a record.
+ * <p>Lee {@code statement.md} en la carpeta del ejercicio y haz que pasen los tests de
+ * {@code MoneyTest}. Puedes convertir esta clase en un record.
  */
 public final class Money {
 

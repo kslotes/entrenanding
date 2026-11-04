@@ -1,6 +1,5 @@
 ---
 title: Objeto de valor inmutable Money
-locale: es
 category: backend
 stack: [java]
 seniority: [jr, ssr]
@@ -39,4 +38,4 @@ En Windows, usa `mvnw.cmd` en lugar de `./mvnw`.
 - ¿`new BigDecimal("10.0").equals(new BigDecimal("10.00"))` es verdadero? ¿Y con `compareTo`?
 - Si usas un record, ¿dónde puedes normalizar el monto antes de guardarlo?
 
-La solución de referencia está en `solution/`. Inténtalo primero y después compara.
+La solución de referencia está en `solution/`, comentada para que aprendas de ella. Inténtalo primero y después compara.

@@ -31,7 +31,7 @@ describe("question content", () => {
     expect(entries.length).toBeGreaterThan(0);
   });
 
-  it("passes schema, path and translation integrity checks", () => {
+  it("passes schema and path integrity checks", () => {
     const problems = checkIntegrity(entries);
     expect(problems, `\n${problems.join("\n")}\n`).toEqual([]);
   });

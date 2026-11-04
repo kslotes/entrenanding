@@ -7,8 +7,7 @@ const evidence = [
 ];
 
 const base = {
-  title: "Sample question",
-  locale: "en",
+  title: "Pregunta de ejemplo",
   category: "backend",
   stack: ["java"],
   seniority: ["ssr"],
@@ -144,8 +143,8 @@ describe("questionSchema", () => {
     });
   });
 
-  it("rejects an invalid locale", () => {
-    expect(parse({ ...mc, locale: "fr" }).success).toBe(false);
+  it("rejects the removed locale field", () => {
+    expect(parse({ ...mc, locale: "es" }).success).toBe(false);
   });
 
   it("rejects an unknown category", () => {

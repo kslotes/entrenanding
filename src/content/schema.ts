@@ -1,6 +1,5 @@
 import { z } from "astro/zod";
 
-export const locales = ["es", "en"] as const;
 export const categories = [
   "algorithms",
   "frontend",
@@ -20,7 +19,6 @@ const evidenceSchema = z.strictObject({
 // Strict so frontmatter typos fail validation instead of being dropped.
 const baseSchema = z.strictObject({
   title: z.string().min(1),
-  locale: z.enum(locales),
   category: z.enum(categories),
   stack: z.array(z.string().min(1)),
   seniority: z.array(z.enum(seniorities)).min(1),
@@ -87,5 +85,4 @@ export const questionSchema = z
 
 export type Question = z.infer<typeof questionSchema>;
 export type QuestionType = Question["type"];
-export type Locale = (typeof locales)[number];
 export type Evidence = z.infer<typeof evidenceSchema>;

@@ -6,12 +6,12 @@ import java.util.Currency;
 import java.util.Objects;
 
 /**
- * Reference solution.
+ * Solución de referencia.
  *
- * <p>A record gives immutability, equals, hashCode and toString for free. The catch is that
- * {@link BigDecimal#equals} compares scale too ({@code 10.0} is not equal to {@code 10.00}), so the
- * compact constructor normalizes the scale to the currency's fraction digits. Without that, two
- * amounts that look the same would break equals, hashCode and every HashSet that holds them.
+ * <p>Un record da inmutabilidad, equals, hashCode y toString sin escribirlos. La trampa es que
+ * {@link BigDecimal#equals} también compara la escala ({@code 10.0} no es igual a {@code 10.00}),
+ * por eso el constructor compacto normaliza la escala a los decimales de la moneda. Sin eso, dos
+ * montos que se ven iguales rompen equals, hashCode y cualquier HashSet que los contenga.
  */
 public record Money(BigDecimal amount, Currency currency) {
 
@@ -48,7 +48,7 @@ public record Money(BigDecimal amount, Currency currency) {
     Objects.requireNonNull(other, "other");
     if (!currency.equals(other.currency)) {
       throw new IllegalArgumentException(
-          "Currency mismatch: " + currency.getCurrencyCode() + " vs " + other.currency.getCurrencyCode());
+          "Monedas distintas: " + currency.getCurrencyCode() + " vs " + other.currency.getCurrencyCode());
     }
   }
 }

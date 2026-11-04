@@ -1,6 +1,5 @@
 ---
 title: ¿Qué imprime este bucle?
-locale: es
 type: predict-output
 category: frontend
 stack: [javascript]

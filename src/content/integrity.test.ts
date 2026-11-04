@@ -1,9 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { checkIntegrity, type ContentEntry } from "./integrity";
+import { checkIntegrity } from "./integrity";
 
-const en = {
-  title: "Find the bug",
-  locale: "en",
+const question = {
+  title: "Encuentra el error",
   type: "spot-the-bug",
   category: "algorithms",
   stack: ["java"],
@@ -14,71 +13,20 @@ const en = {
   bugLine: 2,
 };
 
-const es = { ...en, title: "Encuentra el error", locale: "es" };
-
-const mcEn = {
-  title: "Default scope?",
-  locale: "en",
-  type: "multiple-choice",
-  category: "backend",
-  stack: ["spring"],
-  seniority: ["jr"],
-  fundamentals: true,
-  options: [
-    { id: "a", text: "singleton" },
-    { id: "b", text: "prototype" },
-  ],
-  answer: "a",
-};
-
-const mcEs = {
-  ...mcEn,
-  title: "¿Scope por defecto?",
-  locale: "es",
-  options: [
-    { id: "a", text: "singleton (uno)" },
-    { id: "b", text: "prototype (varios)" },
-  ],
-};
-
-const pair = (
-  enData: object = en,
-  esData: object = es,
-  path = "algorithms/foo.md",
-): ContentEntry[] => [
-  { path: `en/${path}`, data: enData },
-  { path: `es/${path}`, data: esData },
-];
-
 describe("checkIntegrity", () => {
-  it("accepts consistent translations", () => {
-    expect(checkIntegrity(pair())).toEqual([]);
-  });
-
-  it("accepts translated option text when ids match", () => {
-    expect(checkIntegrity(pair(mcEn, mcEs, "backend/bar.md"))).toEqual([]);
-  });
-
-  it("accepts a question that exists in one locale only", () => {
+  it("accepts a valid question at <category>/<slug>.md", () => {
     expect(
-      checkIntegrity([{ path: "en/algorithms/foo.md", data: en }]),
+      checkIntegrity([{ path: "algorithms/foo.md", data: question }]),
     ).toEqual([]);
   });
 
   describe("path", () => {
-    it("reports a locale that does not match the folder", () => {
-      const problems = checkIntegrity(pair(en, { ...es, locale: "en" }));
-      expect(problems).toContain(
-        'es/algorithms/foo.md: locale "en" does not match folder "es"',
-      );
-    });
-
     it("reports a category that does not match the folder", () => {
       const problems = checkIntegrity([
-        { path: "en/frontend/foo.md", data: en },
+        { path: "frontend/foo.md", data: question },
       ]);
       expect(problems).toContain(
-        'en/frontend/foo.md: category "algorithms" does not match folder "frontend"',
+        'frontend/foo.md: category "algorithms" does not match folder "frontend"',
       );
     });
 
@@ -86,99 +34,35 @@ describe("checkIntegrity", () => {
       "reports an invalid slug %s",
       (file) => {
         const problems = checkIntegrity([
-          { path: `en/algorithms/${file}`, data: en },
+          { path: `algorithms/${file}`, data: question },
         ]);
         expect(problems.some((p) => p.includes("slug"))).toBe(true);
       },
     );
 
-    it("reports a path without locale and category folders", () => {
-      const problems = checkIntegrity([{ path: "foo.md", data: en }]);
-      expect(problems).toEqual([
-        "foo.md: expected <locale>/<category>/<slug>.md",
-      ]);
-    });
+    it.each(["foo.md", "es/algorithms/foo.md"])(
+      "reports a path that is not <category>/<slug>.md: %s",
+      (path) => {
+        expect(checkIntegrity([{ path, data: question }])).toEqual([
+          `${path}: expected <category>/<slug>.md`,
+        ]);
+      },
+    );
   });
 
   it("reports schema errors with the field path", () => {
     const problems = checkIntegrity([
-      { path: "en/algorithms/foo.md", data: { ...en, bugLine: 0 } },
+      { path: "algorithms/foo.md", data: { ...question, bugLine: 0 } },
     ]);
     expect(
-      problems.some((p) => p.startsWith("en/algorithms/foo.md: bugLine")),
+      problems.some((p) => p.startsWith("algorithms/foo.md: bugLine")),
     ).toBe(true);
   });
 
-  describe("translation parity", () => {
-    it.each([
-      ["type", { type: "predict-output" }],
-      ["stack", { stack: ["kotlin"] }],
-      ["seniority", { seniority: ["sr"] }],
-      ["fundamentals", { fundamentals: false }],
-      ["code", { code: "int a = 2;\nint b = a / 0;\n" }],
-      ["language", { language: "kotlin" }],
-      ["bugLine", { bugLine: 1 }],
-    ])("reports a different %s", (field, change) => {
-      const problems = checkIntegrity(pair(en, { ...es, ...change }));
-      expect(problems).toContain(
-        `algorithms/foo.md: "${field}" differs between en and es`,
-      );
-    });
-
-    it("reports different evidence", () => {
-      const evidence = [
-        { type: "job-posting", url: "https://example.com/a" },
-        { type: "job-posting", url: "https://example.com/b" },
-      ];
-      const problems = checkIntegrity(
-        pair(
-          { ...en, evidence },
-          { ...es, evidence: evidence.slice().reverse() },
-        ),
-      );
-      expect(problems).toContain(
-        'algorithms/foo.md: "evidence" differs between en and es',
-      );
-    });
-
-    it("reports a different answer", () => {
-      const problems = checkIntegrity(
-        pair(mcEn, { ...mcEs, answer: "b" }, "backend/bar.md"),
-      );
-      expect(problems).toContain(
-        'backend/bar.md: "answer" differs between en and es',
-      );
-    });
-
-    it("reports option ids in a different order", () => {
-      const options = mcEs.options.slice().reverse();
-      const problems = checkIntegrity(
-        pair(mcEn, { ...mcEs, options }, "backend/bar.md"),
-      );
-      expect(problems).toContain(
-        'backend/bar.md: "options" ids differ between en and es',
-      );
-    });
-
-    it("reports a different expectedOutput", () => {
-      const po = {
-        title: "What does it print?",
-        locale: "en",
-        type: "predict-output",
-        category: "algorithms",
-        stack: [],
-        seniority: ["jr"],
-        fundamentals: true,
-        code: "console.log(1 + 2);\n",
-        language: "javascript",
-        expectedOutput: "3",
-      };
-      const problems = checkIntegrity(
-        pair(po, { ...po, locale: "es", expectedOutput: "0" }),
-      );
-      expect(problems).toContain(
-        'algorithms/foo.md: "expectedOutput" differs between en and es',
-      );
-    });
+  it("reports the removed locale field", () => {
+    const problems = checkIntegrity([
+      { path: "algorithms/foo.md", data: { ...question, locale: "es" } },
+    ]);
+    expect(problems.some((p) => p.startsWith("algorithms/foo.md:"))).toBe(true);
   });
 });

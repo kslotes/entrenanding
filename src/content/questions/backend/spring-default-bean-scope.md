@@ -1,6 +1,5 @@
 ---
 title: ¿Qué scope usa Spring por defecto para sus beans?
-locale: es
 type: multiple-choice
 category: backend
 stack: [java, spring]

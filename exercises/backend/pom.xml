@@ -5,10 +5,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <!--
-    Parent of every backend exercise. Each exercise is one Maven module.
+    Padre de todos los ejercicios de backend. Cada ejercicio es un módulo de Maven.
 
-    Run one exercise:     ./mvnw -pl java-core/immutable-money test
-    Check the solutions:  ./mvnw -Psolution clean test
+    Ejecutar un ejercicio:     ./mvnw -pl java-core/immutable-money test
+    Verificar las soluciones:  ./mvnw -Psolution clean test
   -->
   <groupId>io.github.kslotes.entrenanding</groupId>
   <artifactId>backend-exercises</artifactId>
@@ -21,7 +21,7 @@
 
   <properties>
     <maven.compiler.release>25</maven.compiler.release>
-    <!-- Starter code by default; the "solution" profile switches it. -->
+    <!-- Código inicial por defecto; el perfil "solution" lo cambia. -->
     <exercise.sources>src/main/java</exercise.sources>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <junit.version>6.1.3</junit.version>
@@ -80,8 +80,8 @@
 
   <profiles>
     <!--
-      Compiles the reference solution (solution/src/main/java) instead of the
-      starter code (src/main/java). The tests are the same.
+      Compila la solución de referencia (solution/src/main/java) en lugar del
+      código inicial (src/main/java). Los tests son los mismos.
     -->
     <profile>
       <id>solution</id>

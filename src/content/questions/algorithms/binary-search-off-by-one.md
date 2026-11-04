@@ -1,6 +1,5 @@
 ---
 title: Encuentra el error en esta búsqueda binaria
-locale: es
 type: spot-the-bug
 category: algorithms
 stack: [java]

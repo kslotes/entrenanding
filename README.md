@@ -1,38 +1,36 @@
 # Entrenanding
 
-English | [Español](README.es.md)
+Entrenanding es un proyecto de código abierto para aprender, practicar y prepararse para entrevistas técnicas de trabajo. Se clona y se ejecuta en tu propia máquina: no hay sitio publicado ni cuenta. Se enfoca en lo que sirve en el trabajo real y en lo que efectivamente se pregunta en las entrevistas.
 
-Entrenanding is an open-source project to learn, practice, and prepare for technical job interviews. You clone it and run it on your own machine: no hosted site, no account. It focuses on what is useful on the job and on what interviewers actually ask.
+> Nombre provisional. Puede cambiar.
 
-> Working name. It may change.
+## Cómo funciona
 
-## How it works
+1. Clonas el repositorio y levantas la aplicación en local.
+2. La aplicación explica el proyecto y presenta preguntas teóricas (opción múltiple y otros tipos con evaluación automática).
+3. Después pasas a ejercicios de código en tu propio editor, validados con tests: Java con JUnit para backend y TypeScript con Vitest para frontend.
 
-1. Clone the repository and start the app locally.
-2. The app explains the project and serves theory questions (multiple choice and other auto-graded types).
-3. Then you move to code exercises in your own editor, validated by tests: Java with JUnit for backend, TypeScript with Vitest for frontend.
+## Estado
 
-## Status
+**Fase 0, pre-alfa.** La aplicación arranca y compila, pero solo muestra páginas provisionales y algunas preguntas de ejemplo. Hay un ejercicio de código de backend; los ejercicios de frontend y la lista de ejercicios en la aplicación vienen a continuación.
 
-**Phase 0, pre-alpha.** The app starts and builds, but it only shows placeholder pages and a few sample questions. There is one backend code exercise; the frontend exercises and the in-app exercise list are next.
+## Requisitos previos
 
-## Prerequisites
+Instala lo siguiente antes de empezar. La columna **Verificación** muestra el comando que confirma la versión instalada.
 
-Install these before you start. The **Check** column shows the command that confirms the installed version.
+| Herramienta                                                | Versión             | Para qué se necesita                   | Verificación     |
+| ---------------------------------------------------------- | ------------------- | -------------------------------------- | ---------------- |
+| [Git](https://git-scm.com/)                                | Cualquiera reciente | Clonar el repositorio                  | `git --version`  |
+| [Node.js](https://nodejs.org/)                             | 24 o superior       | La aplicación y ejercicios de frontend | `node --version` |
+| [pnpm](https://pnpm.io/)                                   | 10                  | Instalar dependencias                  | `pnpm --version` |
+| JDK (por ejemplo [Eclipse Temurin](https://adoptium.net/)) | 25 (LTS)            | Ejercicios de backend                  | `java -version`  |
 
-| Tool                                                       | Version     | Needed for                  | Check            |
-| ---------------------------------------------------------- | ----------- | --------------------------- | ---------------- |
-| [Git](https://git-scm.com/)                                | Any recent  | Cloning the repository      | `git --version`  |
-| [Node.js](https://nodejs.org/)                             | 24 or newer | The app, frontend exercises | `node --version` |
-| [pnpm](https://pnpm.io/)                                   | 10          | Installing dependencies     | `pnpm --version` |
-| JDK (for example [Eclipse Temurin](https://adoptium.net/)) | 25 (LTS)    | Backend exercises           | `java -version`  |
+- **pnpm**: si no lo tienes, ejecuta `npm install -g pnpm@10`.
+- **JDK**: sirve cualquier distribución de OpenJDK 25. Asegúrate de que `JAVA_HOME` apunte a ella (`java -version` debe mostrar 25).
+- **Maven**: no hace falta instalarlo. Los ejercicios de backend incluyen Maven Wrapper (`./mvnw`), que descarga la versión correcta de Maven la primera vez que se usa.
+- **Editor**: cualquiera. Un IDE con soporte para Java (IntelliJ IDEA, VS Code con las extensiones de Java) facilita los ejercicios de backend.
 
-- **pnpm**: if you do not have it, run `npm install -g pnpm@10`.
-- **JDK**: any OpenJDK 25 distribution works. Make sure `JAVA_HOME` points to it (`java -version` must print 25).
-- **Maven**: you do not need to install it. The backend exercises ship with the Maven Wrapper (`./mvnw`), which downloads the right Maven version on first use.
-- **Editor**: any. An IDE with Java support (IntelliJ IDEA, VS Code with the Java extensions) makes the backend exercises easier.
-
-## Getting started
+## Primeros pasos
 
 ```sh
 git clone https://github.com/kslotes/entrenanding.git
@@ -41,81 +39,80 @@ pnpm install
 pnpm dev
 ```
 
-Open http://localhost:4321/ in your browser.
+Abre http://localhost:4321/ en tu navegador.
 
-| Command      | What it does                                       |
-| ------------ | -------------------------------------------------- |
-| `pnpm dev`   | Starts the app locally with live reload            |
-| `pnpm test`  | Runs the test suite (schema and content integrity) |
-| `pnpm build` | Builds the app and validates all content           |
+| Comando      | Qué hace                                               |
+| ------------ | ------------------------------------------------------ |
+| `pnpm dev`   | Levanta la aplicación en local con recarga automática  |
+| `pnpm test`  | Ejecuta los tests (esquema e integridad del contenido) |
+| `pnpm build` | Compila la aplicación y valida todo el contenido       |
 
-## Code exercises
+## Ejercicios de código
 
-Each exercise has a statement (`statement.en.md`, `statement.es.md`), starter code that you edit, tests that check your work, and a reference solution in `solution/`. The solutions are visible on purpose: try first, then compare and learn from them.
+Cada ejercicio tiene un enunciado (`statement.md`), código inicial que editas, tests que validan tu trabajo y una solución de referencia en `solution/`. Las soluciones están a la vista a propósito: inténtalo primero y después compara y aprende de ellas.
 
-Backend exercises live in `exercises/backend`, one Maven module each:
+Los ejercicios de backend están en `exercises/backend`, un módulo de Maven por ejercicio:
 
 ```sh
 cd exercises/backend
 ./mvnw -pl java-core/immutable-money test
 ```
 
-On Windows, use `mvnw.cmd` from PowerShell or `cmd` instead of `./mvnw`. In Git Bash, `./mvnw` can fail to download Maven when it picks the Windows `curl`.
+En Windows, usa `mvnw.cmd` desde PowerShell o `cmd` en lugar de `./mvnw`. En Git Bash, `./mvnw` puede fallar al descargar Maven si toma el `curl` de Windows.
 
-| Exercise                     | Path                        | Topic                                                     |
-| ---------------------------- | --------------------------- | --------------------------------------------------------- |
-| Immutable Money value object | `java-core/immutable-money` | Value objects, `BigDecimal`, `equals`/`hashCode`, records |
+| Ejercicio                       | Ruta                        | Tema                                                         |
+| ------------------------------- | --------------------------- | ------------------------------------------------------------ |
+| Objeto de valor inmutable Money | `java-core/immutable-money` | Objetos de valor, `BigDecimal`, `equals`/`hashCode`, records |
 
-Maintainers check every exercise with `pnpm verify:exercises`: the starter code must fail its tests and the reference solution must pass them. CI runs the same check.
+Quienes mantienen el proyecto verifican cada ejercicio con `pnpm verify:exercises`: el código inicial debe fallar sus tests y la solución de referencia debe pasarlos. CI ejecuta la misma verificación.
 
-## What makes it different
+## Qué lo diferencia
 
-| Principle         | What it means                                                                                                                                                |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Job-oriented      | Content must apply to real work, not trivia.                                                                                                                 |
-| Evidence-backed   | Theoretical questions must cite at least two sources showing they recur in real interviews. Fundamentals needed to understand a tool or language are exempt. |
-| Bilingual         | UI and content in Spanish and English. A question can exist in one language until someone translates it.                                                     |
-| Local and private | Everything runs on your machine. Your progress stays in your browser (`localStorage`). No account, no server.                                                |
-| Content as code   | Questions are Markdown files in this repository, contributed through pull requests.                                                                          |
-| Real tooling      | Code exercises use the real JDK, JUnit, and Vitest, the same tools you use at work.                                                                          |
+| Principio                | Qué significa                                                                                                                                                                                    |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Orientado al trabajo     | El contenido debe aplicarse al trabajo real, no a curiosidades.                                                                                                                                  |
+| Respaldado por evidencia | Las preguntas teóricas deben citar al menos dos fuentes que muestren que se repiten en entrevistas reales. Los fundamentos necesarios para entender una herramienta o un lenguaje están exentos. |
+| Local y privado          | Todo se ejecuta en tu máquina. Tu progreso queda en tu navegador (`localStorage`). Sin cuenta y sin servidor.                                                                                    |
+| Contenido como código    | Las preguntas son archivos Markdown en este repositorio y se aportan mediante pull requests.                                                                                                     |
+| Herramientas reales      | Los ejercicios de código usan el JDK, JUnit y Vitest reales, las mismas herramientas del trabajo.                                                                                                |
 
-## Question types
+## Tipos de pregunta
 
-All theory question types are graded automatically in the app.
+Todos los tipos de pregunta teórica se evalúan automáticamente en la aplicación.
 
-| Type              | How it is graded                    |
-| ----------------- | ----------------------------------- |
-| `multiple-choice` | Automatic                           |
-| `predict-output`  | Automatic (string comparison)       |
-| `spot-the-bug`    | Automatic (selected line or option) |
+| Tipo              | Cómo se evalúa                           |
+| ----------------- | ---------------------------------------- |
+| `multiple-choice` | Automática                               |
+| `predict-output`  | Automática (comparación de texto)        |
+| `spot-the-bug`    | Automática (línea u opción seleccionada) |
 
-Self-assessed types (open answers, behavioral questions, and system-design walkthroughs) return in a later phase, together with AI answer evaluation.
+Los tipos de autoevaluación (respuestas abiertas, preguntas de comportamiento y recorridos de diseño de sistemas) volverán en una fase posterior, junto con la evaluación de respuestas con IA.
 
-## Categories
+## Categorías
 
-| Category        | Scope                                         |
-| --------------- | --------------------------------------------- |
-| `algorithms`    | Data structures and algorithms                |
-| `frontend`      | React, Vue, Angular, and the web platform     |
-| `backend`       | Initial focus on Java with Spring and Quarkus |
-| `system-design` | Architecture and design exercises             |
+| Categoría       | Alcance                                      |
+| --------------- | -------------------------------------------- |
+| `algorithms`    | Estructuras de datos y algoritmos            |
+| `frontend`      | React, Vue, Angular y la plataforma web      |
+| `backend`       | Enfoque inicial en Java con Spring y Quarkus |
+| `system-design` | Ejercicios de arquitectura y diseño          |
 
-## Roadmap
+## Hoja de ruta
 
-| Phase          | Scope                                                                                                                                                                      |
-| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 0. Foundations | Repository, licenses, content schema, CI that validates content and evidence                                                                                               |
-| 1. MVP         | Browse by category, stack, and seniority; all question types; progress in the browser; seed content; code exercises validated by tests (Java + JUnit, TypeScript + Vitest) |
-| 2. Study tools | Spaced repetition, mock interview mode, progress export and import                                                                                                         |
-| 3+. Later      | AI answer evaluation and mock interviews with your own API key (brings back open, behavioral, and system-design walkthrough questions)                                     |
+| Fase                       | Alcance                                                                                                                                                                                             |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0. Fundamentos             | Repositorio, licencias, esquema de contenido, CI que valida contenido y evidencia                                                                                                                   |
+| 1. MVP                     | Navegación por categoría, stack y seniority; todos los tipos de pregunta; progreso en el navegador; contenido inicial; ejercicios de código validados con tests (Java + JUnit, TypeScript + Vitest) |
+| 2. Herramientas de estudio | Repetición espaciada, modo simulacro de entrevista, exportación e importación del progreso                                                                                                          |
+| 3+. Más adelante           | Evaluación de respuestas y simulacros con IA usando tu propia clave de API (recupera las preguntas abiertas, de comportamiento y de diseño de sistemas)                                             |
 
-## Contributing
+## Cómo contribuir
 
-Contributions are welcome, especially questions with evidence and translations. Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
+Las contribuciones son bienvenidas, en especial preguntas con evidencia y traducciones. Lee [CONTRIBUTING.md](CONTRIBUTING.md) antes de abrir un pull request.
 
-## Licenses
+## Licencias
 
-| What                         | License                            |
-| ---------------------------- | ---------------------------------- |
-| Code                         | [MIT](LICENSE)                     |
-| Content under `src/content/` | [CC BY-SA 4.0](LICENSE-CONTENT.md) |
+| Qué                         | Licencia                           |
+| --------------------------- | ---------------------------------- |
+| Código                      | [MIT](LICENSE)                     |
+| Contenido en `src/content/` | [CC BY-SA 4.0](LICENSE-CONTENT.md) |
