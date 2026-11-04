@@ -2,29 +2,67 @@
 
 English | [Español](README.es.md)
 
-Entrenanding is an open-source web app to learn, practice, and prepare for technical job interviews. It focuses on what is useful on the job and on what interviewers actually ask.
+Entrenanding is an open-source project to learn, practice, and prepare for technical job interviews. You clone it and run it on your own machine: no hosted site, no account. It focuses on what is useful on the job and on what interviewers actually ask.
 
-> Working name. It may change before the public launch.
+> Working name. It may change.
+
+## How it works
+
+1. Clone the repository and start the app locally.
+2. The app explains the project and serves theory questions (multiple choice and other auto-graded types).
+3. Then you move to code exercises in your own editor, validated by tests: Java with JUnit for backend, TypeScript with Vitest for frontend.
 
 ## Status
 
-**Phase 0, pre-alpha. Nothing is runnable yet.**
+**Phase 0, pre-alpha.** The app starts and builds, but it only shows placeholder pages and a few sample questions. Code exercises do not exist yet.
 
-The repository currently holds licenses and contributor docs. Install, run, and test commands will be added here when the application scaffold lands.
+## Prerequisites
+
+Install these before you start. The **Check** column shows the command that confirms the installed version.
+
+| Tool                                                       | Version     | Needed for                  | Check            |
+| ---------------------------------------------------------- | ----------- | --------------------------- | ---------------- |
+| [Git](https://git-scm.com/)                                | Any recent  | Cloning the repository      | `git --version`  |
+| [Node.js](https://nodejs.org/)                             | 24 or newer | The app, frontend exercises | `node --version` |
+| [pnpm](https://pnpm.io/)                                   | 10          | Installing dependencies     | `pnpm --version` |
+| JDK (for example [Eclipse Temurin](https://adoptium.net/)) | 25 (LTS)    | Backend exercises (planned) | `java -version`  |
+
+- **pnpm**: if you do not have it, run `npm install -g pnpm@10`.
+- **JDK**: not needed until the backend exercises land. Any OpenJDK 25 distribution works.
+- **Maven**: you will not need to install it. The backend exercises will ship with the Maven Wrapper (`./mvnw`), which downloads the right Maven version on first use.
+- **Editor**: any. An IDE with Java support (IntelliJ IDEA, VS Code with the Java extensions) makes the backend exercises easier.
+
+## Getting started
+
+```sh
+git clone https://github.com/kslotes/entrenanding.git
+cd entrenanding
+pnpm install
+pnpm dev
+```
+
+Open http://localhost:4321/ in your browser.
+
+| Command      | What it does                                       |
+| ------------ | -------------------------------------------------- |
+| `pnpm dev`   | Starts the app locally with live reload            |
+| `pnpm test`  | Runs the test suite (schema and content integrity) |
+| `pnpm build` | Builds the app and validates all content           |
 
 ## What makes it different
 
-| Principle          | What it means                                                                                                                                                |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Job-oriented       | Content must apply to real work, not trivia.                                                                                                                 |
-| Evidence-backed    | Theoretical questions must cite at least two sources showing they recur in real interviews. Fundamentals needed to understand a tool or language are exempt. |
-| Bilingual          | UI and content in Spanish and English. A question can exist in one language until someone translates it.                                                     |
-| Private by default | Your progress stays in your browser (`localStorage`). No account, no backend.                                                                                |
-| Content as code    | Questions are Markdown files in this repository, contributed through pull requests.                                                                          |
+| Principle         | What it means                                                                                                                                                |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Job-oriented      | Content must apply to real work, not trivia.                                                                                                                 |
+| Evidence-backed   | Theoretical questions must cite at least two sources showing they recur in real interviews. Fundamentals needed to understand a tool or language are exempt. |
+| Bilingual         | UI and content in Spanish and English. A question can exist in one language until someone translates it.                                                     |
+| Local and private | Everything runs on your machine. Your progress stays in your browser (`localStorage`). No account, no server.                                                |
+| Content as code   | Questions are Markdown files in this repository, contributed through pull requests.                                                                          |
+| Real tooling      | Code exercises use the real JDK, JUnit, and Vitest, the same tools you use at work.                                                                          |
 
 ## Question types
 
-None of the types require running code. All of them are graded automatically.
+All theory question types are graded automatically in the app.
 
 | Type              | How it is graded                    |
 | ----------------- | ----------------------------------- |
@@ -45,12 +83,12 @@ Self-assessed types (open answers, behavioral questions, and system-design walkt
 
 ## Roadmap
 
-| Phase          | Scope                                                                                                                                                                                   |
-| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 0. Foundations | Repository, licenses, content schema, CI that validates content and evidence, first deploy                                                                                              |
-| 1. MVP         | Browse by category, stack, and seniority; all question types; progress in the browser; seed content                                                                                     |
-| 2. Study tools | Spaced repetition, mock interview mode, progress export and import                                                                                                                      |
-| 3+. Later      | Executable practice, optional accounts and sync, AI answer evaluation and mock interviews with your own API key (brings back open, behavioral, and system-design walkthrough questions) |
+| Phase          | Scope                                                                                                                                                                     |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0. Foundations | Repository, licenses, content schema, CI that validates content and evidence                                                                                              |
+| 1. MVP         | Browse by category, stack, and seniority; all question types; progress in the browser; seed content                                                                       |
+| 2. Study tools | Spaced repetition, mock interview mode, progress export and import                                                                                                        |
+| 3+. Later      | Code exercises validated by tests, AI answer evaluation and mock interviews with your own API key (brings back open, behavioral, and system-design walkthrough questions) |
 
 ## Contributing
 
