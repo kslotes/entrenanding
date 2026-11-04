@@ -1,32 +1,31 @@
-## Summary
+## Resumen
 
-<!-- What does this PR change, and why? One or two sentences. -->
+<!-- ¿Qué cambia este PR y por qué? Una o dos oraciones. -->
 
-## Type
+## Tipo
 
-- [ ] Content (new question, fix, or translation)
-- [ ] Code
-- [ ] Documentation or tooling
+- [ ] Contenido (pregunta nueva, corrección o ejercicio)
+- [ ] Código
+- [ ] Documentación o herramientas
 
-## Content checklist
+## Checklist de contenido
 
-<!-- Skip this section if the PR does not touch src/content/. -->
+<!-- Omite esta sección si el PR no toca src/content/ ni exercises/. -->
 
-- [ ] Files follow `src/content/questions/<locale>/<category>/<slug>.md`.
-- [ ] Theoretical questions (`fundamentals: false`) have at least 2 evidence links (`interview-report` or `job-posting`).
-- [ ] Evidence links are public and point to the source; no copied text.
-- [ ] Locales: both `en` and `es` are included, **or** this PR adds only: <!-- en / es -->
-- [ ] Metadata (`type`, `category`, `stack`, `seniority`, `fundamentals`, `evidence`) matches across locales.
-- [ ] I wrote this content or it is available under a license compatible with CC BY-SA 4.0.
+- [ ] Las preguntas siguen `src/content/questions/<category>/<slug>.md`.
+- [ ] Las preguntas teóricas (`fundamentals: false`) tienen al menos 2 enlaces de evidencia (`interview-report` o `job-posting`).
+- [ ] Los enlaces de evidencia son públicos y apuntan a la fuente; no hay texto copiado.
+- [ ] Los ejercicios pasan `pnpm verify:exercises`.
+- [ ] Escribí este contenido o está disponible bajo una licencia compatible con CC BY-SA 4.0.
 
-## Code checklist
+## Checklist de código
 
-<!-- Skip this section if the PR does not touch code. -->
+<!-- Omite esta sección si el PR no toca código. -->
 
-- [ ] Tests added or updated for behavior changes.
-- [ ] PR title follows [Conventional Commits](https://www.conventionalcommits.org/) (for example `feat: add category filter`).
-- [ ] The PR is focused on one change.
+- [ ] Agregué o actualicé tests para los cambios de comportamiento.
+- [ ] El título del PR sigue [Conventional Commits](https://www.conventionalcommits.org/es/) (por ejemplo `feat: add category filter`).
+- [ ] El PR se enfoca en un solo cambio.
 
-## Notes for reviewers
+## Notas para quien revisa
 
-<!-- Anything to review first, known limitations, or follow-up work. -->
+<!-- Qué revisar primero, limitaciones conocidas o trabajo pendiente. -->

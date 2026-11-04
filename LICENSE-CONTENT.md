@@ -1,31 +1,31 @@
-# Content License
+# Licencia del contenido
 
-Everything under `src/content/` (questions, answers, guides, and any other learning material) is licensed under the
-**Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)** license.
+Todo lo que está en `src/content/` (preguntas, respuestas, guías y cualquier otro material de aprendizaje) se distribuye bajo la licencia
+**Creative Commons Atribución-CompartirIgual 4.0 Internacional (CC BY-SA 4.0)**.
 
-- Summary: https://creativecommons.org/licenses/by-sa/4.0/
-- Legal code: https://creativecommons.org/licenses/by-sa/4.0/legalcode
+- Resumen: https://creativecommons.org/licenses/by-sa/4.0/deed.es
+- Texto legal: https://creativecommons.org/licenses/by-sa/4.0/legalcode.es
 
-The source code of the application is licensed separately under the MIT License. See [LICENSE](LICENSE).
+El código fuente de la aplicación se distribuye por separado bajo la licencia MIT. Ver [LICENSE](LICENSE).
 
-## What this means
+## Qué significa
 
-You may copy, share, and adapt the content, including for commercial use, as long as you:
+Puedes copiar, compartir y adaptar el contenido, incluso con fines comerciales, siempre que:
 
-| Requirement           | What to do                                                                                                                    |
-| --------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| Attribution           | Credit "Entrenanding contributors", link to this repository, link to the license, and state whether you changed the material. |
-| ShareAlike            | Distribute your adapted material under CC BY-SA 4.0 or a compatible license.                                                  |
-| No extra restrictions | Do not apply legal terms or technical measures that stop others from doing what the license allows.                           |
+| Requisito               | Qué hacer                                                                                                             |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| Atribución              | Da crédito a "Entrenanding contributors", enlaza este repositorio y la licencia, e indica si modificaste el material. |
+| CompartirIgual          | Distribuye el material adaptado bajo CC BY-SA 4.0 o una licencia compatible.                                          |
+| Sin restricciones extra | No apliques términos legales ni medidas técnicas que impidan a otros hacer lo que la licencia permite.                |
 
-A short attribution line is enough, for example:
+Una línea breve de atribución es suficiente, por ejemplo:
 
-> Based on content from Entrenanding contributors, licensed under CC BY-SA 4.0. Modified.
+> Basado en contenido de Entrenanding contributors, con licencia CC BY-SA 4.0. Modificado.
 
-## Contributions
+## Contribuciones
 
-By submitting content to `src/content/` through a pull request, you agree to license it under CC BY-SA 4.0.
-Only submit material you wrote yourself or that is available under a compatible license. Evidence links (interview
-reports, job postings) are references, not copied content: link to them, do not paste their text.
+Al enviar contenido a `src/content/` mediante un pull request, aceptas licenciarlo bajo CC BY-SA 4.0.
+Envía solo material que hayas escrito o que esté disponible bajo una licencia compatible. Los enlaces de evidencia (relatos de
+entrevistas, ofertas de trabajo) son referencias, no contenido copiado: enlázalos, no pegues su texto.
 
-This notice is a summary. If it conflicts with the legal code, the legal code applies.
+Este aviso es un resumen. Si contradice el texto legal, prevalece el texto legal.

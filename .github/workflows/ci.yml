@@ -33,3 +33,22 @@ jobs:
       - run: pnpm check
       - run: pnpm test
       - run: pnpm build
+
+  backend-exercises:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 25
+          cache: maven
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      # Starter code must fail its tests; reference solutions must pass.
+      - run: node scripts/verify-exercises.mjs

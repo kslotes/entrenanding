@@ -1,49 +1,44 @@
-# Contributing to Entrenanding
+# Cómo contribuir a Entrenanding
 
-English | [Español](CONTRIBUTING.es.md)
+Tanto el contenido como el código se aportan mediante pull requests. Las preguntas y los ejercicios viven en este repositorio, así que agregar contenido es igual que agregar código: fork, rama, commit y pull request.
 
-Content and code are both contributed through pull requests. Questions live in this repository as Markdown files, so adding a question is the same as adding code: fork, branch, commit, open a PR.
+El contenido se escribe en español. Los términos técnicos se dejan en inglés, como se usan en el trabajo (`bean scope`, `record`, `equals`). El código (identificadores) y los mensajes de commit van en inglés.
 
-> **Phase 0.** The frontmatter below is enforced by the content schema in `src/content/schema.ts` when the site builds, and `pnpm test` also checks that `locale` and `category` match the folder, that slugs are valid, and that translations share the same metadata. Automated validation in CI is coming in Phase 0. Until then, reviewers check these rules by hand.
+## Pasos rápidos
 
-## Quick path
+1. Haz un fork del repositorio y crea una rama a partir de `main`.
+2. Agrega o edita una pregunta en `src/content/questions/<category>/<slug>.md`.
+3. Si la pregunta es teórica, agrega al menos dos enlaces de evidencia.
+4. Ejecuta `pnpm test` y `pnpm build`.
+5. Haz commit con un mensaje que siga [Conventional Commits](https://www.conventionalcommits.org/es/).
+6. Abre un pull request y completa la lista de verificación de la plantilla.
 
-1. Fork the repository and create a branch from `main`.
-2. Add or edit a question under `src/content/questions/<locale>/<category>/<slug>.md`.
-3. If the question is theoretical, add at least two evidence links.
-4. Commit with a [Conventional Commits](https://www.conventionalcommits.org/) message.
-5. Open a pull request and complete the checklist in the template.
+CI valida el esquema, las rutas y la evidencia en cada pull request.
 
-## File layout
+## Estructura de archivos
 
 ```text
 src/content/questions/
-  en/
-    backend/
-      spring-bean-scopes.md
-  es/
-    backend/
-      spring-bean-scopes.md
+  backend/
+    spring-default-bean-scope.md
 ```
 
-| Part         | Rule                                                                                                 |
-| ------------ | ---------------------------------------------------------------------------------------------------- |
-| `<locale>`   | `en` or `es`                                                                                         |
-| `<category>` | `algorithms`, `frontend`, `backend`, or `system-design`                                              |
-| `<slug>`     | Lowercase, hyphen-separated, in English. The same slug in both locales identifies the same question. |
+| Parte        | Regla                                                 |
+| ------------ | ----------------------------------------------------- |
+| `<category>` | `algorithms`, `frontend`, `backend` o `system-design` |
+| `<slug>`     | En minúsculas, separado por guiones y en inglés.      |
 
 ## Frontmatter
 
 ```yaml
-title: Which bean scope does Spring use by default?
-locale: en
+title: ¿Qué scope usa Spring por defecto para un bean?
 type: multiple-choice
 category: backend
 stack: [java, spring]
 seniority: [ssr, sr]
-fundamentals: false # true = no evidence required
-evidence: # required (min 2) when fundamentals is false
-  - type: interview-report # Glassdoor, Blind, public post
+fundamentals: false # true = no requiere evidencia
+evidence: # obligatoria (mínimo 2) cuando fundamentals es false
+  - type: interview-report # Glassdoor, Blind, publicación pública
     url: https://...
   - type: job-posting
     url: https://...
@@ -55,71 +50,74 @@ options:
 answer: a
 ```
 
-| Field          | Values                                                                         |
-| -------------- | ------------------------------------------------------------------------------ |
-| `title`        | The question, in the file's locale.                                            |
-| `locale`       | `en`, `es`. Must match the folder.                                             |
-| `type`         | `multiple-choice`, `predict-output`, `spot-the-bug`                            |
-| `category`     | `algorithms`, `frontend`, `backend`, `system-design`. Must match the folder.   |
-| `stack`        | Technologies the question applies to. May be empty.                            |
-| `seniority`    | One or more of `jr`, `ssr`, `sr`.                                              |
-| `fundamentals` | `true` for basics needed to understand a tool or language.                     |
-| `evidence`     | Sources showing the question recurs in real interviews. See the evidence rule. |
+| Campo          | Valores                                                                                          |
+| -------------- | ------------------------------------------------------------------------------------------------ |
+| `title`        | La pregunta.                                                                                     |
+| `type`         | `multiple-choice`, `predict-output`, `spot-the-bug`                                              |
+| `category`     | `algorithms`, `frontend`, `backend`, `system-design`. Debe coincidir con la carpeta.             |
+| `stack`        | Tecnologías a las que aplica la pregunta. Puede estar vacío.                                     |
+| `seniority`    | Uno o más de `jr`, `ssr`, `sr`.                                                                  |
+| `fundamentals` | `true` para conceptos básicos necesarios para entender una herramienta o un lenguaje.            |
+| `evidence`     | Fuentes que muestran que la pregunta se repite en entrevistas reales. Ver la regla de evidencia. |
 
-The Markdown body holds the model answer or explanation for every type.
+El cuerpo en Markdown contiene la respuesta modelo o la explicación, para todos los tipos.
 
-Unknown fields are rejected, so a typo such as `anwser` fails validation instead of being silently ignored.
+Los campos desconocidos se rechazan: un error de tipeo como `anwser` hace fallar la validación en lugar de ignorarse en silencio.
 
-### Type-specific fields
+### Campos específicos de cada tipo
 
-| Type              | Fields                                                                                             |
-| ----------------- | -------------------------------------------------------------------------------------------------- |
-| `multiple-choice` | `options`: 2 to 6 items of `{ id, text }` with unique ids. `answer`: the id of the correct option. |
-| `predict-output`  | `code`, `language`, `expectedOutput`: the exact output, compared as a string.                      |
-| `spot-the-bug`    | `code`, `language`, `bugLine`: the 1-based line number of the bug, within `code`.                  |
+| Tipo              | Campos                                                                                              |
+| ----------------- | --------------------------------------------------------------------------------------------------- |
+| `multiple-choice` | `options`: de 2 a 6 elementos `{ id, text }` con ids únicos. `answer`: el id de la opción correcta. |
+| `predict-output`  | `code`, `language`, `expectedOutput`: la salida exacta, que se compara como texto.                  |
+| `spot-the-bug`    | `code`, `language`, `bugLine`: el número de línea del error (empezando en 1), dentro de `code`.     |
 
-> **Deferred types.** The site only accepts types it can grade automatically. Self-assessed types (open answers, behavioral, and system-design walkthroughs) and the `behavioral` category are deferred to the phase that adds AI answer evaluation, so contributions of those types are not accepted yet. System-design topics are welcome as any of the types above.
+> **Tipos pospuestos.** La aplicación solo acepta tipos que puede evaluar automáticamente. Los tipos de autoevaluación (respuestas abiertas, preguntas de comportamiento y recorridos de diseño de sistemas) y la categoría `behavioral` se posponen hasta la fase que agrega la evaluación de respuestas con IA, por lo que todavía no se aceptan contribuciones de esos tipos. Los temas de diseño de sistemas se pueden aportar con cualquiera de los tipos anteriores.
 
-## Evidence rule
+## Regla de evidencia
 
-Entrenanding only includes theoretical questions that people are actually asked.
+Entrenanding solo incluye preguntas teóricas que efectivamente se hacen en entrevistas.
 
-- When `fundamentals: false`, the question needs **at least 2** evidence entries.
-- Each entry has a `type` and a public `url`.
-- When `fundamentals: true`, evidence is optional. Use it only for basics required to understand a tool or language, not to skip the rule.
+- Cuando `fundamentals: false`, la pregunta necesita **al menos 2** entradas de evidencia.
+- Cada entrada tiene un `type` y una `url` pública.
+- Cuando `fundamentals: true`, la evidencia es opcional. Úsalo solo para conceptos básicos necesarios para entender una herramienta o un lenguaje, no para evitar la regla.
 
-| Evidence type      | Examples                                                                       |
-| ------------------ | ------------------------------------------------------------------------------ |
-| `interview-report` | A Glassdoor review, a Blind thread, a public blog post describing an interview |
-| `job-posting`      | A job posting that lists the topic as a requirement                            |
+| Tipo de evidencia  | Ejemplos                                                                                       |
+| ------------------ | ---------------------------------------------------------------------------------------------- |
+| `interview-report` | Una reseña en Glassdoor, un hilo en Blind, una publicación pública que describe una entrevista |
+| `job-posting`      | Una oferta de trabajo que incluye el tema como requisito                                       |
 
-Link to sources. Do not copy their text into the repository.
+Enlaza las fuentes. No copies su texto en el repositorio.
 
-## Translations
+## Ejercicios de código
 
-- Each locale is a separate file with the same slug.
-- Metadata must match across locales: `type`, `category`, `stack`, `seniority`, `fundamentals`, and `evidence`. Only `locale` and the prose change.
-- A question may exist in one locale only. The site will show a "not yet translated" notice that links to the available version.
-- Translating an existing question is a welcome contribution on its own.
+Cada ejercicio de backend es un módulo de Maven en `exercises/backend/<grupo>/<slug>/` con:
 
-## Code contributions
+- `statement.md`: el enunciado, con el mismo frontmatter común que las preguntas (`title`, `category`, `stack`, `seniority`, `fundamentals`).
+- `src/main/java`: el código inicial, que compila pero no pasa los tests.
+- `src/test/java`: los tests que validan el ejercicio.
+- `solution/src/main/java`: la solución de referencia, comentada para que se pueda aprender de ella.
 
-- Add or update tests with behavior changes.
-- Keep pull requests focused on one change.
-- Tooling, lint, and test commands will be documented here once the application scaffold lands.
+Registra el módulo en `exercises/backend/pom.xml` y ejecuta `pnpm verify:exercises`: el código inicial debe fallar sus tests y la solución debe pasarlos. CI ejecuta la misma verificación.
 
-## Commit messages
+## Contribuciones de código
 
-Use [Conventional Commits](https://www.conventionalcommits.org/). The PR title follows the same format.
+- Agrega o actualiza pruebas cuando cambies comportamiento.
+- Mantén cada pull request enfocado en un solo cambio.
+- Antes de abrir el pull request, ejecuta `pnpm lint`, `pnpm format:check`, `pnpm check`, `pnpm test` y `pnpm build`.
 
-| Example                                                | When            |
-| ------------------------------------------------------ | --------------- |
-| `feat(content): add spring bean scopes question`       | New question    |
-| `feat(content): translate spring bean scopes to es`    | New translation |
-| `fix(content): correct expected output in js-closures` | Content fix     |
-| `feat: add category filter`                            | New app feature |
-| `docs: clarify evidence rule`                          | Documentation   |
+## Mensajes de commit
 
-## Licensing
+Usa [Conventional Commits](https://www.conventionalcommits.org/es/). El título del pull request sigue el mismo formato. Los mensajes de commit se escriben en inglés.
 
-By contributing, you agree that your code is licensed under [MIT](LICENSE) and your content under `src/content/` is licensed under [CC BY-SA 4.0](LICENSE-CONTENT.md).
+| Ejemplo                                                | Cuándo                               |
+| ------------------------------------------------------ | ------------------------------------ |
+| `feat(content): add spring bean scopes question`       | Pregunta nueva                       |
+| `feat(exercises): add immutable money exercise`        | Ejercicio nuevo                      |
+| `fix(content): correct expected output in js-closures` | Corrección de contenido              |
+| `feat: add category filter`                            | Nueva funcionalidad de la aplicación |
+| `docs: clarify evidence rule`                          | Documentación                        |
+
+## Licencias
+
+Al contribuir, aceptas que tu código se licencia bajo [MIT](LICENSE) y tu contenido en `src/content/` bajo [CC BY-SA 4.0](LICENSE-CONTENT.md).
