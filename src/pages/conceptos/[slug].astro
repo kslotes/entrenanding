@@ -1,0 +1,57 @@
+---
+import type { GetStaticPaths } from "astro";
+import { render } from "astro:content";
+import Shell from "../../layouts/Shell.astro";
+import { getConcepts, getExercises } from "../../lib/collections";
+import { exerciseHref } from "../../lib/exercises";
+
+export const getStaticPaths = (async () => {
+  const concepts = await getConcepts();
+  return concepts.map((concept) => ({
+    params: { slug: concept.id },
+    props: { concept },
+  }));
+}) satisfies GetStaticPaths;
+
+const { concept } = Astro.props;
+const { Content } = await render(concept);
+const usedBy = (await getExercises()).filter(({ entry }) =>
+  entry.data.concepts.includes(concept.id),
+);
+---
+
+<Shell
+  title={concept.data.title}
+  description={`Concepto: ${concept.data.title}.`}
+  section="conceptos"
+  file={`src/content/concepts/${concept.id}.md`}
+>
+  <p class="comment"># {concept.data.stack.join(", ")}</p>
+  <h1>{concept.data.title}</h1>
+
+  <article class="prose">
+    <Content />
+
+    <h2>Referencias</h2>
+    <ul>
+      {concept.data.references.map((reference) => (
+        <li>
+          <a href={reference.url}>{reference.title}</a>
+        </li>
+      ))}
+    </ul>
+
+    {usedBy.length > 0 && (
+      <>
+        <h2>Ejercicios que lo usan</h2>
+        <ul>
+          {usedBy.map(({ entry, location }) => (
+            <li>
+              <a href={exerciseHref(location)}>{entry.data.title}</a>
+            </li>
+          ))}
+        </ul>
+      </>
+    )}
+  </article>
+</Shell>

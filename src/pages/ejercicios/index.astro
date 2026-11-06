@@ -1,0 +1,59 @@
+---
+import Shell from "../../layouts/Shell.astro";
+import { getExercises } from "../../lib/collections";
+import { exerciseAreas, exerciseHref } from "../../lib/exercises";
+
+const exercises = await getExercises();
+const areas = exerciseAreas.map((area) => ({
+  area,
+  items: exercises.filter((exercise) => exercise.location.area === area),
+}));
+---
+
+<Shell
+  title="Ejercicios"
+  description="Ejercicios de código validados con tests: Java con JUnit para backend y TypeScript con Vitest para frontend."
+  section="ejercicios"
+  file="exercises/"
+>
+  <p class="comment"># {exercises.length} ejercicios</p>
+  <h1>Ejercicios</h1>
+  <p class="intro">
+    Cada ejercicio se resuelve en tu editor, dentro del repositorio. Abre uno
+    para leer el enunciado, la teoría que lo respalda y el comando que corre sus
+    tests.
+  </p>
+
+  {areas.map(({ area, items }) => (
+    <section aria-labelledby={`area-${area}`}>
+      <h2 id={`area-${area}`}>{area}/</h2>
+      {items.length === 0 ? (
+        <p class="comment">
+          # Todavía no hay ejercicios de {area}. Puedes proponer uno en un Pull
+          Request.
+        </p>
+      ) : (
+        <ul class="files">
+          {items.map(({ entry, location }) => (
+            <li>
+              <a href={exerciseHref(location)}>
+                <span class="path">{location.path}</span>
+                <span>{entry.data.title}</span>
+                <span class="meta">
+                  {entry.data.stack.join(", ")} /{" "}
+                  {entry.data.seniority.join(", ")}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  ))}
+</Shell>
+
+<style>
+  .intro {
+    max-width: 68ch;
+  }
+</style>
