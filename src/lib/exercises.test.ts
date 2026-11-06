@@ -41,7 +41,8 @@ describe("runInstructions", () => {
     ).toEqual({
       cwd: "exercises/backend",
       run: "./mvnw -pl java-core/immutable-money test",
-      windowsRun: "mvnw.cmd -pl java-core/immutable-money test",
+      // ".\" so PowerShell finds it; cmd accepts it too.
+      windowsRun: ".\\mvnw.cmd -pl java-core/immutable-money test",
     });
   });
 

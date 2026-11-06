@@ -41,7 +41,9 @@ export function runInstructions({
     return {
       cwd: "exercises/backend",
       run: `./mvnw -pl ${path} test`,
-      windowsRun: `mvnw.cmd -pl ${path} test`,
+      // PowerShell does not run commands from the current directory without
+      // ".\"; cmd accepts the same form.
+      windowsRun: `.\\mvnw.cmd -pl ${path} test`,
     };
   }
   return {

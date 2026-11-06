@@ -19,6 +19,8 @@
   --font-prose: var(--font);
 }
 
+/* The dark palette appears twice (system preference and explicit toggle);
+   keep both blocks identical. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
