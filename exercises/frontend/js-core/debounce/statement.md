@@ -7,7 +7,7 @@ fundamentals: true
 concepts: [js-closures, debounce-throttle]
 ---
 
-Implementá `debounce`: recibe una función y un tiempo de espera, y devuelve una función nueva que solo ejecuta la original cuando pasan `waitMs` milisegundos sin llamadas. Es una de las implementaciones más pedidas en entrevistas de frontend, porque en pocas líneas aparecen closures, `this` y timers.
+Implementa `debounce`: recibe una función y un tiempo de espera, y devuelve una función nueva que solo ejecuta la original cuando pasan `waitMs` milisegundos sin llamadas. Es una de las implementaciones más pedidas en entrevistas de frontend, porque en pocas líneas aparecen closures, `this` y timers.
 
 ## Teoría
 
