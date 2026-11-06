@@ -32,3 +32,6 @@ Thumbs.db
 
 # Maven build output
 target/
+
+# Local agent tooling (gentle-ai skill registry)
+.atl/

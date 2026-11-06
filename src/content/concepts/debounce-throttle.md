@@ -59,5 +59,5 @@ Es habitual exponer un `cancel()` para descartar la ejecución pendiente, por ej
 ## En la entrevista
 
 - ¿Qué diferencia hay entre debounce y throttle? Da un caso de uso de cada uno.
-- Implementá `debounce`. Las preguntas que siguen suelen ser sobre `this`, los argumentos y cómo cancelarlo.
+- Implementa `debounce`. Las preguntas que siguen suelen ser sobre `this`, los argumentos y cómo cancelarlo.
 - ¿Por qué `setTimeout(fn, 0)` no ejecuta `fn` inmediatamente?
