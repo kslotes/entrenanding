@@ -1,13 +1,149 @@
 ---
+import Shell from "../layouts/Shell.astro";
+import { getConcepts, getExercises } from "../lib/collections";
+import { exerciseHref } from "../lib/exercises";
+
+const exercises = await getExercises();
+const concepts = await getConcepts();
 ---
 
-<html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Entrenanding</title>
-  </head>
-  <body>
-    <p>Entrenanding está en construcción.</p>
-  </body>
-</html>
+<Shell
+  title="Entrenanding"
+  description="Prepárate para entrevistas técnicas con teoría y ejercicios de código validados con tests, en tu propia máquina."
+  section="inicio"
+  file="README.md"
+>
+  <div class="hero">
+    <div>
+      <h1>Prepárate para entrevistas técnicas escribiendo código real.</h1>
+      <p>
+        Entrenanding es un proyecto open source que corre en tu máquina. Lees la
+        teoría, resuelves ejercicios en tu editor y los tests te dicen si están
+        bien. Backend en Java con JUnit; frontend en TypeScript con Vitest.
+      </p>
+    </div>
+
+    <pre
+      class="session"
+      aria-label="Ejemplo: los tests fallan, editas el código y vuelven a correr en verde"
+    ><code><span class="prompt">$</span> pnpm exercise js-core/debounce
+<span class="fail"> Tests  9 failed (9)</span>
+
+<span class="note"># editas src/debounce.ts</span>
+
+<span class="prompt">$</span> pnpm exercise js-core/debounce
+<span class="pass"> Tests  9 passed (9)</span></code></pre>
+  </div>
+
+  <h2>Cómo funciona</h2>
+  <ol class="steps">
+    <li>
+      Elige un ejercicio y lee los <a href="/conceptos/">conceptos</a> en los
+      que se apoya.
+    </li>
+    <li>Edita el código inicial en tu editor, dentro del repositorio.</li>
+    <li>Corre los tests hasta que pasen todos.</li>
+    <li>
+      Compara con la solución de referencia en <code>solution/</code>: está
+      comentada para que aprendas de ella.
+    </li>
+  </ol>
+
+  <h2>Ejercicios</h2>
+  <ul class="files">
+    {exercises.map(({ entry, location }) => (
+      <li>
+        <a href={exerciseHref(location)}>
+          <span class="path">
+            {location.area}/{location.path}
+          </span>
+          <span>{entry.data.title}</span>
+          <span class="meta">{entry.data.stack.join(", ")}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+  <p>
+    <a href="/ejercicios/">Ver todos los ejercicios</a> o explora los{" "}
+    {concepts.length} <a href="/conceptos/">conceptos</a>.
+  </p>
+
+  <h2>Contribuir</h2>
+  <p class="narrow">
+    Las preguntas, los conceptos y los ejercicios viven en el repositorio como
+    archivos. Para proponer uno nuevo o corregir uno existente, abre un Pull
+    Request en{" "}
+    <a href="https://github.com/kslotes/entrenanding">
+      github.com/kslotes/entrenanding
+    </a>
+    .
+  </p>
+</Shell>
+
+<style>
+  .hero {
+    display: grid;
+    gap: 24px 48px;
+    align-items: center;
+    padding: 12px 0 8px;
+  }
+
+  @media (min-width: 900px) {
+    .hero {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 26rem);
+    }
+  }
+
+  .hero h1 {
+    font-size: clamp(1.6rem, 4vw, 2.3rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin: 0 0 16px;
+    max-width: 22ch;
+  }
+
+  .hero p {
+    margin: 0;
+    max-width: 60ch;
+  }
+
+  .session {
+    margin: 0;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-left: 2px solid var(--accent);
+    border-radius: 4px;
+    padding: 16px 18px;
+    font-size: 14px;
+    overflow-x: auto;
+  }
+
+  .prompt {
+    color: var(--link);
+  }
+
+  .note {
+    color: var(--dim);
+  }
+
+  .fail {
+    color: var(--red);
+  }
+
+  .pass {
+    color: var(--green);
+  }
+
+  .steps {
+    max-width: 68ch;
+    padding-left: 3ch;
+  }
+
+  .steps li + li {
+    margin-top: 6px;
+  }
+
+  .narrow {
+    max-width: 68ch;
+  }
+</style>

@@ -1,0 +1,164 @@
+---
+import "../styles/global.css";
+
+export type Section = "inicio" | "ejercicios" | "conceptos";
+
+interface Props {
+  title: string;
+  description: string;
+  section: Section;
+  /** File-like label for the status bar, e.g. "js-core/debounce/statement.md". */
+  file: string;
+  /** Extra shortcut hints for this page. */
+  keys?: { key: string; label: string }[];
+}
+
+const { title, description, section, file, keys = [] } = Astro.props;
+
+const tabs: { section: Section; href: string; key: string }[] = [
+  { section: "inicio", href: "/", key: "i" },
+  { section: "ejercicios", href: "/ejercicios/", key: "e" },
+  { section: "conceptos", href: "/conceptos/", key: "c" },
+];
+
+const hints = [
+  ...tabs.map((tab) => ({ key: tab.key, label: tab.section })),
+  ...keys,
+  { key: "t", label: "tema" },
+];
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title === "Entrenanding" ? title : `${title} | Entrenanding`}</title>
+    <script is:inline>
+      // Apply the saved theme before first paint to avoid a flash.
+      try {
+        const theme = localStorage.getItem("theme");
+        if (theme === "light" || theme === "dark") {
+          document.documentElement.dataset.theme = theme;
+        }
+      } catch {
+        // Storage unavailable: follow the system theme.
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#content">
+      Saltar al contenido
+    </a>
+    <header class="tabbar">
+      <a class="brand" href="/">
+        entrenanding
+      </a>
+      <nav aria-label="Secciones">
+        {tabs.map((tab) => (
+          <a
+            href={tab.href}
+            data-key={tab.key}
+            aria-current={tab.section === section ? "page" : undefined}
+          >
+            {tab.section}/
+          </a>
+        ))}
+      </nav>
+      <button class="theme-toggle" type="button" data-key="t" data-theme-toggle>
+        tema: sistema
+      </button>
+    </header>
+
+    <main id="content">
+      <slot />
+    </main>
+
+    <footer class="statusbar">
+      <span>
+        <span class="mode">{section}</span>
+        {file}
+      </span>
+      <span class="keys" aria-label="Atajos de teclado">
+        {hints.map((hint) => (
+          <span>
+            <kbd>{hint.key}</kbd> {hint.label}
+          </span>
+        ))}
+      </span>
+    </footer>
+
+    <script>
+      const order = ["system", "light", "dark"] as const;
+      type Theme = (typeof order)[number];
+      const names: Record<Theme, string> = {
+        system: "sistema",
+        light: "claro",
+        dark: "oscuro",
+      };
+      const toggle = document.querySelector<HTMLButtonElement>(
+        "[data-theme-toggle]",
+      );
+
+      const current = (): Theme => {
+        const theme = document.documentElement.dataset.theme;
+        return theme === "light" || theme === "dark" ? theme : "system";
+      };
+
+      const render = () => {
+        if (toggle) toggle.textContent = `tema: ${names[current()]}`;
+      };
+
+      toggle?.addEventListener("click", () => {
+        const next = order[(order.indexOf(current()) + 1) % order.length];
+        if (next === "system") delete document.documentElement.dataset.theme;
+        else document.documentElement.dataset.theme = next;
+        try {
+          if (next === "system") localStorage.removeItem("theme");
+          else localStorage.setItem("theme", next);
+        } catch {
+          // Storage unavailable: the choice lasts until the page reloads.
+        }
+        render();
+      });
+      render();
+
+      // Single-key shortcuts: any element with data-key is clicked.
+      document.addEventListener("keydown", (event) => {
+        if (
+          event.defaultPrevented ||
+          event.ctrlKey ||
+          event.metaKey ||
+          event.altKey
+        )
+          return;
+        const target = event.target as HTMLElement;
+        if (target.closest("input, textarea, select, [contenteditable]"))
+          return;
+        const element = document.querySelector<HTMLElement>(
+          `[data-key="${CSS.escape(event.key.toLowerCase())}"]`,
+        );
+        if (element) {
+          event.preventDefault();
+          element.click();
+        }
+      });
+
+      // Copy buttons: data-copy holds the text to copy.
+      document
+        .querySelectorAll<HTMLButtonElement>("[data-copy]")
+        .forEach((button) => {
+          const label = button.textContent;
+          button.addEventListener("click", async () => {
+            try {
+              await navigator.clipboard.writeText(button.dataset.copy ?? "");
+              button.textContent = "copiado";
+            } catch {
+              button.textContent = "no se pudo copiar";
+            }
+            setTimeout(() => (button.textContent = label), 1500);
+          });
+        });
+    </script>
+  </body>
+</html>

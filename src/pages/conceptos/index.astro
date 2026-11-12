@@ -1,0 +1,39 @@
+---
+import Shell from "../../layouts/Shell.astro";
+import { getConcepts } from "../../lib/collections";
+import { conceptHref } from "../../lib/exercises";
+
+const concepts = await getConcepts();
+---
+
+<Shell
+  title="Conceptos"
+  description="La teoría detrás de cada ejercicio, con enlaces a la documentación oficial."
+  section="conceptos"
+  file="src/content/concepts/"
+>
+  <p class="comment"># {concepts.length} conceptos</p>
+  <h1>Conceptos</h1>
+  <p class="intro">
+    La teoría en la que se apoyan los ejercicios. Cada concepto explica la idea,
+    no la solución de un ejercicio, y enlaza a la documentación oficial.
+  </p>
+
+  <ul class="files">
+    {concepts.map((concept) => (
+      <li>
+        <a href={conceptHref(concept.id)}>
+          <span class="path">{concept.id}.md</span>
+          <span>{concept.data.title}</span>
+          <span class="meta">{concept.data.stack.join(", ")}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</Shell>
+
+<style>
+  .intro {
+    max-width: 68ch;
+  }
+</style>

@@ -1,0 +1,164 @@
+---
+import type { GetStaticPaths } from "astro";
+import { render } from "astro:content";
+import Shell from "../../../../layouts/Shell.astro";
+import { getConcepts, getExercises } from "../../../../lib/collections";
+import { conceptHref, runInstructions } from "../../../../lib/exercises";
+
+export const getStaticPaths = (async () => {
+  const exercises = await getExercises();
+  return exercises.map(({ entry, location }) => ({
+    params: { area: location.area, group: location.group, slug: location.slug },
+    props: { entry, location },
+  }));
+}) satisfies GetStaticPaths;
+
+const { entry, location } = Astro.props;
+const { Content } = await render(entry);
+const run = runInstructions(location);
+
+const conceptsById = new Map(
+  (await getConcepts()).map((concept) => [concept.id, concept]),
+);
+// Integrity tests guarantee every referenced concept exists.
+const concepts = entry.data.concepts.map((id) => conceptsById.get(id)!);
+
+const folder = `exercises/${location.area}/${location.path}`;
+---
+
+<Shell
+  title={entry.data.title}
+  description={`Ejercicio de ${location.area}: ${entry.data.title}.`}
+  section="ejercicios"
+  file={`${folder}/statement.md`}
+  keys={[{ key: "y", label: "copiar comando" }]}
+>
+  <p class="comment">
+    # {location.area} / {entry.data.stack.join(", ")} /{" "}
+    {entry.data.seniority.join(", ")}
+  </p>
+  <h1>{entry.data.title}</h1>
+
+  <div class="layout">
+    <aside aria-label="Cómo empezar">
+      <section class="command" aria-labelledby="run-title">
+        <h2 id="run-title">Correr los tests</h2>
+        <p class="where">
+          {run.cwd ? (
+            <>
+              Desde <code>{run.cwd}</code>:
+            </>
+          ) : (
+            "Desde la raíz del repositorio:"
+          )}
+        </p>
+        <pre set:text={`$ ${run.run}`} />
+        <button type="button" class="copy" data-copy={run.run} data-key="y">
+          copiar comando
+        </button>
+        {run.watch && (
+          <>
+            <p class="where">Para correrlos cada vez que guardas:</p>
+            <pre set:text={`$ ${run.watch}`} />
+          </>
+        )}
+        {run.windowsRun && (
+          <>
+            <p class="where">En Windows (PowerShell o cmd):</p>
+            <pre set:text={`> ${run.windowsRun}`} />
+          </>
+        )}
+        <p class="where">
+          Edita el código en <code>{folder}</code>. La solución de referencia
+          está en <code>solution/</code>.
+        </p>
+      </section>
+
+      <section aria-labelledby="concepts-title">
+        <h2 id="concepts-title">Conceptos</h2>
+        <ul class="concepts">
+          {concepts.map((concept) => (
+            <li>
+              <a href={conceptHref(concept.id)}>{concept.data.title}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </aside>
+
+    <article class="prose">
+      <Content />
+    </article>
+  </div>
+</Shell>
+
+<style>
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px 48px;
+  }
+
+  @media (min-width: 960px) {
+    .layout {
+      grid-template-columns: minmax(0, 1fr) 20rem;
+    }
+
+    aside {
+      grid-column: 2;
+      grid-row: 1;
+      position: sticky;
+      top: 16px;
+      align-self: start;
+    }
+
+    article {
+      grid-column: 1;
+      grid-row: 1;
+    }
+  }
+
+  aside h2 {
+    font-size: 1rem;
+    margin: 16px 0 8px;
+  }
+
+  .where {
+    margin: 8px 0 4px;
+    font-size: 13px;
+    color: var(--dim);
+  }
+
+  .where code {
+    color: var(--fg);
+    overflow-wrap: anywhere;
+  }
+
+  .command pre {
+    margin: 0;
+    font-size: 13px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .copy {
+    font: inherit;
+    font-size: 13px;
+    margin-top: 6px;
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    color: var(--link);
+    padding: 2px 10px;
+    cursor: pointer;
+  }
+
+  .copy:hover {
+    background: var(--panel);
+  }
+
+  .concepts {
+    margin: 0;
+    padding-left: 2ch;
+  }
+</style>
