@@ -188,6 +188,7 @@ Layout (accepted 2026-11-03): `exercises/backend` is a Maven multi-module projec
 - 2026-11-12: PR #16 merged (`9b33f43`). T1.Q4 scope agreed: mostly `fundamentals: true` questions; a few `fundamentals: false` only with verifiable evidence. User (verbatim): "me gusta este enfoque. Por favor, insisto en que no te inventes nada. Si no encuentras informacion verificable no las agregues. Prefiero que tengamos menos pero verificado antes que empezar a inventar cosas". T1.Q4 starts on `feat/seed-questions`.
 
 - 2026-11-12: Evidence URLs confirmed by the user in a browser (verbatim): "abren todos los posts". T1.Q4 done.
+- 2026-11-12: PR #17 (`feat/seed-questions`) merged into `main` (`964ba16`); branch deleted.
 
 ## Delivery
 
@@ -206,4 +207,4 @@ Layout (accepted 2026-11-03): `exercises/backend` is a Maven multi-module projec
 
 ## Next step
 
-T1.Q4 done on `feat/seed-questions`; push and PR are the user's decision. Questions block (T1.Q1–T1.Q4) closed.
+Phase 1 closed (PR #17 merged). Next: break down Phase 2 (mock interview mode) into tasks.
