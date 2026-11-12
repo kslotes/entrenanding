@@ -95,7 +95,7 @@ evidence: # required (min 2) when fundamentals is false
 
 - **Phase 0 — Foundations:** repo, licenses, Astro + Zod schema, CI validating content and evidence, deploy to Cloudflare Pages.
 - **Phase 1 — MVP:** browse by category/stack/seniority, the 3 auto-graded question types, seed content with evidence (~10 questions per category), code exercises validated by tests (backend: Maven multi-module + JUnit 6 on JDK 25 via `./mvnw`; frontend: Vitest).
-- **Phase 2 — Study tools:** mock interview mode (N random questions + timer). Spaced repetition and progress export/import removed 2026-11-12: both need stored progress.
+- ~~**Phase 2 — Study tools:** mock interview mode (N random questions + timer).~~ Removed 2026-11-12: owner decision, a simulation cannot reproduce the pressure of a real interview. Spaced repetition and progress export/import had already been removed the same day: both need stored progress.
 - **Phase 3+ — Later:** accounts + DB for sync and "I was asked this" votes, AI answer evaluation and mock interviews with BYOK (user-provided API key), which brings back the deferred self-assessed types `open`, `behavioral`, `system-design` and the `behavioral` category.
 
 ### Deferred research for executable practice (Phase 3+) — superseded 2026-11-03 by the local-first decision
@@ -189,6 +189,7 @@ Layout (accepted 2026-11-03): `exercises/backend` is a Maven multi-module projec
 
 - 2026-11-12: Evidence URLs confirmed by the user in a browser (verbatim): "abren todos los posts". T1.Q4 done.
 - 2026-11-12: PR #17 (`feat/seed-questions`) merged into `main` (`964ba16`); branch deleted.
+- 2026-11-12: Phase 2 removed. User (verbatim): "Eliminemos la Fase 2. No me interesa generar un simulacro de entrevista, ya que nunca va a llegar a ser como en la realidad de estar con la presion de estar atravesando una entrevista."
 
 ## Delivery
 
@@ -207,4 +208,4 @@ Layout (accepted 2026-11-03): `exercises/backend` is a Maven multi-module projec
 
 ## Next step
 
-Phase 1 closed (PR #17 merged). Next: break down Phase 2 (mock interview mode) into tasks.
+Phase 1 closed (PR #17 merged). Phase 2 removed. Next step to be agreed with the user.
