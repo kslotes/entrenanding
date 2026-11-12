@@ -5,17 +5,19 @@ import { render } from "astro:content";
 import Shell from "../../../layouts/Shell.astro";
 import { getConcepts, getQuestions } from "../../../lib/collections";
 import { conceptHref } from "../../../lib/exercises";
-import { codeLines } from "../../../lib/questions";
+import { codeLines, questionHref } from "../../../lib/questions";
 
 export const getStaticPaths = (async () => {
   const questions = await getQuestions();
+  const hrefs = questions.map(({ location }) => questionHref(location));
   return questions.map(({ entry, location }) => ({
     params: { category: location.category, slug: location.slug },
-    props: { entry, location },
+    props: { entry, location, hrefs },
   }));
 }) satisfies GetStaticPaths;
 
-const { entry, location } = Astro.props;
+const { entry, location, hrefs } = Astro.props;
+const currentHref = questionHref(location);
 const { data } = entry;
 const { Content } = await render(entry);
 
@@ -48,8 +50,12 @@ const keys =
           label: "responder",
         },
         { key: "r", label: "reintentar" },
+        { key: "n", label: "nueva" },
       ]
-    : [{ key: "r", label: "reintentar" }];
+    : [
+        { key: "r", label: "reintentar" },
+        { key: "n", label: "nueva" },
+      ];
 ---
 
 <Shell
@@ -138,6 +144,20 @@ const keys =
       </ol>
     )}
 
+    <p class="next">
+      <button
+        type="button"
+        class="action"
+        data-next
+        data-key="n"
+        data-hrefs={JSON.stringify(hrefs)}
+        data-current={currentHref}
+        disabled={hrefs.length < 2}
+      >
+        Nueva pregunta
+      </button>
+    </p>
+
     <p class="result" role="status" data-result></p>
     <pre class="expected" data-expected hidden></pre>
     <button
@@ -184,6 +204,14 @@ const keys =
     gradeOutput,
     type Grade,
   } from "../../../lib/grading";
+  import { pickRandomOther } from "../../../lib/questions";
+
+  const next = document.querySelector<HTMLButtonElement>("[data-next]");
+  next?.addEventListener("click", () => {
+    const hrefs = JSON.parse(next.dataset.hrefs ?? "[]") as string[];
+    const href = pickRandomOther(hrefs, next.dataset.current ?? "");
+    if (href) window.location.assign(href);
+  });
 
   const root = document.querySelector<HTMLElement>("[data-question]");
 
@@ -363,7 +391,8 @@ const keys =
     resize: vertical;
   }
 
-  .submit {
+  .submit,
+  .next {
     display: flex;
     align-items: center;
     gap: 2ch;
