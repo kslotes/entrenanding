@@ -1,7 +1,7 @@
 ---
 import "../styles/global.css";
 
-export type Section = "inicio" | "ejercicios" | "conceptos";
+export type Section = "inicio" | "preguntas" | "ejercicios" | "conceptos";
 
 interface Props {
   title: string;
@@ -17,6 +17,7 @@ const { title, description, section, file, keys = [] } = Astro.props;
 
 const tabs: { section: Section; href: string; key: string }[] = [
   { section: "inicio", href: "/", key: "i" },
+  { section: "preguntas", href: "/preguntas/", key: "p" },
   { section: "ejercicios", href: "/ejercicios/", key: "e" },
   { section: "conceptos", href: "/conceptos/", key: "c" },
 ];
@@ -123,7 +124,9 @@ const hints = [
       });
       render();
 
-      // Single-key shortcuts: any element with data-key is clicked.
+      // Single-key shortcuts: an enabled element with data-key is clicked.
+      // Page shortcuts inside <main> win over the tab bar (on a question, `c`
+      // picks option c instead of opening concepts).
       document.addEventListener("keydown", (event) => {
         if (
           event.defaultPrevented ||
@@ -135,9 +138,10 @@ const hints = [
         const target = event.target as HTMLElement;
         if (target.closest("input, textarea, select, [contenteditable]"))
           return;
-        const element = document.querySelector<HTMLElement>(
-          `[data-key="${CSS.escape(event.key.toLowerCase())}"]`,
-        );
+        const selector = `[data-key="${CSS.escape(event.key.toLowerCase())}"]:not(:disabled)`;
+        const element =
+          document.querySelector<HTMLElement>(`main ${selector}`) ??
+          document.querySelector<HTMLElement>(selector);
         if (element) {
           event.preventDefault();
           element.click();
