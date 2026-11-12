@@ -5,7 +5,12 @@ import {
   gradeOutput,
   normalizeOutput,
 } from "./grading";
-import { codeLines, parseQuestionId, questionHref } from "./questions";
+import {
+  codeLines,
+  parseQuestionId,
+  pickRandomOther,
+  questionHref,
+} from "./questions";
 
 describe("parseQuestionId", () => {
   it("splits a collection id into category and slug", () => {
@@ -81,5 +86,24 @@ describe("gradeLine", () => {
 describe("codeLines", () => {
   it("splits code into lines, ignoring the final newline", () => {
     expect(codeLines("int a;\nint b;\n")).toEqual(["int a;", "int b;"]);
+  });
+});
+
+describe("pickRandomOther", () => {
+  const hrefs = ["/a/", "/b/", "/c/"];
+
+  it("never returns the current item", () => {
+    expect(pickRandomOther(hrefs, "/a/", () => 0)).toBe("/b/");
+    expect(pickRandomOther(hrefs, "/a/", () => 0.99)).toBe("/c/");
+  });
+
+  it("picks from every item when the current one is not in the list", () => {
+    expect(pickRandomOther(hrefs, "/x/", () => 0)).toBe("/a/");
+    expect(pickRandomOther(hrefs, "/x/", () => 0.99)).toBe("/c/");
+  });
+
+  it("returns undefined when there is no other item", () => {
+    expect(pickRandomOther(["/a/"], "/a/")).toBeUndefined();
+    expect(pickRandomOther([], "/a/")).toBeUndefined();
   });
 });
