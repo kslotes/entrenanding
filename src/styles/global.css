@@ -86,8 +86,11 @@ a {
 
 code,
 kbd,
-pre {
+pre,
+textarea {
   font-family: var(--font);
+  /* Code must show the characters it contains: no `<=` drawn as `≤`. */
+  font-variant-ligatures: none;
 }
 
 kbd {
@@ -165,13 +168,24 @@ kbd {
 }
 
 @media (max-width: 520px) {
+  /* Two rows: brand and theme on top, the four tabs below. */
+  .tabbar {
+    flex-wrap: wrap;
+  }
+
   .tabbar .brand {
-    display: none;
+    flex: 1;
+  }
+
+  .tabbar nav {
+    order: 2;
+    flex-basis: 100%;
+    border-top: 1px solid var(--line);
   }
 
   .tabbar nav a,
   .theme-toggle {
-    padding-inline: 10px;
+    padding-inline: 8px;
   }
 }
 

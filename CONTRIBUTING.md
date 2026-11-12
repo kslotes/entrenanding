@@ -72,6 +72,8 @@ Los campos desconocidos se rechazan: un error de tipeo como `anwser` hace fallar
 | `predict-output`  | `code`, `language`, `expectedOutput`: la salida exacta, que se compara como texto.                  |
 | `spot-the-bug`    | `code`, `language`, `bugLine`: el número de línea del error (empezando en 1), dentro de `code`.     |
 
+En `predict-output`, la respuesta se compara con `expectedOutput` como texto, sin tener en cuenta el tipo de final de línea (`\n` o `\r\n`), los espacios al final de cada línea ni las líneas vacías del final. Las mayúsculas y los espacios al principio de una línea sí cuentan.
+
 > **Tipos pospuestos.** La aplicación solo acepta tipos que puede evaluar automáticamente. Los tipos de autoevaluación (respuestas abiertas, preguntas de comportamiento y recorridos de diseño de sistemas) y la categoría `behavioral` se posponen hasta la fase que agrega la evaluación de respuestas con IA, por lo que todavía no se aceptan contribuciones de esos tipos. Los temas de diseño de sistemas se pueden aportar con cualquiera de los tipos anteriores.
 
 ## Regla de evidencia

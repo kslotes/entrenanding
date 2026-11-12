@@ -1,0 +1,416 @@
+---
+import type { GetStaticPaths } from "astro";
+import { Code } from "astro:components";
+import { render } from "astro:content";
+import Shell from "../../../layouts/Shell.astro";
+import { getConcepts, getQuestions } from "../../../lib/collections";
+import { conceptHref } from "../../../lib/exercises";
+import { codeLines } from "../../../lib/questions";
+
+export const getStaticPaths = (async () => {
+  const questions = await getQuestions();
+  return questions.map(({ entry, location }) => ({
+    params: { category: location.category, slug: location.slug },
+    props: { entry, location },
+  }));
+}) satisfies GetStaticPaths;
+
+const { entry, location } = Astro.props;
+const { data } = entry;
+const { Content } = await render(entry);
+
+const conceptsById = new Map(
+  (await getConcepts()).map((concept) => [concept.id, concept]),
+);
+// Integrity tests guarantee every referenced concept exists.
+const concepts = data.concepts.map((id) => conceptsById.get(id)!);
+
+// The answer ships with the page: the app is local-first and the content is
+// public in the repository anyway.
+const answer =
+  data.type === "multiple-choice"
+    ? data.answer
+    : data.type === "predict-output"
+      ? data.expectedOutput
+      : String(data.bugLine);
+
+const instructions = {
+  "multiple-choice": "Elige una opción.",
+  "predict-output": "Escribe exactamente lo que imprime este código.",
+  "spot-the-bug": "Elige la línea que tiene el error.",
+}[data.type];
+
+const keys =
+  data.type === "multiple-choice"
+    ? [
+        {
+          key: data.options.map((option) => option.id).join(" "),
+          label: "responder",
+        },
+        { key: "r", label: "reintentar" },
+      ]
+    : [{ key: "r", label: "reintentar" }];
+---
+
+<Shell
+  title={data.title}
+  description={`Pregunta de ${location.category}: ${data.title}`}
+  section="preguntas"
+  file={`src/content/questions/${location.category}/${location.slug}.md`}
+  keys={keys}
+>
+  <p class="comment">
+    # {location.category} / {data.type} / {data.stack.join(", ")} /{" "}
+    {data.seniority.join(", ")}
+  </p>
+  <h1>{data.title}</h1>
+
+  <div
+    class="question"
+    data-question
+    data-type={data.type}
+    data-answer={answer}
+  >
+    <p class="where">{instructions}</p>
+
+    {data.type === "multiple-choice" && (
+      <ol class="options" role="list">
+        {data.options.map((option) => (
+          <li>
+            <button
+              type="button"
+              class="pick"
+              data-choice={option.id}
+              data-key={
+                option.id.length === 1 ? option.id.toLowerCase() : undefined
+              }
+            >
+              <span class="id">[{option.id}]</span>
+              <span>{option.text}</span>
+            </button>
+          </li>
+        ))}
+      </ol>
+    )}
+
+    {data.type === "predict-output" && (
+      <>
+        <Code
+          code={data.code}
+          lang={data.language as never}
+          themes={{ light: "github-light", dark: "tokyo-night" }}
+          defaultColor={false}
+        />
+        <form class="output" data-output-form>
+          <label for="output">Salida</label>
+          <textarea
+            id="output"
+            rows={Math.max(3, data.expectedOutput.split("\n").length + 1)}
+            spellcheck="false"
+            autocomplete="off"
+            autocapitalize="off"
+          />
+          <p class="submit">
+            <button type="submit" class="action">
+              comprobar
+            </button>
+            <span class="where">o Ctrl+Enter</span>
+          </p>
+        </form>
+      </>
+    )}
+
+    {data.type === "spot-the-bug" && (
+      <ol class="lines" role="list" aria-label={`Código en ${data.language}`}>
+        {codeLines(data.code).map((line, index) => (
+          <li>
+            <button
+              type="button"
+              class="pick"
+              data-line={index + 1}
+              aria-label={`Línea ${index + 1}: ${line.trim() || "vacía"}`}
+            >
+              <span class="n">{index + 1}</span>
+              <code set:text={line || " "} />
+            </button>
+          </li>
+        ))}
+      </ol>
+    )}
+
+    <p class="result" role="status" data-result></p>
+    <pre class="expected" data-expected hidden></pre>
+    <button
+      type="button"
+      class="action"
+      data-retry
+      data-key="r"
+      disabled
+      hidden
+    >
+      reintentar
+    </button>
+  </div>
+
+  <section
+    class="explanation"
+    aria-labelledby="explanation-title"
+    data-explanation
+    hidden
+  >
+    <h2 id="explanation-title">Explicación</h2>
+    <article class="prose">
+      <Content />
+    </article>
+    {concepts.length > 0 && (
+      <>
+        <h2>Conceptos</h2>
+        <ul class="concepts">
+          {concepts.map((concept) => (
+            <li>
+              <a href={conceptHref(concept.id)}>{concept.data.title}</a>
+            </li>
+          ))}
+        </ul>
+      </>
+    )}
+  </section>
+</Shell>
+
+<script>
+  import {
+    gradeChoice,
+    gradeLine,
+    gradeOutput,
+    type Grade,
+  } from "../../../lib/grading";
+
+  const root = document.querySelector<HTMLElement>("[data-question]");
+
+  if (root) {
+    const answer = root.dataset.answer ?? "";
+    const result = root.querySelector<HTMLElement>("[data-result]")!;
+    const expectedBlock = root.querySelector<HTMLElement>("[data-expected]")!;
+    const retry = root.querySelector<HTMLButtonElement>("[data-retry]")!;
+    const explanation =
+      document.querySelector<HTMLElement>("[data-explanation]")!;
+    const picks = [...root.querySelectorAll<HTMLButtonElement>(".pick")];
+    const form = root.querySelector<HTMLFormElement>("[data-output-form]");
+    const textarea = form?.querySelector("textarea");
+    const submit = form?.querySelector<HTMLButtonElement>("[type=submit]");
+
+    const setAnswered = (answered: boolean) => {
+      picks.forEach((pick) => (pick.disabled = answered));
+      if (textarea) textarea.readOnly = answered;
+      if (submit) submit.disabled = answered;
+      retry.disabled = !answered;
+      retry.hidden = !answered;
+      explanation.hidden = !answered;
+    };
+
+    const show = (grade: Grade, picked?: HTMLButtonElement) => {
+      root.dataset.state = grade.pass ? "pass" : "fail";
+      const multiline = root.dataset.type === "predict-output";
+      result.textContent = grade.pass
+        ? "✓ PASS"
+        : multiline
+          ? "✗ FAIL expected:"
+          : `✗ FAIL expected: ${grade.expected}`;
+      expectedBlock.textContent = grade.expected;
+      expectedBlock.hidden = grade.pass || !multiline;
+      picked?.setAttribute("data-picked", "");
+      picks
+        .find(
+          (pick) =>
+            (pick.dataset.choice ?? pick.dataset.line) === grade.expected,
+        )
+        ?.setAttribute("data-correct", "");
+      setAnswered(true);
+      retry.focus();
+    };
+
+    picks.forEach((pick) =>
+      pick.addEventListener("click", () => {
+        const grade = pick.dataset.choice
+          ? gradeChoice(pick.dataset.choice, answer)
+          : gradeLine(Number(pick.dataset.line), Number(answer));
+        show(grade, pick);
+      }),
+    );
+
+    form?.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (textarea) show(gradeOutput(textarea.value, answer));
+    });
+
+    textarea?.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
+        event.preventDefault();
+        form?.requestSubmit();
+      }
+    });
+
+    retry.addEventListener("click", () => {
+      delete root.dataset.state;
+      result.textContent = "";
+      expectedBlock.hidden = true;
+      picks.forEach((pick) => {
+        pick.removeAttribute("data-picked");
+        pick.removeAttribute("data-correct");
+      });
+      setAnswered(false);
+      (textarea ?? picks[0])?.focus();
+    });
+  }
+</script>
+
+<style>
+  .question {
+    max-width: 76ch;
+  }
+
+  .where {
+    margin: 8px 0;
+    font-size: 13px;
+    color: var(--dim);
+  }
+
+  .options,
+  .lines {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .options li,
+  .lines li {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .pick {
+    display: flex;
+    gap: 2ch;
+    width: 100%;
+    padding: 10px 8px;
+    font: inherit;
+    text-align: left;
+    color: var(--fg);
+    background: none;
+    border: 0;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+  }
+
+  .lines .pick {
+    padding: 2px 8px;
+    font-size: 14px;
+  }
+
+  .pick:hover:not(:disabled),
+  .pick:focus-visible {
+    background: var(--panel);
+  }
+
+  .pick:disabled {
+    cursor: default;
+  }
+
+  .pick .id,
+  .pick .n {
+    color: var(--link);
+    flex: none;
+  }
+
+  .pick .n {
+    min-width: 3ch;
+    text-align: right;
+    color: var(--dim);
+  }
+
+  .pick code {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .pick[data-picked] {
+    border-left-color: var(--red);
+  }
+
+  .pick[data-correct] {
+    border-left-color: var(--green);
+  }
+
+  .pick[data-correct] .id,
+  .pick[data-correct] .n {
+    color: var(--green);
+  }
+
+  .output label {
+    display: block;
+    margin: 16px 0 4px;
+    color: var(--dim);
+  }
+
+  .output textarea {
+    width: 100%;
+    padding: 8px;
+    font: inherit;
+    color: var(--fg);
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    resize: vertical;
+  }
+
+  .submit {
+    display: flex;
+    align-items: center;
+    gap: 2ch;
+    margin: 8px 0 0;
+  }
+
+  .action {
+    font: inherit;
+    font-size: 13px;
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    color: var(--link);
+    padding: 2px 10px;
+    cursor: pointer;
+  }
+
+  .action:hover:not(:disabled) {
+    background: var(--panel);
+  }
+
+  .action:disabled {
+    color: var(--dim);
+    cursor: default;
+  }
+
+  .result {
+    min-height: 1.5em;
+    margin: 16px 0 4px;
+    font-weight: 700;
+  }
+
+  [data-state="pass"] .result {
+    color: var(--green);
+  }
+
+  [data-state="fail"] .result {
+    color: var(--red);
+  }
+
+  .expected {
+    margin: 0 0 8px;
+    white-space: pre-wrap;
+  }
+
+  .concepts {
+    margin: 0;
+    padding-left: 2ch;
+  }
+</style>

@@ -1,0 +1,60 @@
+---
+import Shell from "../../layouts/Shell.astro";
+import { categories } from "../../content/schema";
+import { getQuestions } from "../../lib/collections";
+import { questionHref } from "../../lib/questions";
+
+const questions = await getQuestions();
+const groups = categories.map((category) => ({
+  category,
+  items: questions.filter(
+    (question) => question.location.category === category,
+  ),
+}));
+---
+
+<Shell
+  title="Preguntas"
+  description="Preguntas de entrevista que se corrigen solas: opción múltiple, predecir la salida y encontrar el error."
+  section="preguntas"
+  file="src/content/questions/"
+>
+  <p class="comment"># {questions.length} preguntas</p>
+  <h1>Preguntas</h1>
+  <p class="intro">
+    Cada pregunta se corrige al responderla y después muestra la explicación y
+    los conceptos que la respaldan.
+  </p>
+
+  {groups.map(({ category, items }) => (
+    <section aria-labelledby={`category-${category}`}>
+      <h2 id={`category-${category}`}>{category}/</h2>
+      {items.length === 0 ? (
+        <p class="comment">
+          # Todavía no hay preguntas de {category}. Puedes proponer una en un
+          Pull Request.
+        </p>
+      ) : (
+        <ul class="files">
+          {items.map(({ entry, location }) => (
+            <li>
+              <a href={questionHref(location)}>
+                <span class="path">{location.slug}</span>
+                <span>{entry.data.title}</span>
+                <span class="meta">
+                  {entry.data.type} / {entry.data.seniority.join(", ")}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  ))}
+</Shell>
+
+<style>
+  .intro {
+    max-width: 68ch;
+  }
+</style>

@@ -12,7 +12,7 @@ Entrenanding es un proyecto de código abierto para aprender, practicar y prepar
 
 ## Estado
 
-**Fase 1, pre-alfa.** La aplicación lista los ejercicios de código (uno de backend y uno de frontend) con su enunciado, los conceptos que los respaldan y el comando que corre sus tests. Las preguntas de opción múltiple todavía no se pueden responder en la aplicación.
+**Fase 1, pre-alfa.** La aplicación lista los ejercicios de código (uno de backend y uno de frontend) con su enunciado, los conceptos que los respaldan y el comando que corre sus tests, y permite responder las preguntas teóricas, que se corrigen al instante. Todavía faltan el progreso guardado, los filtros y el contenido inicial de preguntas.
 
 ## Requisitos previos
 
@@ -39,7 +39,7 @@ pnpm install
 pnpm dev
 ```
 
-Abre http://localhost:4321/ en tu navegador. La aplicación se maneja con el teclado: `i` inicio, `e` ejercicios, `c` conceptos, `t` cambia el tema y, en un ejercicio, `y` copia el comando de los tests.
+Abre http://localhost:4321/ en tu navegador. La aplicación se maneja con el teclado: `i` inicio, `p` preguntas, `e` ejercicios, `c` conceptos y `t` cambia el tema. En un ejercicio, `y` copia el comando de los tests; en una pregunta de opción múltiple, la letra de cada opción la elige, y `r` reintenta la pregunta.
 
 | Comando      | Qué hace                                               |
 | ------------ | ------------------------------------------------------ |

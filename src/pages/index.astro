@@ -1,10 +1,11 @@
 ---
 import Shell from "../layouts/Shell.astro";
-import { getConcepts, getExercises } from "../lib/collections";
+import { getConcepts, getExercises, getQuestions } from "../lib/collections";
 import { exerciseHref } from "../lib/exercises";
 
 const exercises = await getExercises();
 const concepts = await getConcepts();
+const questions = await getQuestions();
 ---
 
 <Shell
@@ -48,6 +49,14 @@ const concepts = await getConcepts();
       comentada para que aprendas de ella.
     </li>
   </ol>
+
+  <h2>Preguntas</h2>
+  <p class="narrow">
+    Para repasar teoría sin salir de la aplicación: opción múltiple, predecir la
+    salida de un código y encontrar la línea con el error. Se corrigen al
+    responder y muestran la explicación.{" "}
+    <a href="/preguntas/">Ver las {questions.length} preguntas</a>.
+  </p>
 
   <h2>Ejercicios</h2>
   <ul class="files">
