@@ -151,7 +151,7 @@ Layout (accepted 2026-11-03): `exercises/backend` is a Maven multi-module projec
 
 - [x] T1.Q1 Answer questions in the app: `/preguntas/` (grouped by category) and `/preguntas/<category>/<slug>/` for the 3 auto-graded types. `multiple-choice`: `[a]`–`[f]` options with single-key selection. `predict-output`: textarea, submit with a button or Ctrl+Enter. `spot-the-bug`: numbered code lines, pick one. Terse feedback (`✓ PASS` / `✗ FAIL expected: b`), then the explanation (body) and concepts; retry. Pure grading in `src/lib/grading.ts`. Assumption: `predict-output` compares after normalizing line endings and trailing whitespace (per line and trailing blank lines); documented in CONTRIBUTING. Page shortcuts inside `<main>` win over tab shortcuts and disabled elements are skipped. New tab `preguntas` (key `p`). Route: inline. Done: `src/lib/grading.ts` (no imports, so the client bundle does not pull Zod), `src/lib/questions.ts` (id parsing, href, `codeLines`), `getQuestions`, `/preguntas/` and `/preguntas/<category>/<slug>/`, home section; the answer ships in the page (local-first, content is public). Also: `font-variant-ligatures: none` for `pre`/`code`/`textarea` site-wide (the monospace stack drew `<=` as `≤`), and on ≤520px the tab bar wraps to two rows so the 4 tabs fit. Docs: README status and shortcuts, CONTRIBUTING output comparison rule. RED: `Cannot find module './questions'`. GREEN: 73 tests. Checks: lint, format, `astro check` 0 errors, build 14 pages; CDP in headless Chrome: each type pass/fail/retry, expected output shown on fail, option keys win over tabs and give way once answered (`c` → `/conceptos/`), typing in the textarea does not trigger shortcuts, Ctrl+Enter submits, no horizontal overflow at 390px; differential check of existing shortcuts (`i e c p`, `y` copies, `t`, Ctrl ignored); screenshots light/dark/mobile.
 - [x] ~~T1.Q2 Progress in `localStorage` behind a `ProgressRepository` port: last result per question, shown on the list; storage failures degrade silently.~~ Cancelled 2026-11-12: owner decision, no progress is stored. README updated (status, "Local y privado", roadmap). The theme preference stays in `localStorage` (UI setting, not progress).
-- [ ] T1.Q3 Browse by category/stack/seniority on `/preguntas/` (client-side filters, state in the query string).
+- [x] T1.Q3 Browse by category/stack/seniority on `/preguntas/` (client-side filters, state in the query string). Done: pure `src/lib/question-filters.ts` (parse/serialize the query string, OR within a group and AND across groups, unknown values and duplicates dropped so a stale link never hides everything); toggle buttons (`aria-pressed`) for all categories, the stacks present in the content and all seniorities; count `# N de M preguntas`, categories without matches hidden while filtering, empty message, `limpiar filtros`; URL updated with `history.replaceState` (`?categoria=backend,frontend&stack=java`). Without JavaScript the panel stays hidden and the full list shows. Meta line now includes stack. README status updated. Route: inline. RED: `Cannot find module './question-filters'`. GREEN: 83 tests. Checks: lint, format, `astro check` 0 errors, build 14 pages; CDP in headless Chrome: OR/AND combinations, empty state, clear (focus returns to the first toggle), deep link with an unknown value cleaned from the URL, reload keeps filters, no JS shows all 3 items with the panel hidden, no horizontal overflow at 390px; screenshots desktop and mobile.
 - [ ] T1.Q4 Seed content: ~10 questions per category, with evidence when `fundamentals: false`. Agree scope and topics with the user before writing.
 
 ## Acceptance criteria (Phase 0)
@@ -183,6 +183,8 @@ Layout (accepted 2026-11-03): `exercises/backend` is a Maven multi-module projec
 
 - 2026-11-12: PR #14 merged (T1.Q1). User (verbatim): "quiero que saquemos lo del progreso. No me interesa que guardemos nada, ya que la idea es volver a repetir las preguntas ya contestadas en algun momento para reforzar conocimiento y verificar que el aprendizaje quedo guardado en mi memoria". T1.Q2 cancelled; spaced repetition and progress export/import dropped from Phase 2 (they need stored progress).
 
+- 2026-11-12: PR #15 merged. User: "continuemos". T1.Q3 done on `feat/question-filters`.
+
 ## Delivery
 
 - Strategy: `ask-on-risk` (default). Forecast for Phase 0: roughly 600–900 authored lines (scaffold, schema, tests, CI, sample content), so a chain decision is expected before T0.4.
@@ -200,4 +202,4 @@ Layout (accepted 2026-11-03): `exercises/backend` is a Maven multi-module projec
 
 ## Next step
 
-T1.Q3 (filters on `/preguntas/`), then T1.Q4 (agree content scope first).
+T1.Q4 seed content: agree scope and topics with the user before writing.

@@ -12,7 +12,7 @@ Entrenanding es un proyecto de código abierto para aprender, practicar y prepar
 
 ## Estado
 
-**Fase 1, pre-alfa.** La aplicación lista los ejercicios de código (uno de backend y uno de frontend) con su enunciado, los conceptos que los respaldan y el comando que corre sus tests, y permite responder las preguntas teóricas, que se corrigen al instante. Todavía faltan los filtros y el contenido inicial de preguntas.
+**Fase 1, pre-alfa.** La aplicación lista los ejercicios de código (uno de backend y uno de frontend) con su enunciado, los conceptos que los respaldan y el comando que corre sus tests, y permite responder las preguntas teóricas, que se corrigen al instante y se filtran por categoría, stack y seniority. Todavía falta el contenido inicial de preguntas.
 
 ## Requisitos previos
 

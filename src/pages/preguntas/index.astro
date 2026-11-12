@@ -1,7 +1,8 @@
 ---
 import Shell from "../../layouts/Shell.astro";
-import { categories } from "../../content/schema";
+import { categories, seniorities } from "../../content/schema";
 import { getQuestions } from "../../lib/collections";
+import type { FilterOptions } from "../../lib/question-filters";
 import { questionHref } from "../../lib/questions";
 
 const questions = await getQuestions();
@@ -11,6 +12,20 @@ const groups = categories.map((category) => ({
     (question) => question.location.category === category,
   ),
 }));
+
+const options: FilterOptions = {
+  categoria: categories,
+  stack: [
+    ...new Set(questions.flatMap(({ entry }) => entry.data.stack)),
+  ].sort(),
+  seniority: seniorities,
+};
+
+const legends = {
+  categoria: "categoría",
+  stack: "stack",
+  seniority: "seniority",
+};
 ---
 
 <Shell
@@ -19,15 +34,51 @@ const groups = categories.map((category) => ({
   section="preguntas"
   file="src/content/questions/"
 >
-  <p class="comment"># {questions.length} preguntas</p>
+  <p class="comment" data-count data-total={questions.length}>
+    # {questions.length} preguntas
+  </p>
   <h1>Preguntas</h1>
   <p class="intro">
     Cada pregunta se corrige al responderla y después muestra la explicación y
     los conceptos que la respaldan.
   </p>
 
+  <!-- Hidden until the script runs: without JavaScript the full list shows. -->
+  <div
+    class="filters"
+    role="group"
+    aria-label="Filtros"
+    data-filters
+    data-options={JSON.stringify(options)}
+    hidden
+  >
+    {Object.entries(options).map(([group, values]) => (
+      <fieldset>
+        <legend>{legends[group as keyof typeof legends]}</legend>
+        {values.map((value) => (
+          <button
+            type="button"
+            class="toggle"
+            aria-pressed="false"
+            data-group={group}
+            data-value={value}
+          >
+            {value}
+          </button>
+        ))}
+      </fieldset>
+    ))}
+    <button type="button" class="clear" data-clear disabled>
+      limpiar filtros
+    </button>
+  </div>
+
+  <p class="comment" data-empty hidden>
+    # Ninguna pregunta coincide con los filtros.
+  </p>
+
   {groups.map(({ category, items }) => (
-    <section aria-labelledby={`category-${category}`}>
+    <section aria-labelledby={`category-${category}`} data-category={category}>
       <h2 id={`category-${category}`}>{category}/</h2>
       {items.length === 0 ? (
         <p class="comment">
@@ -37,12 +88,18 @@ const groups = categories.map((category) => ({
       ) : (
         <ul class="files">
           {items.map(({ entry, location }) => (
-            <li>
+            <li
+              data-question
+              data-categoria={location.category}
+              data-stack={entry.data.stack.join(",")}
+              data-seniority={entry.data.seniority.join(",")}
+            >
               <a href={questionHref(location)}>
                 <span class="path">{location.slug}</span>
                 <span>{entry.data.title}</span>
                 <span class="meta">
-                  {entry.data.type} / {entry.data.seniority.join(", ")}
+                  {entry.data.type} / {entry.data.stack.join(", ")} /{" "}
+                  {entry.data.seniority.join(", ")}
                 </span>
               </a>
             </li>
@@ -53,8 +110,180 @@ const groups = categories.map((category) => ({
   ))}
 </Shell>
 
+<script>
+  import {
+    emptyFilters,
+    filterGroups,
+    matchesFilters,
+    parseFilters,
+    serializeFilters,
+    type FilterGroup,
+    type FilterOptions,
+  } from "../../lib/question-filters";
+
+  const panel = document.querySelector<HTMLElement>("[data-filters]");
+
+  if (panel) {
+    const options = JSON.parse(panel.dataset.options ?? "{}") as FilterOptions;
+    const toggles = [
+      ...panel.querySelectorAll<HTMLButtonElement>("[data-group]"),
+    ];
+    const clear = panel.querySelector<HTMLButtonElement>("[data-clear]")!;
+    const count = document.querySelector<HTMLElement>("[data-count]")!;
+    const empty = document.querySelector<HTMLElement>("[data-empty]")!;
+    const sections = [
+      ...document.querySelectorAll<HTMLElement>("section[data-category]"),
+    ];
+    const items = [
+      ...document.querySelectorAll<HTMLElement>("[data-question]"),
+    ];
+    const total = Number(count.dataset.total);
+    const list = (value = "") => (value ? value.split(",") : []);
+
+    let filters = parseFilters(location.search, options);
+
+    const render = () => {
+      const active = filterGroups.some((group) => filters[group].length > 0);
+      toggles.forEach((toggle) => {
+        const group = toggle.dataset.group as FilterGroup;
+        toggle.setAttribute(
+          "aria-pressed",
+          String(filters[group].includes(toggle.dataset.value ?? "")),
+        );
+      });
+      clear.disabled = !active;
+
+      let visible = 0;
+      items.forEach((item) => {
+        const show = matchesFilters(
+          {
+            categoria: item.dataset.categoria ?? "",
+            stack: list(item.dataset.stack),
+            seniority: list(item.dataset.seniority),
+          },
+          filters,
+        );
+        item.hidden = !show;
+        if (show) visible += 1;
+      });
+
+      // With filters on, hide categories without matches (including the
+      // "no questions yet" ones); without filters, show the full layout.
+      sections.forEach((section) => {
+        section.hidden =
+          active && !section.querySelector("[data-question]:not([hidden])");
+      });
+      empty.hidden = visible > 0;
+      count.textContent = active
+        ? `# ${visible} de ${total} preguntas`
+        : `# ${total} preguntas`;
+
+      history.replaceState(
+        null,
+        "",
+        `${location.pathname}${serializeFilters(filters)}${location.hash}`,
+      );
+    };
+
+    toggles.forEach((toggle) =>
+      toggle.addEventListener("click", () => {
+        const group = toggle.dataset.group as FilterGroup;
+        const value = toggle.dataset.value ?? "";
+        const selected = filters[group];
+        filters = {
+          ...filters,
+          [group]: selected.includes(value)
+            ? selected.filter((v) => v !== value)
+            : [...selected, value],
+        };
+        render();
+      }),
+    );
+
+    clear.addEventListener("click", () => {
+      filters = emptyFilters();
+      render();
+      toggles[0]?.focus();
+    });
+
+    panel.hidden = false;
+    render();
+  }
+</script>
+
 <style>
   .intro {
     max-width: 68ch;
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 12px 32px;
+    margin: 0 0 8px;
+  }
+
+  .filters[hidden] {
+    display: none;
+  }
+
+  fieldset {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  legend {
+    padding: 0;
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: var(--dim);
+  }
+
+  .toggle,
+  .clear {
+    font: inherit;
+    font-size: 13px;
+    padding: 2px 10px;
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    color: var(--dim);
+    cursor: pointer;
+  }
+
+  .toggle:hover,
+  .clear:hover:not(:disabled) {
+    background: var(--panel);
+    color: var(--fg);
+  }
+
+  .toggle[aria-pressed="true"] {
+    color: var(--fg);
+    border-color: var(--accent);
+    background: var(--panel);
+  }
+
+  .toggle[aria-pressed="true"]::before {
+    content: "✓ ";
+    color: var(--accent);
+  }
+
+  .clear {
+    color: var(--link);
+  }
+
+  .clear:disabled {
+    color: var(--dim);
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  [data-empty] {
+    margin-top: 24px;
   }
 </style>
