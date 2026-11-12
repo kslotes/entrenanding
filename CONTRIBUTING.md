@@ -125,6 +125,19 @@ Cada ejercicio de frontend vive en `exercises/frontend/<grupo>/<slug>/` con:
 
 Antes de abrir el pull request, ejecuta `pnpm verify:exercises` (o `pnpm verify:exercises backend` / `frontend`): el código inicial debe fallar sus tests y la solución debe pasarlos, y cada ejercicio debe tener su `statement.md`. CI ejecuta la misma verificación.
 
+### Cómo agregar un ejercicio
+
+1. **Elige el área, el grupo y el slug.** La ruta es `exercises/<área>/<grupo>/<slug>/`, con `<área>` igual a `backend` o `frontend`. El grupo junta ejercicios del mismo tema (por ejemplo `java-core` o `js-core`); el grupo y el slug van en minúsculas, separados por guiones y en inglés.
+2. **Copia un ejercicio existente como base.** Para backend, `exercises/backend/java-core/immutable-money/`; cambia el `artifactId` de su `pom.xml` por el slug y usa un paquete propio bajo `io.github.kslotes.entrenanding.exercises`. Para frontend, `exercises/frontend/js-core/debounce/`.
+3. **Escribe o reutiliza la teoría.** Cada slug de `concepts` debe existir en `src/content/concepts/`. Si falta un concepto, agrégalo en el mismo pull request (ver [Conceptos](#conceptos-teoría)).
+4. **Escribe el enunciado.** En la sección `## Teoría`, enlaza los conceptos con rutas relativas al `statement.md` (`../../../../src/content/concepts/<slug>.md`): funcionan en GitHub y la aplicación las convierte en enlaces a sus páginas de conceptos. Si el ejercicio no es de fundamentos (`fundamentals: false`), necesita evidencia como las preguntas (ver la [regla de evidencia](#regla-de-evidencia)).
+5. **Escribe primero los tests y la solución.** Los tests prueban el comportamiento que pide el enunciado, no detalles de la implementación. Comprueba que la solución los pase:
+   - Backend, desde `exercises/backend`: `./mvnw -pl <grupo>/<slug> -Psolution test` (en Windows, `.\mvnw.cmd` en lugar de `./mvnw`).
+   - Frontend, desde la raíz: `pnpm exercise <grupo>/<slug> --mode solution`.
+6. **Deja el código inicial.** Mismas firmas que la solución, sin la lógica: debe compilar y fallar los tests. Ejecuta el mismo comando sin `-Psolution` o sin `--mode solution` para comprobarlo.
+7. **Registra el ejercicio.** Backend: agrega el módulo en `exercises/backend/pom.xml`. Ambos: agrega una fila a la tabla de ejercicios del [README](README.md#ejercicios-de-código).
+8. **Verifica todo.** Ejecuta `pnpm verify:exercises` y `pnpm test`; este último valida el frontmatter del enunciado y que los conceptos referenciados existan.
+
 ## Contribuciones de código
 
 - Agrega o actualiza pruebas cuando cambies comportamiento.
