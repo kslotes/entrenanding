@@ -4,7 +4,12 @@ type: multiple-choice
 category: frontend
 stack: [javascript, react]
 seniority: [jr, ssr]
-fundamentals: true
+fundamentals: false
+evidence:
+  - type: interview-report
+    url: https://leetcode.com/discuss/post/6766726/writesonic-full-stack-developer-intervie-q35l/
+  - type: interview-report
+    url: https://leetcode.com/discuss/post/7347058/microsoft-software-engineer-ii-frontend-z7ods/
 options:
   - id: a
     text: "0"

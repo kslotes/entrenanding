@@ -4,7 +4,12 @@ type: spot-the-bug
 category: backend
 stack: [java]
 seniority: [jr, ssr]
-fundamentals: true
+fundamentals: false
+evidence:
+  - type: interview-report
+    url: https://leetcode.com/discuss/post/5345682/cars24-interview-experience-round-1-java-1g0a/
+  - type: interview-report
+    url: https://leetcode.com/discuss/post/7349349/my-nike-interview-experience-by-pravinya-zsvl/
 concepts: [equals-hashcode-contract]
 language: java
 code: |

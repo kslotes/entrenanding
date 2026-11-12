@@ -4,7 +4,12 @@ type: spot-the-bug
 category: backend
 stack: [java]
 seniority: [jr, ssr]
-fundamentals: true
+fundamentals: false
+evidence:
+  - type: interview-report
+    url: https://leetcode.com/discuss/post/301975/booking-android-developer-amsterdam-by-a-lkd3/
+  - type: interview-report
+    url: https://leetcode.com/discuss/post/6596203/optum-sde-1-java-full-stack-hyderabad-ma-8bab/
 language: java
 code: |
   static void removeEven(List<Integer> numbers) {

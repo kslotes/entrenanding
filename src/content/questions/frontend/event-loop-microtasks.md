@@ -4,7 +4,12 @@ type: predict-output
 category: frontend
 stack: [javascript]
 seniority: [jr, ssr]
-fundamentals: true
+fundamentals: false
+evidence:
+  - type: interview-report
+    url: https://leetcode.com/discuss/post/472235/livspace-frontend-sde-i-bangalore-decemb-3er1/
+  - type: interview-report
+    url: https://leetcode.com/discuss/post/8302947/buyucoin-founding-frontend-developer-apr-oo7u/
 language: javascript
 code: |
   console.log("a");
