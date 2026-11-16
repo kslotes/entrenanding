@@ -95,8 +95,9 @@ evidence: # required (min 2) when fundamentals is false
 
 - **Phase 0 — Foundations:** repo, licenses, Astro + Zod schema, CI validating content and evidence, deploy to Cloudflare Pages.
 - **Phase 1 — MVP:** browse by category/stack/seniority, the 3 auto-graded question types, seed content with evidence (~10 questions per category), code exercises validated by tests (backend: Maven multi-module + JUnit 6 on JDK 25 via `./mvnw`; frontend: Vitest).
-- **Phase 2 — Study tools:** mock interview mode (N random questions + timer). Spaced repetition and progress export/import removed 2026-11-12: both need stored progress.
-- **Phase 3+ — Later:** accounts + DB for sync and "I was asked this" votes, AI answer evaluation and mock interviews with BYOK (user-provided API key), which brings back the deferred self-assessed types `open`, `behavioral`, `system-design` and the `behavioral` category.
+- ~~**Phase 2 — Study tools:** mock interview mode (N random questions + timer).~~ Removed 2026-11-12: owner decision, a simulation cannot reproduce the pressure of a real interview. Spaced repetition and progress export/import had already been removed the same day: both need stored progress.
+- **Phase 2 — AI answer evaluation (2026-11-12):** AI evaluates open-ended answers with BYOK (user-provided API key) and helps the developer refine them. Brings back the deferred self-assessed types `open`, `behavioral`, `system-design` and the `behavioral` category. Not broken down into tasks yet.
+- **Phase 3+ — Later:** accounts + DB for sync and "I was asked this" votes. AI mock interviews removed 2026-11-12 (same reason as the old Phase 2).
 
 ### Deferred research for executable practice (Phase 3+) — superseded 2026-11-03 by the local-first decision
 
@@ -188,6 +189,9 @@ Layout (accepted 2026-11-03): `exercises/backend` is a Maven multi-module projec
 - 2026-11-12: PR #16 merged (`9b33f43`). T1.Q4 scope agreed: mostly `fundamentals: true` questions; a few `fundamentals: false` only with verifiable evidence. User (verbatim): "me gusta este enfoque. Por favor, insisto en que no te inventes nada. Si no encuentras informacion verificable no las agregues. Prefiero que tengamos menos pero verificado antes que empezar a inventar cosas". T1.Q4 starts on `feat/seed-questions`.
 
 - 2026-11-12: Evidence URLs confirmed by the user in a browser (verbatim): "abren todos los posts". T1.Q4 done.
+- 2026-11-12: PR #17 (`feat/seed-questions`) merged into `main` (`964ba16`); branch deleted.
+- 2026-11-12: Phase 2 removed. User (verbatim): "Eliminemos la Fase 2. No me interesa generar un simulacro de entrevista, ya que nunca va a llegar a ser como en la realidad de estar con la presion de estar atravesando una entrevista."
+- 2026-11-12: AI answer evaluation moves from Phase 3+ to the new Phase 2; AI mock interviews dropped. User (verbatim): "La integracion con IA me interesa, ya que puede aportar valor real al permitir preguntas de respuestas abiertas y ayudar al dev a perfeccionar las respuestas dadas. Quiero que eso sea la nueva Fase 2."
 
 ## Delivery
 
@@ -206,4 +210,4 @@ Layout (accepted 2026-11-03): `exercises/backend` is a Maven multi-module projec
 
 ## Next step
 
-T1.Q4 done on `feat/seed-questions`; push and PR are the user's decision. Questions block (T1.Q1–T1.Q4) closed.
+Phase 1 closed (PR #17 merged). Next: break down the new Phase 2 (AI answer evaluation with BYOK) into tasks.

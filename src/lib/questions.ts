@@ -26,5 +26,15 @@ export function parseQuestionId(id: string): QuestionLocation {
 export const questionHref = ({ category, slug }: QuestionLocation) =>
   `/preguntas/${category}/${slug}/`;
 
+/** Picks a random item other than `current`, or undefined when none is left. */
+export function pickRandomOther<T>(
+  items: readonly T[],
+  current: T,
+  random: () => number = Math.random,
+): T | undefined {
+  const others = items.filter((item) => item !== current);
+  return others[Math.floor(random() * others.length)];
+}
+
 /** Same line split the schema uses to validate `bugLine`. */
 export const codeLines = (code: string) => code.replace(/\n$/, "").split("\n");
