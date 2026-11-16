@@ -5,7 +5,7 @@ category: frontend
 stack: [javascript]
 seniority: [jr, ssr]
 fundamentals: true
-concepts: [js-closures]
+concepts: [js-closures, js-hoisting-and-scope]
 language: javascript
 code: |
   for (var i = 0; i < 3; i++) {

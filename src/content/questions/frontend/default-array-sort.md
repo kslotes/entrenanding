@@ -5,6 +5,7 @@ category: frontend
 stack: [javascript]
 seniority: [jr]
 fundamentals: true
+concepts: [js-array-sort]
 language: javascript
 code: |
   const nums = [10, 9, 1];

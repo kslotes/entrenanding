@@ -5,6 +5,7 @@ category: frontend
 stack: [javascript, react]
 seniority: [jr, ssr]
 fundamentals: false
+concepts: [react-state]
 evidence:
   - type: interview-report
     url: https://leetcode.com/discuss/post/6766726/writesonic-full-stack-developer-intervie-q35l/

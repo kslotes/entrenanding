@@ -5,6 +5,7 @@ category: frontend
 stack: [javascript]
 seniority: [jr, ssr]
 fundamentals: false
+concepts: [js-event-loop]
 evidence:
   - type: interview-report
     url: https://leetcode.com/discuss/post/472235/livspace-frontend-sde-i-bangalore-decemb-3er1/

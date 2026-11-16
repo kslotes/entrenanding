@@ -5,6 +5,7 @@ category: frontend
 stack: [javascript]
 seniority: [jr]
 fundamentals: true
+concepts: [floating-point-numbers]
 language: javascript
 code: |
   console.log(0.1 + 0.2);
