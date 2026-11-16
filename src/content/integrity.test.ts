@@ -8,6 +8,7 @@ const question = {
   stack: ["java"],
   seniority: ["jr"],
   fundamentals: true,
+  concepts: ["equals-hashcode-contract"],
   language: "java",
   code: "int a = 1;\nint b = a / 0;\n",
   bugLine: 2,
@@ -16,7 +17,7 @@ const question = {
 describe("checkIntegrity", () => {
   it("accepts a valid question at <category>/<slug>.md", () => {
     expect(
-      checkIntegrity([{ path: "algorithms/foo.md", data: question }]),
+      checkIntegrity([{ path: "algorithms/foo.md", data: question }], known),
     ).toEqual([]);
   });
 

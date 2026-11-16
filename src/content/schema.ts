@@ -32,7 +32,8 @@ const baseSchema = z.strictObject({
   fundamentals: z.boolean(),
   evidence: z.array(evidenceSchema).default([]),
   // Slugs of src/content/concepts/<slug>.md that hold the theory behind it.
-  concepts: z.array(slugSchema).default([]),
+  // Required so every question and exercise links to its theory.
+  concepts: z.array(slugSchema).min(1),
 });
 
 const codeFields = {
@@ -106,14 +107,11 @@ export const conceptSchema = z.strictObject({
     .min(1),
 });
 
-// Frontmatter of exercises/<area>/<group>/<slug>/statement.md. Every exercise
-// must be backed by at least one concept.
-export const exerciseSchema = baseSchema
-  .extend({ concepts: z.array(slugSchema).min(1) })
-  .refine(hasEnoughEvidence, {
-    message: `Exercises with fundamentals: false need at least ${MIN_EVIDENCE} evidence items`,
-    path: ["evidence"],
-  });
+// Frontmatter of exercises/<area>/<group>/<slug>/statement.md.
+export const exerciseSchema = baseSchema.refine(hasEnoughEvidence, {
+  message: `Exercises with fundamentals: false need at least ${MIN_EVIDENCE} evidence items`,
+  path: ["evidence"],
+});
 
 export type Question = z.infer<typeof questionSchema>;
 export type Concept = z.infer<typeof conceptSchema>;
