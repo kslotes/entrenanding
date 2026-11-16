@@ -5,6 +5,7 @@ category: algorithms
 stack: [javascript]
 seniority: [jr, ssr]
 fundamentals: true
+concepts: [modifying-collections-while-iterating]
 language: javascript
 code: |
   function removeEven(arr) {

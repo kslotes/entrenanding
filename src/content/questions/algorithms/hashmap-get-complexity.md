@@ -5,6 +5,7 @@ category: algorithms
 stack: [java]
 seniority: [jr, ssr]
 fundamentals: true
+concepts: [hash-tables]
 options:
   - id: a
     text: O(1)

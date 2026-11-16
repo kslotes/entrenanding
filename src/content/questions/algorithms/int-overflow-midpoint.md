@@ -5,6 +5,7 @@ category: algorithms
 stack: [java]
 seniority: [jr, ssr]
 fundamentals: true
+concepts: [binary-search]
 language: java
 code: |
   int low = 1_500_000_000;

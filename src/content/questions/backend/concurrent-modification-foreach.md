@@ -5,6 +5,7 @@ category: backend
 stack: [java]
 seniority: [jr, ssr]
 fundamentals: false
+concepts: [modifying-collections-while-iterating]
 evidence:
   - type: interview-report
     url: https://leetcode.com/discuss/post/301975/booking-android-developer-amsterdam-by-a-lkd3/

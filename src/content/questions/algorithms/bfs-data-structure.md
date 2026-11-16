@@ -5,6 +5,7 @@ category: algorithms
 stack: []
 seniority: [jr, ssr]
 fundamentals: true
+concepts: [graph-traversal]
 options:
   - id: a
     text: Una pila (LIFO)

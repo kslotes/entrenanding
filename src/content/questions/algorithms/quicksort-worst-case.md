@@ -5,6 +5,7 @@ category: algorithms
 stack: []
 seniority: [jr, ssr]
 fundamentals: true
+concepts: [quicksort]
 options:
   - id: a
     text: O(n)
