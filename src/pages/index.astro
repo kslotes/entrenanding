@@ -1,7 +1,9 @@
 ---
+import RandomQuestion from "../components/RandomQuestion.astro";
 import Shell from "../layouts/Shell.astro";
 import { getConcepts, getExercises, getQuestions } from "../lib/collections";
 import { exerciseHref } from "../lib/exercises";
+import { questionHref } from "../lib/questions";
 
 const exercises = await getExercises();
 const concepts = await getConcepts();
@@ -13,6 +15,7 @@ const questions = await getQuestions();
   description="Prepárate para entrevistas técnicas con teoría y ejercicios de código validados con tests, en tu propia máquina."
   section="inicio"
   file="README.md"
+  keys={[{ key: "n", label: "al azar" }]}
 >
   <div class="hero">
     <div>
@@ -56,6 +59,14 @@ const questions = await getQuestions();
     salida de un código y encontrar la línea con el error. Se corrigen al
     responder y muestran la explicación.{" "}
     <a href="/preguntas/">Ver las {questions.length} preguntas</a>.
+  </p>
+  <p class="start">
+    <RandomQuestion
+      hrefs={questions.map(({ location }) => questionHref(location))}
+    />
+    <span class="hint">
+      o pulsa <kbd>n</kbd> para empezar a practicar
+    </span>
   </p>
 
   <h2>Ejercicios</h2>
@@ -154,5 +165,17 @@ const questions = await getQuestions();
 
   .narrow {
     max-width: 68ch;
+  }
+
+  .start {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 2ch;
+  }
+
+  .hint {
+    font-size: 13px;
+    color: var(--dim);
   }
 </style>

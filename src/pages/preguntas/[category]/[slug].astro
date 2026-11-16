@@ -2,6 +2,7 @@
 import type { GetStaticPaths } from "astro";
 import { Code } from "astro:components";
 import { render } from "astro:content";
+import RandomQuestion from "../../../components/RandomQuestion.astro";
 import Shell from "../../../layouts/Shell.astro";
 import { getConcepts, getQuestions } from "../../../lib/collections";
 import { conceptHref } from "../../../lib/exercises";
@@ -154,17 +155,11 @@ const keys =
     </nav>
 
     <p class="next">
-      <button
-        type="button"
-        class="action"
-        data-next
-        data-key="n"
-        data-hrefs={JSON.stringify(hrefs)}
-        data-current={currentHref}
-        disabled={hrefs.length < 2}
-      >
-        Nueva pregunta
-      </button>
+      <RandomQuestion
+        hrefs={hrefs}
+        current={currentHref}
+        label="Nueva pregunta"
+      />
     </p>
 
     <p class="result" role="status" data-result></p>
@@ -191,14 +186,10 @@ const keys =
     gradeOutput,
     type Grade,
   } from "../../../lib/grading";
-  import { pickRandomOther } from "../../../lib/questions";
 
-  const next = document.querySelector<HTMLButtonElement>("[data-next]");
-  next?.addEventListener("click", () => {
-    const hrefs = JSON.parse(next.dataset.hrefs ?? "[]") as string[];
-    const href = pickRandomOther(hrefs, next.dataset.current ?? "");
-    if (href) window.location.assign(href);
-  });
+  const next = document.querySelector<HTMLButtonElement>(
+    "[data-random-question]",
+  );
 
   const root = document.querySelector<HTMLElement>("[data-question]");
 

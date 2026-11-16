@@ -1,4 +1,5 @@
 ---
+import RandomQuestion from "../../components/RandomQuestion.astro";
 import Shell from "../../layouts/Shell.astro";
 import { categories, seniorities } from "../../content/schema";
 import { getQuestions } from "../../lib/collections";
@@ -33,14 +34,23 @@ const legends = {
   description="Preguntas de entrevista que se corrigen solas: opción múltiple, predecir la salida y encontrar el error."
   section="preguntas"
   file="src/content/questions/"
+  keys={[{ key: "n", label: "al azar" }]}
 >
   <p class="comment" data-count data-total={questions.length}>
     # {questions.length} preguntas
   </p>
   <h1>Preguntas</h1>
   <p class="intro">
-    Cada pregunta se corrige al responderla y después muestra la explicación y
-    los conceptos que la respaldan.
+    Cada pregunta enlaza a los conceptos que la respaldan, para repasar antes de
+    responder. Se corrige al responderla y después muestra la explicación.
+  </p>
+  <p class="start">
+    <RandomQuestion
+      hrefs={questions.map(({ location }) => questionHref(location))}
+    />
+    <span class="hint" data-random-hint>
+      entre todas las preguntas
+    </span>
   </p>
 
   <!-- Hidden until the script runs: without JavaScript the full list shows. -->
@@ -138,6 +148,11 @@ const legends = {
       ...document.querySelectorAll<HTMLElement>("[data-question]"),
     ];
     const total = Number(count.dataset.total);
+    const random = document.querySelector<HTMLButtonElement>(
+      "[data-random-question]",
+    )!;
+    const randomHint =
+      document.querySelector<HTMLElement>("[data-random-hint]")!;
     const list = (value = "") => (value ? value.split(",") : []);
 
     let filters = parseFilters(location.search, options);
@@ -174,6 +189,15 @@ const legends = {
           active && !section.querySelector("[data-question]:not([hidden])");
       });
       empty.hidden = visible > 0;
+      // The random pick follows the filters: only visible questions.
+      const pool = items
+        .filter((item) => !item.hidden)
+        .map((item) => item.querySelector("a")?.getAttribute("href") ?? "");
+      random.dataset.hrefs = JSON.stringify(pool);
+      random.disabled = pool.length === 0;
+      randomHint.textContent = active
+        ? "entre las preguntas filtradas"
+        : "entre todas las preguntas";
       count.textContent = active
         ? `# ${visible} de ${total} preguntas`
         : `# ${total} preguntas`;
@@ -214,6 +238,18 @@ const legends = {
 <style>
   .intro {
     max-width: 68ch;
+  }
+
+  .start {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 2ch;
+  }
+
+  .hint {
+    font-size: 13px;
+    color: var(--dim);
   }
 
   .filters {
