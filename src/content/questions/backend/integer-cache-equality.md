@@ -5,6 +5,7 @@ category: backend
 stack: [java]
 seniority: [jr, ssr]
 fundamentals: true
+concepts: [java-reference-equality]
 language: java
 code: |
   Integer a = 127, b = 127;

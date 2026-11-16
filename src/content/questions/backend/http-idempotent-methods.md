@@ -5,6 +5,7 @@ category: backend
 stack: [http]
 seniority: [jr, ssr]
 fundamentals: true
+concepts: [http-method-semantics]
 options:
   - id: a
     text: GET

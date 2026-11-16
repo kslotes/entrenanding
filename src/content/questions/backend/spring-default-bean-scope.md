@@ -5,6 +5,7 @@ category: backend
 stack: [java, spring]
 seniority: [jr, ssr]
 fundamentals: true
+concepts: [spring-beans]
 options:
   - id: a
     text: singleton

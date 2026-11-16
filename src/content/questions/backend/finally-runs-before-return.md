@@ -5,6 +5,7 @@ category: backend
 stack: [java]
 seniority: [jr, ssr]
 fundamentals: true
+concepts: [java-exceptions]
 language: java
 code: |
   static int value() {
