@@ -49,13 +49,9 @@ const keys =
           key: data.options.map((option) => option.id).join(" "),
           label: "responder",
         },
-        { key: "r", label: "reintentar" },
         { key: "n", label: "nueva" },
       ]
-    : [
-        { key: "r", label: "reintentar" },
-        { key: "n", label: "nueva" },
-      ];
+    : [{ key: "n", label: "nueva" }];
 ---
 
 <Shell
@@ -144,6 +140,19 @@ const keys =
       </ol>
     )}
 
+    <nav class="theory" aria-labelledby="theory-title">
+      <p id="theory-title" class="where">
+        ¿No sabes cómo responder? Repasa la teoría:
+      </p>
+      <ul class="concepts">
+        {concepts.map((concept) => (
+          <li>
+            <a href={conceptHref(concept.id)}>{concept.data.title}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
     <p class="next">
       <button
         type="button"
@@ -160,16 +169,6 @@ const keys =
 
     <p class="result" role="status" data-result></p>
     <pre class="expected" data-expected hidden></pre>
-    <button
-      type="button"
-      class="action"
-      data-retry
-      data-key="r"
-      disabled
-      hidden
-    >
-      reintentar
-    </button>
   </div>
 
   <section
@@ -182,18 +181,6 @@ const keys =
     <article class="prose">
       <Content />
     </article>
-    {concepts.length > 0 && (
-      <>
-        <h2>Conceptos</h2>
-        <ul class="concepts">
-          {concepts.map((concept) => (
-            <li>
-              <a href={conceptHref(concept.id)}>{concept.data.title}</a>
-            </li>
-          ))}
-        </ul>
-      </>
-    )}
   </section>
 </Shell>
 
@@ -219,7 +206,6 @@ const keys =
     const answer = root.dataset.answer ?? "";
     const result = root.querySelector<HTMLElement>("[data-result]")!;
     const expectedBlock = root.querySelector<HTMLElement>("[data-expected]")!;
-    const retry = root.querySelector<HTMLButtonElement>("[data-retry]")!;
     const explanation =
       document.querySelector<HTMLElement>("[data-explanation]")!;
     const picks = [...root.querySelectorAll<HTMLButtonElement>(".pick")];
@@ -227,13 +213,12 @@ const keys =
     const textarea = form?.querySelector("textarea");
     const submit = form?.querySelector<HTMLButtonElement>("[type=submit]");
 
-    const setAnswered = (answered: boolean) => {
-      picks.forEach((pick) => (pick.disabled = answered));
-      if (textarea) textarea.readOnly = answered;
-      if (submit) submit.disabled = answered;
-      retry.disabled = !answered;
-      retry.hidden = !answered;
-      explanation.hidden = !answered;
+    // An answer is final: there is no retry, so guessing gives nothing back.
+    const lock = () => {
+      picks.forEach((pick) => (pick.disabled = true));
+      if (textarea) textarea.readOnly = true;
+      if (submit) submit.disabled = true;
+      explanation.hidden = false;
     };
 
     const show = (grade: Grade, picked?: HTMLButtonElement) => {
@@ -253,8 +238,8 @@ const keys =
             (pick.dataset.choice ?? pick.dataset.line) === grade.expected,
         )
         ?.setAttribute("data-correct", "");
-      setAnswered(true);
-      retry.focus();
+      lock();
+      if (next && !next.disabled) next.focus();
     };
 
     picks.forEach((pick) =>
@@ -276,18 +261,6 @@ const keys =
         event.preventDefault();
         form?.requestSubmit();
       }
-    });
-
-    retry.addEventListener("click", () => {
-      delete root.dataset.state;
-      result.textContent = "";
-      expectedBlock.hidden = true;
-      picks.forEach((pick) => {
-        pick.removeAttribute("data-picked");
-        pick.removeAttribute("data-correct");
-      });
-      setAnswered(false);
-      (textarea ?? picks[0])?.focus();
     });
   }
 </script>
@@ -436,6 +409,14 @@ const keys =
   .expected {
     margin: 0 0 8px;
     white-space: pre-wrap;
+  }
+
+  .theory {
+    margin-top: 16px;
+  }
+
+  .theory .where {
+    margin-bottom: 4px;
   }
 
   .concepts {
