@@ -5,6 +5,7 @@ category: backend
 stack: [java]
 seniority: [jr]
 fundamentals: true
+concepts: [java-exceptions]
 options:
   - id: a
     text: IOException

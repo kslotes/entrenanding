@@ -9,11 +9,12 @@ El contenido se escribe en español. Los términos técnicos se dejan en inglés
 1. Haz un fork del repositorio y crea una rama a partir de `main`.
 2. Agrega o edita una pregunta en `src/content/questions/<category>/<slug>.md`.
 3. Si la pregunta es teórica, agrega al menos dos enlaces de evidencia.
-4. Ejecuta `pnpm test` y `pnpm build`.
-5. Haz commit con un mensaje que siga [Conventional Commits](https://www.conventionalcommits.org/es/).
-6. Abre un pull request y completa la lista de verificación de la plantilla.
+4. Enlaza al menos un concepto con la teoría necesaria para responderla (ver [Conceptos](#conceptos-teoría)).
+5. Ejecuta `pnpm test` y `pnpm build`.
+6. Haz commit con un mensaje que siga [Conventional Commits](https://www.conventionalcommits.org/es/).
+7. Abre un pull request y completa la lista de verificación de la plantilla.
 
-CI valida el esquema, las rutas y la evidencia en cada pull request.
+CI valida el esquema, las rutas, la evidencia y los conceptos en cada pull request.
 
 ## Estructura de archivos
 
@@ -42,6 +43,7 @@ evidence: # obligatoria (mínimo 2) cuando fundamentals es false
     url: https://...
   - type: job-posting
     url: https://...
+concepts: [spring-beans] # obligatorio, mínimo 1
 options:
   - id: a
     text: singleton
@@ -59,6 +61,7 @@ answer: a
 | `seniority`    | Uno o más de `jr`, `ssr`, `sr`.                                                                  |
 | `fundamentals` | `true` para conceptos básicos necesarios para entender una herramienta o un lenguaje.            |
 | `evidence`     | Fuentes que muestran que la pregunta se repite en entrevistas reales. Ver la regla de evidencia. |
+| `concepts`     | Uno o más slugs de `src/content/concepts/` con la teoría necesaria para responder la pregunta.   |
 
 El cuerpo en Markdown contiene la respuesta modelo o la explicación, para todos los tipos.
 
@@ -93,7 +96,7 @@ Enlaza las fuentes. No copies su texto en el repositorio.
 
 ## Conceptos (teoría)
 
-La teoría vive por concepto en `src/content/concepts/<slug>.md`, para que varios ejercicios y preguntas la reutilicen. Todo ejercicio debe referenciar al menos un concepto; las preguntas pueden hacerlo con el campo opcional `concepts`.
+La teoría vive por concepto en `src/content/concepts/<slug>.md`, para que varios ejercicios y preguntas la reutilicen. Todo ejercicio y toda pregunta deben referenciar al menos un concepto con el campo `concepts`: si alguien no sabe la respuesta, puede repasar la teoría antes de volver a intentarlo.
 
 ```yaml
 title: Contrato de equals y hashCode
@@ -104,8 +107,8 @@ references: # mínimo 1: documentación oficial o fuentes reconocidas
 ```
 
 - Las referencias prueban que lo que dice el concepto es correcto. No confundir con `evidence`, que prueba que el tema se pregunta en entrevistas.
-- La teoría explica el concepto, nunca la solución de un ejercicio.
-- `pnpm test` rechaza un concepto sin referencias y cualquier referencia a un concepto que no existe.
+- La teoría explica el concepto, nunca la solución de un ejercicio ni el fragmento exacto de una pregunta.
+- `pnpm test` rechaza un concepto sin referencias, una pregunta o un ejercicio sin conceptos y cualquier referencia a un concepto que no existe.
 
 ## Ejercicios de código
 

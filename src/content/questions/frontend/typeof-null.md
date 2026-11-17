@@ -5,6 +5,7 @@ category: frontend
 stack: [javascript]
 seniority: [jr]
 fundamentals: true
+concepts: [js-equality-and-types]
 options:
   - id: a
     text: '"null"'

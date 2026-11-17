@@ -5,6 +5,7 @@ category: frontend
 stack: [typescript]
 seniority: [jr, ssr]
 fundamentals: true
+concepts: [typescript-unknown-vs-any]
 options:
   - id: a
     text: unknown solo acepta null y undefined

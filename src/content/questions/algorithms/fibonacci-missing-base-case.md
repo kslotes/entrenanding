@@ -5,6 +5,7 @@ category: algorithms
 stack: [java]
 seniority: [jr]
 fundamentals: true
+concepts: [recursion]
 language: java
 code: |
   static int fib(int n) {

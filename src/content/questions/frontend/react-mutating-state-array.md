@@ -5,6 +5,7 @@ category: frontend
 stack: [javascript, react]
 seniority: [jr, ssr]
 fundamentals: true
+concepts: [react-state]
 language: jsx
 code: |
   function SortedList() {

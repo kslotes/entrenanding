@@ -5,6 +5,7 @@ category: backend
 stack: [java, spring]
 seniority: [ssr, sr]
 fundamentals: true
+concepts: [spring-transactional-proxies]
 options:
   - id: a
     text: Se abre una transacción nueva para save()

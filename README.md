@@ -39,7 +39,7 @@ pnpm install
 pnpm dev
 ```
 
-Abre http://localhost:4321/ en tu navegador. La aplicación se maneja con el teclado: `i` inicio, `p` preguntas, `e` ejercicios, `c` conceptos y `t` cambia el tema. En un ejercicio, `y` copia el comando de los tests; en una pregunta de opción múltiple, la letra de cada opción la elige, y `r` reintenta la pregunta.
+Abre http://localhost:4321/ en tu navegador. La aplicación se maneja con el teclado: `i` inicio, `p` preguntas, `e` ejercicios, `c` conceptos y `t` cambia el tema. En un ejercicio, `y` copia el comando de los tests; en una pregunta de opción múltiple, la letra de cada opción la elige, y `n` abre otra pregunta al azar. En el inicio y en la lista de preguntas, `n` abre una pregunta al azar para empezar a practicar; en la lista respeta los filtros activos. Cada respuesta es definitiva; si no sabes contestar, la pregunta enlaza a la teoría para repasar antes de responder.
 
 | Comando      | Qué hace                                               |
 | ------------ | ------------------------------------------------------ |

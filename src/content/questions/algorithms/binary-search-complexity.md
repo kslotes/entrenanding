@@ -5,6 +5,7 @@ category: algorithms
 stack: []
 seniority: [jr]
 fundamentals: true
+concepts: [binary-search]
 options:
   - id: a
     text: O(1)

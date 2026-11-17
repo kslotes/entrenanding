@@ -13,6 +13,7 @@ const base = {
   seniority: ["ssr"],
   fundamentals: false,
   evidence,
+  concepts: ["spring-beans"],
 };
 
 const validByType = {
@@ -52,6 +53,23 @@ describe("questionSchema", () => {
       expect(parse(input).success).toBe(true);
     },
   );
+
+  describe("concepts rule", () => {
+    it.each(Object.entries(validByType))(
+      "rejects a %s question without concepts",
+      (_, input) => {
+        const withoutConcepts: Record<string, unknown> = { ...input };
+        delete withoutConcepts.concepts;
+        expect(parse(withoutConcepts).success).toBe(false);
+      },
+    );
+
+    it("rejects an empty concepts list", () => {
+      const result = parse({ ...mc, concepts: [] });
+      expect(result.success).toBe(false);
+      expect(result.error?.issues[0]?.path).toEqual(["concepts"]);
+    });
+  });
 
   describe("evidence rule", () => {
     it("rejects non-fundamentals questions with fewer than 2 evidence items", () => {

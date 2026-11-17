@@ -5,6 +5,7 @@ category: algorithms
 stack: [java]
 seniority: [ssr, sr]
 fundamentals: true
+concepts: [hash-tables]
 options:
   - id: a
     text: Lanza una excepción

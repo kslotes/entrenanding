@@ -1,0 +1,61 @@
+---
+// Button that opens a random question; bound to the `n` shortcut by the Shell.
+// Pages that narrow the pool at runtime (filters) rewrite `data-hrefs`.
+interface Props {
+  hrefs: string[];
+  /** The page's own question, never picked again. */
+  current?: string;
+  label?: string;
+}
+
+const { hrefs, current = "", label = "Pregunta al azar" } = Astro.props;
+const candidates = hrefs.filter((href) => href !== current);
+---
+
+<button
+  type="button"
+  class="action"
+  data-random-question
+  data-key="n"
+  data-hrefs={JSON.stringify(hrefs)}
+  data-current={current}
+  disabled={candidates.length === 0}
+>
+  {label}
+</button>
+
+<script>
+  import { pickRandomOther } from "../lib/questions";
+
+  document
+    .querySelectorAll<HTMLButtonElement>("[data-random-question]")
+    .forEach((button) =>
+      button.addEventListener("click", () => {
+        const hrefs = JSON.parse(button.dataset.hrefs ?? "[]") as string[];
+        const href = pickRandomOther(hrefs, button.dataset.current ?? "");
+        if (href) window.location.assign(href);
+      }),
+    );
+</script>
+
+<style>
+  .action {
+    font: inherit;
+    font-size: 13px;
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    color: var(--link);
+    padding: 2px 10px;
+    cursor: pointer;
+  }
+
+  .action:hover:not(:disabled) {
+    background: var(--panel);
+  }
+
+  .action:disabled {
+    color: var(--dim);
+    cursor: default;
+  }
+</style>

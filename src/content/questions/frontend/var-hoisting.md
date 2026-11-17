@@ -5,6 +5,7 @@ category: frontend
 stack: [javascript]
 seniority: [jr]
 fundamentals: true
+concepts: [js-hoisting-and-scope]
 language: javascript
 code: |
   console.log(x);

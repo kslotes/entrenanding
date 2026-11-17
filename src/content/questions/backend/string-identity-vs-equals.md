@@ -5,6 +5,7 @@ category: backend
 stack: [java]
 seniority: [jr]
 fundamentals: true
+concepts: [java-reference-equality]
 language: java
 code: |
   String s1 = "hola";

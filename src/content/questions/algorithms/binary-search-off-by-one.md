@@ -5,6 +5,7 @@ category: algorithms
 stack: [java]
 seniority: [jr, ssr]
 fundamentals: true
+concepts: [binary-search]
 language: java
 code: |
   public static int binarySearch(int[] arr, int target) {
