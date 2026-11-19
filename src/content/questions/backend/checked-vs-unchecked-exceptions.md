@@ -18,6 +18,26 @@ options:
 answer: c
 ---
 
-`IllegalArgumentException` extiende `RuntimeException`, y las subclases de `RuntimeException` (y de `Error`) son **unchecked**: el compilador no exige `throws` ni `try/catch`.
+La respuesta es **`IllegalArgumentException`**: extiende `RuntimeException`, y todo lo que hereda de `RuntimeException` (o de `Error`) es **unchecked**, es decir, el compilador no exige `throws` ni `try/catch`.
 
-Las otras tres extienden `Exception` sin pasar por `RuntimeException`, así que son **checked**: el método que las lanza debe declararlas, y quien lo llama debe capturarlas o volver a declararlas.
+```java
+void setAge(int age) {
+  if (age < 0) {
+    throw new IllegalArgumentException("age < 0"); // compila sin throws ni try/catch
+  }
+}
+
+String read(Path path) {
+  return Files.readString(path); // no compila: IOException es checked
+}                                // hay que capturarla o agregar "throws IOException"
+```
+
+**Por qué hay dos tipos:** una checked describe un fallo **esperable** que no depende de tu código (el archivo no existe, la base de datos no responde), y el compilador te obliga a decidir qué hacer. Una unchecked suele ser un **bug** (un argumento inválido, un `null`), que se corrige en el código en vez de capturarlo en cada llamada. La regla es solo por herencia: si en la cadena de superclases aparece `RuntimeException` o `Error`, es unchecked.
+
+**La consecuencia práctica:** con una checked, cada método que la deja pasar debe declararla en `throws`. Por eso es común envolverla en una unchecked (`UncheckedIOException`) cuando no puedes recuperarte en ese punto.
+
+**Las otras opciones (todas checked, extienden `Exception` sin pasar por `RuntimeException`):**
+
+- `IOException`: errores de entrada/salida, como leer un archivo o un socket.
+- `SQLException`: errores de la base de datos al usar JDBC.
+- `InterruptedException`: otro hilo pidió interrumpir al actual mientras esperaba (`Thread.sleep`, `wait`, `join`).
