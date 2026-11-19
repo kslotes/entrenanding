@@ -17,8 +17,22 @@ expectedOutput: |-
   false
 ---
 
-Imprime `true` y `false`.
+Imprime `true` y `false`: `==` entre dos `Integer` compara **si son el mismo objeto**, no si tienen el mismo número, y Java solo garantiza reutilizar los objetos de -128 a 127.
 
-`==` entre dos `Integer` compara **referencias**, no valores. El autoboxing usa `Integer.valueOf`, que siempre reutiliza las instancias de -128 a 127: la especificación del lenguaje (JLS 5.1.7) garantiza que esos valores dan el mismo objeto. Fuera de ese rango no hay garantía; con la configuración por defecto se crean objetos distintos.
+```java
+Integer a = 127, b = 127; // autoboxing: Integer.valueOf(127) -> objeto de la caché
+Integer c = 128, d = 128; // fuera de la caché: dos objetos nuevos
 
-Que `128 == 128` dé `false` depende de la configuración de la JVM, que puede cachear más valores. La única comparación correcta de valores es `a.equals(b)`, o comparar los `int` sin boxing.
+a == b;      // true: las dos variables apuntan al mismo objeto
+c == d;      // false: dos objetos distintos con el mismo valor
+c.equals(d); // true: compara el número
+```
+
+**Por qué pasa:** escribir `Integer a = 127` hace _autoboxing_: el compilador lo convierte en `Integer.valueOf(127)`, que envuelve el `int` en un objeto. Para no crear miles de objetos con los números más usados, la especificación (JLS 5.1.7) obliga a reutilizar los de -128 a 127. Fuera de ese rango no hay garantía; con la configuración por defecto, cada boxing crea un objeto nuevo.
+
+**La consecuencia práctica:** comparar ids `Long` o `Integer` con `==` pasa los tests (ids `1`, `2`, `3`) y falla en producción cuando los ids superan 127. Compara con `a.equals(b)`, con `Objects.equals(a, b)` si alguno puede ser `null`, o usa primitivos (`int`, `long`).
+
+**Las respuestas tentadoras:**
+
+- `true` y `true`: supone que `==` compara valores, cosa que solo hace con primitivos.
+- `false` y `false`: ignora la caché que la JLS garantiza para -128 a 127.
