@@ -22,8 +22,30 @@ code: |
 bugLine: 3
 ---
 
-`high` empieza en `arr.length`, una posición más allá del último índice válido.
+El error está en `int high = arr.length;`: `high` empieza **una posición más allá** del último índice válido, pero el resto del código trata a `high` como un índice que se puede leer.
 
-Con la condición inclusiva `low <= high`, `mid` puede llegar a `arr.length`, así que buscar un valor mayor que todos los elementos lanza `ArrayIndexOutOfBoundsException`.
+Paso a paso con `arr = {1, 2, 3}` buscando `5`:
 
-Solución: inicializar `high = arr.length - 1`. Los límites (`low <= high`, `high = mid - 1`) deben describir de forma consistente un intervalo cerrado `[low, high]`.
+| `low` | `high` | `mid` | `arr[mid]`                                 |
+| ----- | ------ | ----- | ------------------------------------------ |
+| 0     | 3      | 1     | `2 < 5`: `low = 2`                         |
+| 2     | 3      | 2     | `3 < 5`: `low = 3`                         |
+| 3     | 3      | 3     | `arr[3]`: `ArrayIndexOutOfBoundsException` |
+
+Con `low <= high`, el bucle sigue cuando los dos valen 3, y `arr[3]` no existe en un arreglo de 3 elementos.
+
+**Por qué pasa:** una búsqueda binaria mantiene un **intervalo** de índices donde el valor todavía puede estar, y hay dos convenciones:
+
+- Cerrado `[low, high]`: `high = arr.length - 1`, bucle `low <= high`, `high = mid - 1`.
+- Semiabierto `[low, high)`: `high = arr.length`, bucle `low < high`, `high = mid`.
+
+Este código mezcla el inicio de la semiabierta con el resto de la cerrada. Es un error _off-by-one_ ("uno de más") y solo aparece en los bordes: los tests con valores del medio pasan.
+
+**La solución:** usar una sola convención. Con la cerrada:
+
+```java
+int high = arr.length - 1; // último índice válido
+while (low <= high) { /* ... */ }
+```
+
+Para detectar estos errores, prueba siempre el primer elemento, el último, un valor menor que todos y uno mayor que todos.
