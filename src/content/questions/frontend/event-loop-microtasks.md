@@ -24,10 +24,27 @@ expectedOutput: |-
   b
 ---
 
-Imprime `a`, `d`, `c`, `b`.
+Imprime `a`, `d`, `c`, `b`: primero corre todo el código síncrono; después, **todas** las microtareas (el `then`); y solo entonces la siguiente tarea (el `setTimeout`).
 
-1. El código síncrono corre completo primero: `a` y `d`.
-2. Al vaciarse la pila de llamadas, el event loop ejecuta **todas** las microtareas pendientes; el callback de `then` es una microtarea, así que sigue `c`.
-3. Recién después toma la siguiente tarea (macrotarea), el callback de `setTimeout`: `b`.
+```js
+console.log("a"); // 1) síncrono: se imprime ya
+setTimeout(() => console.log("b"), 0); //    se agenda como TAREA para una vuelta posterior
+Promise.resolve().then(() => console.log("c")); //    se agenda como MICROTAREA
+console.log("d"); // 2) síncrono: se imprime ya
+// 3) terminó el script: se vacían las microtareas -> "c"
+// 4) siguiente vuelta del event loop: la tarea del timer -> "b"
+```
 
-Un `setTimeout` con 0 ms no significa "ya": significa "en una tarea posterior", después de las microtareas pendientes.
+**Por qué pasa:** JavaScript ejecuta una cosa a la vez, y el _event loop_ decide qué corre después. Hay dos colas:
+
+- **Tareas** (macrotareas): el callback de `setTimeout`, un click, ejecutar un script. Corre **una** por vuelta del loop.
+- **Microtareas**: los callbacks de `then`/`catch`/`finally` y lo que sigue a un `await`. Después de cada tarea se ejecutan **todas** las pendientes.
+
+El script entero es la primera tarea. Cuando termina se vacían las microtareas (`c`), y solo en la vuelta siguiente le toca a la tarea del timer (`b`).
+
+**La consecuencia práctica:** `setTimeout(fn, 0)` no significa "ya": significa "en una tarea posterior", después del código en curso y de las microtareas pendientes. Por eso un timer de `0` ms puede tardar mucho más si la página está ocupada, y por eso el código que sigue a un `await` corre antes que un timer registrado antes.
+
+**Las respuestas tentadoras:**
+
+- `a`, `b`, `c`, `d`: supone que todo corre en el orden en que está escrito; los callbacks nunca interrumpen el código síncrono.
+- `a`, `d`, `b`, `c`: supone que el timer va primero porque se registró antes, pero las microtareas se vacían antes de la siguiente tarea.
