@@ -18,10 +18,37 @@ options:
 answer: a
 ---
 
-**Inyección por constructor**. La documentación de Spring explica por qué:
+La respuesta es **inyección por constructor**: si la clase no puede funcionar sin una dependencia, pedirla en el constructor hace imposible crear el objeto sin ella.
 
-- Permite que los componentes sean inmutables (campos `final`).
-- Garantiza que las dependencias obligatorias no sean `null`.
-- El objeto llega siempre completamente inicializado a quien lo usa.
+```java
+@Service
+public class InvoiceService {
 
-La inyección por setter queda para dependencias opcionales con un valor por defecto razonable. Un constructor con demasiados parámetros es una señal de que la clase tiene demasiadas responsabilidades.
+  private final InvoiceRepository repository; // final: se asigna una vez y no cambia
+
+  // Un solo constructor: Spring lo usa sin necesidad de @Autowired.
+  public InvoiceService(InvoiceRepository repository) {
+    this.repository = repository;
+  }
+}
+```
+
+**Por qué:** la documentación de Spring da tres razones.
+
+- **Inmutable**: el campo es `final`, así que nadie puede reemplazar ni borrar la dependencia después de crear el objeto.
+- **Nunca `null`**: si no existe un bean `InvoiceRepository`, Spring no puede llamar al constructor y la app falla **al arrancar**, no en medio de una petición.
+- **Completo desde el inicio**: quien recibe el `InvoiceService` lo recibe listo para usar, sin pasos pendientes.
+
+**La consecuencia práctica:** en un test puedes crear la clase con `new` y pasarle un doble de prueba, sin levantar Spring:
+
+```java
+InvoiceService service = new InvoiceService(new InMemoryInvoiceRepository());
+```
+
+Además, si el constructor empieza a tener muchos parámetros, es una señal visible de que la clase hace demasiado.
+
+**Las otras opciones:**
+
+- **Setter**: el objeto existe un momento sin la dependencia y el campo no puede ser `final`. Spring la reserva para dependencias **opcionales** con un valor por defecto razonable.
+- **`@Autowired` sobre campos**: el campo no puede ser `final` y, en un test sin Spring, no hay forma de asignarlo salvo con reflexión.
+- **Buscar en el `ApplicationContext`**: es lo contrario de inyectar; la clase queda atada a Spring y oculta qué necesita, lo que también complica los tests.
