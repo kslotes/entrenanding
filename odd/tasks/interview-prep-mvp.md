@@ -211,3 +211,5 @@ Layout (accepted 2026-11-03): `exercises/backend` is a Maven multi-module projec
 ## Next step
 
 Phase 1 closed (PR #17 merged). Next: break down the new Phase 2 (AI answer evaluation with BYOK) into tasks.
+
+- 2026-11-22: User closed the remaining open items without changes (verbatim: "1, 2, 3 y darlas por cerradas"): T1.E4 advisories (copy command without cwd, no build check for the Sätteri plugin, hand-written hero session), the pre-existing advisories in `question-concepts` L6 (390px status-bar overflow, option `c` vs tab `c`), the long-form font decision (stays monospace through `--font-prose`) and the license confirmation (MIT + CC BY-SA 4.0 stay). Phase 2 is postponed by the user. Next content work: `odd/tasks/system-design-questions.md`.
